@@ -1,5 +1,6 @@
 package proyectoedd1;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +13,7 @@ public class ProyectoEDD1 extends Application {
     public void start(Stage primaryStage) throws Exception {
         try {
             // Cargar el archivo FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../ventana/main.fxml"));
             Parent root = loader.load();
             
             // Configurar la escena y el escenario principal
@@ -20,12 +21,13 @@ public class ProyectoEDD1 extends Application {
             primaryStage.setScene(scene);
             primaryStage.setTitle("Mi Aplicación JavaFX");
             primaryStage.show();
-        } catch (Exception e) {
-            e.printStackTrace();  // Imprime el stack trace para entender mejor el error
+        } catch (IOException e) {
+            // Imprime el stack trace para entender mejor el error
+            
         }
     }
 
     public static void main(String[] args) {
-        launch(args);
+        launch(args);        
     }
 }

@@ -6,6 +6,7 @@ package modelo;
 
 import java.io.Serializable;
 import java.util.Objects;
+import tipo.TipoMotor;
 
 /**
  *
@@ -14,42 +15,42 @@ import java.util.Objects;
 public class Motor implements Serializable{
 
     private static int id = 0;
-    private String tipo;
-    private int cilindrada;
+    private TipoMotor tipo;
+    private int cilindraje;
     
     private static final long serialVersionUID = 58992201266L;
 
-    public Motor(String tipo, int cilindrada) {
+    public Motor(TipoMotor tipo, int cilindrada) {
         Motor.id = ++id;
         this.tipo = tipo;
-        this.cilindrada = cilindrada;
+        this.cilindraje = cilindrada;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getTipo() {
+    public TipoMotor getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoMotor tipo) {
         this.tipo = tipo;
     }
 
     public int getCilindrada() {
-        return cilindrada;
+        return cilindraje;
     }
 
     public void setCilindrada(int cilindrada) {
-        this.cilindrada = cilindrada;
+        this.cilindraje = cilindrada;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 47 * hash + Objects.hashCode(this.tipo);
-        hash = 47 * hash + this.cilindrada;
+        hash = 47 * hash + this.cilindraje;
         return hash;
     }
 
@@ -65,7 +66,7 @@ public class Motor implements Serializable{
             return false;
         }
         final Motor other = (Motor) obj;
-        if (this.cilindrada != other.cilindrada) {
+        if (this.cilindraje != other.cilindraje) {
             return false;
         }
         return Objects.equals(this.tipo, other.tipo);
@@ -73,7 +74,7 @@ public class Motor implements Serializable{
 
     @Override
     public String toString() {
-        return "Motor{" +"id= "+id+ ", tipo=" + tipo + ", cilindrada=" + cilindrada + '}';
+        return "Motor{" +"id= "+id+ ", tipo=" + tipo + ", cilindrada=" + cilindraje + '}';
     }
 
 }

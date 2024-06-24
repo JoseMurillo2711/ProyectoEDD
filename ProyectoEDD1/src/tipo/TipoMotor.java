@@ -10,15 +10,18 @@ import java.io.Serializable;
  *
  * @author Michelle
  */
-public enum TipoTransmision implements Serializable{
-    MANUAL("Manual"),
-    AUTOMATICO("Automatico");
+public enum TipoMotor implements Serializable{    
+    GASOLINA("Gasolina"),
+    DIESEL("Diésel"),
+    ELECTRICO("Eléctrico"),
+    GLP("GLP (Gas licuado del petróleo)"),
+    GNC("GNC (Gas natural comprimido)");
 
     private final String tipo;
     
-    private static final long serialVersionUID = 87854413255L;
+    private static final long serialVersionUID = 154488255L;
 
-    TipoTransmision(String tipo) {
+    TipoMotor(String tipo) {
         this.tipo = tipo;
     }
 

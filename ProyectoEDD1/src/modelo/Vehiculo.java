@@ -5,15 +5,17 @@
 package modelo;
 
 import TDA.*;
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.Objects;
-import tipo.TipoVehiculo;
+import tipo.TipoDireccion;
+import tipo.TipoTraccion;
 
 /**
  *
  * @author Michelle
  */
-public class Vehiculo implements Serializable{
+public class Vehiculo implements Serializable {
 
     private static int id = 0;
     private String marca;
@@ -26,8 +28,13 @@ public class Vehiculo implements Serializable{
     private Ubicacion ubicacion;
     private Historial historial;
     private DoubleCircleLinkedList<Foto> fotos;
-    private TipoVehiculo tipo;
     private boolean favorito;
+    private TipoTraccion traccion;
+    private TipoDireccion direccion;
+    private Color color;
+    private boolean climatizado;
+    private int numHilera;
+    private int numPuerta;
 
     private static final long serialVersionUID = 587432992201266L;
 
@@ -36,22 +43,8 @@ public class Vehiculo implements Serializable{
         this.fotos = new DoubleCircleLinkedList<>();
     }
 
-    public Vehiculo(String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, DoubleCircleLinkedList<Foto> fotos, TipoVehiculo tipo) {
-        this.marca = marca;
-        this.modelo = modelo;
-        this.año = año;
-        this.kilometraje = kilometraje;
-        this.precio = precio;
-        this.motor = motor;
-        this.transmision = transmision;
-        this.ubicacion = ubicacion;
-        this.historial = historial;
-        this.fotos = fotos;
-        this.tipo = tipo;
-        this.favorito = false;
-    }
-
-    public Vehiculo(String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, Foto foto, TipoVehiculo tipo) {
+    public Vehiculo(String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, Foto foto) {
+        this();
         this.marca = marca;
         this.modelo = modelo;
         this.año = año;
@@ -62,8 +55,35 @@ public class Vehiculo implements Serializable{
         this.ubicacion = ubicacion;
         this.historial = historial;
         this.fotos.addLast(foto);
-        this.tipo = tipo;
         this.favorito = false;
+        this.traccion = traccion;
+        this.direccion = direccion;
+        this.color = color;
+        this.climatizado = climatizado;
+        this.numHilera = numHilera;
+        this.numPuerta = numPuerta;
+    }
+    
+    public Vehiculo(String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<Foto> fotos) {
+        this();
+        this.marca = marca;
+        this.modelo = modelo;
+        this.año = año;
+        this.kilometraje = kilometraje;
+        this.precio = precio;
+        this.motor = motor;
+        this.transmision = transmision;
+        this.ubicacion = ubicacion;
+        this.historial = historial;
+        this.fotos = new DoubleCircleLinkedList<>();
+        this.favorito = false;
+        this.traccion = traccion;
+        this.direccion = direccion;
+        this.color = color;
+        this.climatizado = climatizado;
+        this.numHilera = numHilera;
+        this.numPuerta = numPuerta;
+        this.fotos = fotos;
     }
 
     public String getMarca() {
@@ -138,32 +158,12 @@ public class Vehiculo implements Serializable{
         this.historial = historial;
     }
 
-    public List<Foto> getFotos() {
+    public DoubleCircleLinkedList<Foto> getFotos() {
         return fotos;
     }
 
     public void setFotos(DoubleCircleLinkedList<Foto> fotos) {
         this.fotos = fotos;
-    }
-
-    public void marcarComoFavorito() {
-        this.favorito = true;
-    }
-
-    public void desmarcarComoFavorito() {
-        this.favorito = false;
-    }
-
-    public static int getId() {
-        return id;
-    }
-
-    public TipoVehiculo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoVehiculo tipo) {
-        this.tipo = tipo;
     }
 
     public boolean isFavorito() {
@@ -174,20 +174,82 @@ public class Vehiculo implements Serializable{
         this.favorito = favorito;
     }
 
+    public TipoTraccion getTraccion() {
+        return traccion;
+    }
+
+    public void setTraccion(TipoTraccion traccion) {
+        this.traccion = traccion;
+    }
+
+    public TipoDireccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(TipoDireccion direccion) {
+        this.direccion = direccion;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public boolean isClimatizado() {
+        return climatizado;
+    }
+
+    public void setClimatizado(boolean climatizado) {
+        this.climatizado = climatizado;
+    }
+
+    public int getNumHilera() {
+        return numHilera;
+    }
+
+    public void setNumHilera(int numHilera) {
+        this.numHilera = numHilera;
+    }
+
+    public int getNumPuerta() {
+        return numPuerta;
+    }
+
+    public void setNumPuerta(int numPuerta) {
+        this.numPuerta = numPuerta;
+    }
+
+    public void marcarComoFavorito(){
+        this.favorito = true;
+    }
+    
+    public void desmarcarComoFavorito(){
+        this.favorito = false;
+    }
+            
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.marca);
-        hash = 59 * hash + Objects.hashCode(this.modelo);
-        hash = 59 * hash + this.año;
-        hash = 59 * hash + this.kilometraje;
-        hash = 59 * hash + (int) (Double.doubleToLongBits(this.precio) ^ (Double.doubleToLongBits(this.precio) >>> 32));
-        hash = 59 * hash + Objects.hashCode(this.motor);
-        hash = 59 * hash + Objects.hashCode(this.transmision);
-        hash = 59 * hash + Objects.hashCode(this.ubicacion);
-        hash = 59 * hash + Objects.hashCode(this.historial);
-        hash = 59 * hash + Objects.hashCode(this.fotos);
-        hash = 59 * hash + Objects.hashCode(this.tipo);
+        int hash = 5;
+        hash = 31 * hash + Objects.hashCode(this.marca);
+        hash = 31 * hash + Objects.hashCode(this.modelo);
+        hash = 31 * hash + this.año;
+        hash = 31 * hash + this.kilometraje;
+        hash = 31 * hash + (int) (Double.doubleToLongBits(this.precio) ^ (Double.doubleToLongBits(this.precio) >>> 32));
+        hash = 31 * hash + Objects.hashCode(this.motor);
+        hash = 31 * hash + Objects.hashCode(this.transmision);
+        hash = 31 * hash + Objects.hashCode(this.ubicacion);
+        hash = 31 * hash + Objects.hashCode(this.historial);
+        hash = 31 * hash + Objects.hashCode(this.fotos);
+        hash = 31 * hash + (this.favorito ? 1 : 0);
+        hash = 31 * hash + Objects.hashCode(this.traccion);
+        hash = 31 * hash + Objects.hashCode(this.direccion);
+        hash = 31 * hash + Objects.hashCode(this.color);
+        hash = 31 * hash + (this.climatizado ? 1 : 0);
+        hash = 31 * hash + this.numHilera;
+        hash = 31 * hash + this.numPuerta;
         return hash;
     }
 
@@ -212,6 +274,18 @@ public class Vehiculo implements Serializable{
         if (Double.doubleToLongBits(this.precio) != Double.doubleToLongBits(other.precio)) {
             return false;
         }
+        if (this.favorito != other.favorito) {
+            return false;
+        }
+        if (this.climatizado != other.climatizado) {
+            return false;
+        }
+        if (this.numHilera != other.numHilera) {
+            return false;
+        }
+        if (this.numPuerta != other.numPuerta) {
+            return false;
+        }
         if (!Objects.equals(this.marca, other.marca)) {
             return false;
         }
@@ -233,12 +307,18 @@ public class Vehiculo implements Serializable{
         if (!Objects.equals(this.fotos, other.fotos)) {
             return false;
         }
-        return this.tipo == other.tipo;
+        if (this.traccion != other.traccion) {
+            return false;
+        }
+        if (this.direccion != other.direccion) {
+            return false;
+        }
+        return Objects.equals(this.color, other.color);
     }
 
     @Override
     public String toString() {
-        return "Vehiculo{" + "marca=" + marca + ", modelo=" + modelo + ", a\u00f1o=" + año + ", kilometraje=" + kilometraje + ", precio=" + precio + ", motor=" + motor + ", transmision=" + transmision + ", ubicacion=" + ubicacion + ", historial=" + historial + ", fotos=" + fotos + ", tipo=" + tipo + ", favorito=" + favorito + '}';
+        return "Vehiculo{" + "marca=" + marca + ", modelo=" + modelo + ", a\u00f1o=" + año + ", kilometraje=" + kilometraje + ", precio=" + precio + ", motor=" + motor + ", transmision=" + transmision + ", ubicacion=" + ubicacion + ", historial=" + historial + ", fotos=" + fotos + ", favorito=" + favorito + ", traccion=" + traccion + ", direccion=" + direccion + ", color=" + color + ", climatizado=" + climatizado + ", numHilera=" + numHilera + ", numPuerta=" + numPuerta + '}';
     }
 
 }

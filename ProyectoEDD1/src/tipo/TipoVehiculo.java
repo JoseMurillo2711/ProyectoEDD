@@ -4,11 +4,13 @@
  */
 package tipo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Michelle
  */
-public enum TipoVehiculo {
+public enum TipoVehiculo implements Serializable{
     NUEVO("Nuevo"),
     USADO("Usado");
 

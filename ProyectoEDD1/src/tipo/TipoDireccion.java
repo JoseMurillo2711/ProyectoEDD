@@ -10,15 +10,15 @@ import java.io.Serializable;
  *
  * @author Michelle
  */
-public enum TipoTransmision implements Serializable{
-    MANUAL("Manual"),
-    AUTOMATICO("Automatico");
+public enum TipoDireccion implements Serializable{
+    ELECTRONICA("Electronica"),
+    MECANICA("Mecanica");
 
     private final String tipo;
     
-    private static final long serialVersionUID = 87854413255L;
+    private static final long serialVersionUID = 7454413255L;
 
-    TipoTransmision(String tipo) {
+    TipoDireccion(String tipo) {
         this.tipo = tipo;
     }
 

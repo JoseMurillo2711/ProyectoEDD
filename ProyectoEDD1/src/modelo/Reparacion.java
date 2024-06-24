@@ -12,13 +12,14 @@ import java.util.Objects;
  *
  * @author Michelle
  */
-public class Reparacion implements Serializable{
+public class Reparacion implements Serializable {
+
     private static int id = 0;
     private String descripcion;
     private Date fecha;
 
     private static final long serialVersionUID = 587402201266L;
-    
+
     public Reparacion(String descripcion, Date fecha) {
         Reparacion.id = ++id;
         this.descripcion = descripcion;
@@ -73,7 +74,7 @@ public class Reparacion implements Serializable{
 
     @Override
     public String toString() {
-        return "Reparacion{" + "id= "+id+ ", descripcion=" + descripcion + ", fecha=" + fecha + '}';
+        return "Reparacion{" + "id= " + id + ", descripcion=" + descripcion + ", fecha=" + fecha + '}';
     }
 
 }

@@ -8,6 +8,7 @@ import TDA.*;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.Objects;
+import tipo.TipoCosto;
 import tipo.TipoDireccion;
 import tipo.TipoTraccion;
 
@@ -35,6 +36,7 @@ public class Vehiculo implements Serializable {
     private boolean climatizado;
     private int numHilera;
     private int numPuerta;
+    private TipoCosto tipoCosto;
 
     private static final long serialVersionUID = 587432992201266L;
 
@@ -43,8 +45,9 @@ public class Vehiculo implements Serializable {
         this.fotos = new DoubleCircleLinkedList<>();
     }
 
-    public Vehiculo(String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, Foto foto) {
+    public Vehiculo(TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, Foto foto) {
         this();
+        this.tipoCosto = tipoCosto;
         this.marca = marca;
         this.modelo = modelo;
         this.año = año;
@@ -63,9 +66,10 @@ public class Vehiculo implements Serializable {
         this.numHilera = numHilera;
         this.numPuerta = numPuerta;
     }
-    
-    public Vehiculo(String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<Foto> fotos) {
+
+    public Vehiculo(TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<Foto> fotos) {
         this();
+        this.tipoCosto = tipoCosto;
         this.marca = marca;
         this.modelo = modelo;
         this.año = año;
@@ -84,6 +88,14 @@ public class Vehiculo implements Serializable {
         this.numHilera = numHilera;
         this.numPuerta = numPuerta;
         this.fotos = fotos;
+    }
+
+    public TipoCosto getTipoCosto() {
+        return tipoCosto;
+    }
+
+    public void setTipoCosto(TipoCosto tipoCosto) {
+        this.tipoCosto = tipoCosto;
     }
 
     public String getMarca() {
@@ -222,34 +234,35 @@ public class Vehiculo implements Serializable {
         this.numPuerta = numPuerta;
     }
 
-    public void marcarComoFavorito(){
+    public void marcarComoFavorito() {
         this.favorito = true;
     }
-    
-    public void desmarcarComoFavorito(){
+
+    public void desmarcarComoFavorito() {
         this.favorito = false;
     }
-            
+
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 31 * hash + Objects.hashCode(this.marca);
-        hash = 31 * hash + Objects.hashCode(this.modelo);
-        hash = 31 * hash + this.año;
-        hash = 31 * hash + this.kilometraje;
-        hash = 31 * hash + (int) (Double.doubleToLongBits(this.precio) ^ (Double.doubleToLongBits(this.precio) >>> 32));
-        hash = 31 * hash + Objects.hashCode(this.motor);
-        hash = 31 * hash + Objects.hashCode(this.transmision);
-        hash = 31 * hash + Objects.hashCode(this.ubicacion);
-        hash = 31 * hash + Objects.hashCode(this.historial);
-        hash = 31 * hash + Objects.hashCode(this.fotos);
-        hash = 31 * hash + (this.favorito ? 1 : 0);
-        hash = 31 * hash + Objects.hashCode(this.traccion);
-        hash = 31 * hash + Objects.hashCode(this.direccion);
-        hash = 31 * hash + Objects.hashCode(this.color);
-        hash = 31 * hash + (this.climatizado ? 1 : 0);
-        hash = 31 * hash + this.numHilera;
-        hash = 31 * hash + this.numPuerta;
+        hash = 97 * hash + Objects.hashCode(this.marca);
+        hash = 97 * hash + Objects.hashCode(this.modelo);
+        hash = 97 * hash + this.año;
+        hash = 97 * hash + this.kilometraje;
+        hash = 97 * hash + (int) (Double.doubleToLongBits(this.precio) ^ (Double.doubleToLongBits(this.precio) >>> 32));
+        hash = 97 * hash + Objects.hashCode(this.motor);
+        hash = 97 * hash + Objects.hashCode(this.transmision);
+        hash = 97 * hash + Objects.hashCode(this.ubicacion);
+        hash = 97 * hash + Objects.hashCode(this.historial);
+        hash = 97 * hash + Objects.hashCode(this.fotos);
+        hash = 97 * hash + (this.favorito ? 1 : 0);
+        hash = 97 * hash + Objects.hashCode(this.traccion);
+        hash = 97 * hash + Objects.hashCode(this.direccion);
+        hash = 97 * hash + Objects.hashCode(this.color);
+        hash = 97 * hash + (this.climatizado ? 1 : 0);
+        hash = 97 * hash + this.numHilera;
+        hash = 97 * hash + this.numPuerta;
+        hash = 97 * hash + Objects.hashCode(this.tipoCosto);
         return hash;
     }
 
@@ -313,12 +326,27 @@ public class Vehiculo implements Serializable {
         if (this.direccion != other.direccion) {
             return false;
         }
-        return Objects.equals(this.color, other.color);
+        if (!Objects.equals(this.color, other.color)) {
+            return false;
+        }
+        return this.tipoCosto == other.tipoCosto;
     }
+  
 
     @Override
     public String toString() {
         return "Vehiculo{" + "marca=" + marca + ", modelo=" + modelo + ", a\u00f1o=" + año + ", kilometraje=" + kilometraje + ", precio=" + precio + ", motor=" + motor + ", transmision=" + transmision + ", ubicacion=" + ubicacion + ", historial=" + historial + ", fotos=" + fotos + ", favorito=" + favorito + ", traccion=" + traccion + ", direccion=" + direccion + ", color=" + color + ", climatizado=" + climatizado + ", numHilera=" + numHilera + ", numPuerta=" + numPuerta + '}';
     }
 
+    public void agregarFoto(Foto foto) {
+        this.fotos.addLast(foto);
+    }
+
+    public void eliminarFoto(Foto foto) {
+        int ind = this.fotos.indexOf(foto);
+        if (ind == -1) {
+            throw new NullPointerException("No se encuentra esa foto en la lista de fotos");
+        }
+        this.fotos.remove(ind);
+    }
 }

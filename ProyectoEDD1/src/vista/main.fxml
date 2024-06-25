@@ -1,11 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
-    
-</AnchorPane>
+<VBox alignment="TOP_CENTER" stylesheets="@../estilos/estiloBase.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+   <children>
+      <BorderPane fx:id="rootBorderPane" prefHeight="550.0" prefWidth="750.0" style="-fx-background-color: #F2F2F0;" VBox.vgrow="ALWAYS">
+         <top>
+            <HBox alignment="CENTER" prefHeight="79.0" prefWidth="750.0" spacing="20.0" style="-fx-background-color: #5A758C;" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView id="imgInicio" fitHeight="75.0" fitWidth="125.0" onMouseClicked="#inicioDePagina" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/logo.png" />
+                     </image>
+                  </ImageView>
+                  <HBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="283.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="txtBusqueda" prefHeight="25.0" prefWidth="261.0" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Button id="busqueda" fx:id="btnBuscar" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="30.0" prefWidth="54.0" style="-fx-background-color: #162440;">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="1.0">
+                     <children>
+                        <HBox fx:id="hbIniciarSesion" alignment="CENTER_RIGHT">
+                           <children>
+                              <Label id="lblBarra" onMouseClicked="#iniciarSesion" text="Iniciar Sesión" textFill="WHITE">
+                                 <font>
+                                    <Font name="Gill Sans MT Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label text="/" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label id="lblBarra" onMouseClicked="#registrarse" text="Registrarse" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <MenuBar fx:id="menuUser" HBox.hgrow="ALWAYS">
+                                <menus>
+                                  <Menu id="lblBarra" mnemonicParsing="false" text="Usuario">
+                                    <items>
+                                          <MenuItem mnemonicParsing="false" onAction="#mostrarMisAutos" text="Mis autos" />
+                                          <MenuItem mnemonicParsing="false" onAction="#verFavoritos" text="Ver Favoritos" />
+                                      <MenuItem mnemonicParsing="false" onAction="#cerrarSesion" text="Cerrar Sesion" />
+                                    </items>
+                                  </Menu>
+                                </menus>
+                              </MenuBar>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+         </top>
+         <bottom>
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="42.0" prefWidth="750.0" style="-fx-background-color: #F9F3D9;" BorderPane.alignment="BOTTOM_RIGHT">
+               <children>
+                  <Label text="Owners: Michelle Arreaga, José Murillo" HBox.hgrow="ALWAYS" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+         </bottom>
+         <left>
+            <VBox alignment="CENTER" prefHeight="413.0" prefWidth="121.0" spacing="5.0" style="-fx-background-color: #BF8F84;" stylesheets="@../estilos/lateral.css" BorderPane.alignment="CENTER">
+               <children>
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarAutosNuevos" text="Nuevo" VBox.vgrow="ALWAYS" />
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarAutosViejos" text="Viejos" VBox.vgrow="ALWAYS" />
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarAuto" text="Agregar Auto" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </left>
+         <center>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </center></BorderPane>
+   </children>
+</VBox>

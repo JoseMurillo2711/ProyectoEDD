@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" stylesheets="@../estilos/estiloBase.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+   <children>
+      <Button fx:id="btnIniciarSesion" layoutX="257.0" layoutY="188.0" mnemonicParsing="false" onAction="#iniciarSesion" text="Iniciar Sesion" />
+      <VBox alignment="CENTER" layoutX="219.0" layoutY="222.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#registrarse" style="-fx-background-color: transparent;" text="¿No tienes cuenta? Registrarse" />
+            <Label text="o" />
+            <Button mnemonicParsing="false" onAction="#regresarComoInvitado" style="-fx-background-color: transparent;" text="«Seguir como invitado»" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

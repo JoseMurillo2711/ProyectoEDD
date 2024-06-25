@@ -13,7 +13,7 @@ public class ProyectoEDD1 extends Application {
     public void start(Stage primaryStage) throws Exception {
         try {
             // Cargar el archivo FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../ventana/main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../vista/main.fxml"));
             Parent root = loader.load();
             
             // Configurar la escena y el escenario principal

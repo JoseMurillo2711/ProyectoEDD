@@ -1,0 +1,68 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+    -fx-font-family: "Gill Sans MT", sans-serif;
+}
+
+.root {
+    -fx-font-family: "Gill Sans MT", sans-serif;
+
+}
+
+.menu-bar .menu {
+    -fx-padding: 0 5px 0 5px;
+    -fx-pref-width: -1; /* Permite que el ancho se ajuste automáticamente */
+}
+.menu-bar .menu .label {
+    -fx-padding: 0 5px 0 5px;
+}
+
+
+#busqueda:pressed {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0); /* Efecto de sombra hacia adentro al hacer clic */
+}
+
+#lblBarra{
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+}
+
+#lblBarra:hover {
+    -fx-text-fill: blue;
+    -fx-underline: true;
+}
+
+.menu-bar {
+    -fx-background-color: transparent;
+    -fx-text-fill: white; /* Color de texto blanco */
+}
+
+/* Estilo base para los Menu */
+.menu {
+    -fx-font-size: 16px;
+    -fx-underline: false;
+}
+
+.menu .label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-underline: false;
+}
+
+.menu-item {
+    -fx-text-fill: black; /* Color de texto negro */
+    -fx-font-size: 14px;
+    -fx-underline: false;
+}
+
+.menu-item .label{
+    -fx-text-fill: black; /* Color de texto negro */
+    -fx-font-size: 14px;
+    -fx-underline: false;
+}
+
+.menu-item:focused, .menu-item:armed {
+    -fx-text-fill: black; /* Color de texto blanco */
+}

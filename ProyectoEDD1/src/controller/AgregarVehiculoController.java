@@ -2,6 +2,9 @@ package controller;
 
 //import java.awt.Color;
 import TDA.DoubleCircleLinkedList;
+import TDA.List;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import javafx.scene.paint.Color;
 import java.util.Date;
@@ -102,6 +105,9 @@ public class AgregarVehiculoController {
     private DoubleCircleLinkedList<Reparacion> tipoRep;
     private DoubleCircleLinkedList<Foto> fotosList;
     
+    private List<Vehiculo> vehiculos;
+    private List<Vehiculo> vehiculosNuevos;
+    private List<Vehiculo> vehiculosUsados;
     
     public void initialize() {
         initializeMenuButton(usrTipoMotor, TipoMotor.values());
@@ -183,21 +189,36 @@ public class AgregarVehiculoController {
                 
                 
                 //VehiculoUsado nuevoVehiculo = new VehiculoUsado(marca, modelo, anio, kilometraje, precio, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), new Historial(tipoServ, tipoRep), fotosList, new TipoTraccion(tipoTraccion), new TipoDireccion(tipoDireccion), color, climatizado, nHileras, nPuertas, new TipoCosto(tipoCosto), new Placa(ultimoDigito, provincia), new Usuario());
-                
+                VehiculoUsado nuevoVehiculoUsado  = new VehiculoUsado(new Placa(ultimoDigito, provincia), new Usuario(), marca, modelo, anio);
                 
                 //System.out.println("Vehículo usado creado: " + nuevoVehiculo);
+                vehiculos.addFirst(nuevoVehiculoUsado);
+                vehiculosUsados.addFirst(nuevoVehiculoUsado);
             } else {
-                // Crea un objeto Vehiculo con los datos obtenidos
                 //Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, anio, kilometraje, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), foto, new TipoTraccion(tipoTraccion), tipoDireccion, color, climatizado, nHileras, nPuertas, precio, new TipoCosto(tipoCosto));
-                //System.out.println("Vehículo nuevo creado: " + nuevoVehiculo);
+
+                Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, anio);
+                vehiculos.addFirst(nuevoVehiculo);
+                vehiculosNuevos.addFirst(nuevoVehiculo);
+                
+                
             }
         } catch (NumberFormatException e) {
             System.err.println("Error. Revise haber colocado bien los datos." + e.getMessage());
         } catch (Exception e) {
-            // Manejo de otros posibles errores
             System.err.println("Error al crear el vehículo: " + e.getMessage());
         }
     }
-
+    
+    public void guardarVehiculosEnArchivo(String nombreArchivo) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
+            for (Vehiculo vehiculo : vehiculos) {
+                writer.write(vehiculo.toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -161,6 +161,19 @@ public class MainController implements Initializable {
 
     @FXML
     private void agregarAuto(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../vista/agregarVehiculo.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+            Stage st = new Stage();
+            st.setTitle("Agregar vehiculo");
+            Scene sc = new Scene(root);
+            st.setScene(sc);
+            cerrarVentana();
+            st.show();
+        } catch (IOException ex) {
+            Alertas.alertaError("Ha ocurrido un error", ex.getMessage());
+        }
     }
 
     @FXML

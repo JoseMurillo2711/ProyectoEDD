@@ -11,4 +11,27 @@ package modelo;
 public class Placa {
     private int ultimoDigito;
     private String provincia;
+
+    public int getUltimoDigito() {
+        return ultimoDigito;
+    }
+
+    public void setUltimoDigito(int ultimoDigito) {
+        this.ultimoDigito = ultimoDigito;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public Placa(int ultimoDigito, String provincia) {
+        this.ultimoDigito = ultimoDigito;
+        this.provincia = provincia;
+    }
+    
+    
 }

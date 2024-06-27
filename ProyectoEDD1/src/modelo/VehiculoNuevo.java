@@ -26,7 +26,9 @@ public class VehiculoNuevo extends Vehiculo implements Serializable {
     public VehiculoNuevo(TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<Foto> fotos) {
         super(tipoCosto, marca, modelo, año, kilometraje, precio, motor, transmision, ubicacion, historial, traccion, direccion, color, climatizado, numHilera, numPuerta, fotos);
     }
-
+    public VehiculoNuevo(String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, DoubleCircleLinkedList<Foto> fotos, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, TipoCosto tipoCosto) {
+        super(marca, modelo, año, kilometraje, precio, motor, transmision, ubicacion, historial, fotos, traccion, direccion, color, climatizado, numHilera, numPuerta, tipoCosto);
+    }
     /**
      *
      * @param o
@@ -42,8 +44,6 @@ public class VehiculoNuevo extends Vehiculo implements Serializable {
         return super.hashCode();
     }
 
-    public VehiculoNuevo(String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, DoubleCircleLinkedList<Foto> fotos, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, TipoCosto tipoCosto) {
-        super(marca, modelo, año, kilometraje, precio, motor, transmision, ubicacion, historial, fotos, traccion, direccion, color, climatizado, numHilera, numPuerta, tipoCosto);
-    }
+    
 
 }

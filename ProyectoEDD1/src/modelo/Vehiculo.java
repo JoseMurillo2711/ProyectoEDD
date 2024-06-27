@@ -44,6 +44,13 @@ public class Vehiculo implements Serializable {
         Vehiculo.id = ++id;
         this.fotos = new DoubleCircleLinkedList<>();
     }
+    
+    public Vehiculo(String marca, String modelo, int año) {
+        this();
+        this.marca = marca;
+        this.modelo = modelo;
+        this.año = año;
+    }
 
     public Vehiculo(TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, Foto foto) {
         this();

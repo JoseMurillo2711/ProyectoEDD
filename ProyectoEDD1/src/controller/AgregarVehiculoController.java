@@ -108,6 +108,8 @@ public class AgregarVehiculoController {
     private List<Vehiculo> vehiculos;
     private List<Vehiculo> vehiculosNuevos;
     private List<Vehiculo> vehiculosUsados;
+    @FXML
+    private TextField usrCedula;
     
     public void initialize() {
         initializeMenuButton(usrTipoMotor, TipoMotor.values());
@@ -134,6 +136,7 @@ public class AgregarVehiculoController {
         usrUlDigito.setDisable(!enabled);
         usrProvincia.setDisable(!enabled);
         usrDuenio.setDisable(!enabled);
+        usrCedula.setDisable(enabled);
         usrFechaRep.setDisable(!enabled);
         usrFechaServ.setDisable(!enabled);
         usrTipoRep.setDisable(!enabled);
@@ -181,8 +184,8 @@ public class AgregarVehiculoController {
             if (usado) {
                 int ultimoDigito = Integer.parseInt(usrUlDigito.getText());
                 String provincia = usrProvincia.getText();
-                String duenio = usrDuenio.getText();
-                
+                String duenioNombre = usrDuenio.getText();
+                String dueniocedula = usrCedula.getText();
                 String historialReparaciones = usrTipoRep.getText();
                 String historialServicios = usrTipoServ.getText();
                 Date fechaRep = java.sql.Date.valueOf(usrFechaRep.getValue());

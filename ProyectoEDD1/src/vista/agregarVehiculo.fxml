@@ -120,7 +120,7 @@
                   <TextField fx:id="usrUlDigito" GridPane.columnIndex="1" GridPane.rowIndex="16" />
                   <TextField fx:id="usrProvincia" GridPane.columnIndex="4" GridPane.rowIndex="16" />
                   <TextField fx:id="usrDuenio" GridPane.columnIndex="1" GridPane.rowIndex="17" />
-                  <TextField GridPane.columnIndex="4" GridPane.rowIndex="17" />
+                  <TextField fx:id="usrCedula" GridPane.columnIndex="4" GridPane.rowIndex="17" />
                   <DatePicker fx:id="usrFechaRep" GridPane.columnIndex="1" GridPane.rowIndex="19" />
                   <DatePicker fx:id="usrFechaServ" GridPane.columnIndex="4" GridPane.rowIndex="19" />
                   <TextArea fx:id="usrTipoRep" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="20" />

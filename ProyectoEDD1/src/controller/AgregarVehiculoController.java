@@ -2,10 +2,14 @@ package controller;
 
 //import java.awt.Color;
 import TDA.DoubleCircleLinkedList;
+import java.io.IOException;
 import javafx.scene.paint.Color;
 import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
@@ -14,6 +18,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import modelo.Foto;
 import modelo.Historial;
 import modelo.Motor;
@@ -87,8 +92,6 @@ public class AgregarVehiculoController {
     @FXML
     private TextArea usrTipoServ;
     @FXML
-    private Button RegresarButton;
-    @FXML
     private Button CrearButton;
     @FXML
     private TextField usrFotoNombre;
@@ -131,9 +134,7 @@ public class AgregarVehiculoController {
         usrTipoServ.setDisable(!enabled);
     }
     
-    @FXML
-    private void RegresarMain(ActionEvent event) {
-    }
+    
 
     @FXML
     private void crearVehiculo(ActionEvent event) {
@@ -181,14 +182,14 @@ public class AgregarVehiculoController {
                 fotosList.addLast(foto);
                 
                 
-                VehiculoUsado nuevoVehiculo = new VehiculoUsado(marca, modelo, anio, kilometraje, precio, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), new Historial(tipoServ, tipoRep), fotosList, new TipoTraccion(tipoTraccion), new TipoDireccion(tipoDireccion), color, climatizado, nHileras, nPuertas, new TipoCosto(tipoCosto), new Placa(ultimoDigito, provincia), new Usuario());
+                //VehiculoUsado nuevoVehiculo = new VehiculoUsado(marca, modelo, anio, kilometraje, precio, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), new Historial(tipoServ, tipoRep), fotosList, new TipoTraccion(tipoTraccion), new TipoDireccion(tipoDireccion), color, climatizado, nHileras, nPuertas, new TipoCosto(tipoCosto), new Placa(ultimoDigito, provincia), new Usuario());
                 
                 
-                System.out.println("Vehículo usado creado: " + nuevoVehiculo);
+                //System.out.println("Vehículo usado creado: " + nuevoVehiculo);
             } else {
                 // Crea un objeto Vehiculo con los datos obtenidos
-                Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, anio, kilometraje, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), foto, new TipoTraccion(tipoTraccion), tipoDireccion, color, climatizado, nHileras, nPuertas, precio, new TipoCosto(tipoCosto));
-                System.out.println("Vehículo nuevo creado: " + nuevoVehiculo);
+                //Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, anio, kilometraje, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), foto, new TipoTraccion(tipoTraccion), tipoDireccion, color, climatizado, nHileras, nPuertas, precio, new TipoCosto(tipoCosto));
+                //System.out.println("Vehículo nuevo creado: " + nuevoVehiculo);
             }
         } catch (NumberFormatException e) {
             System.err.println("Error. Revise haber colocado bien los datos." + e.getMessage());

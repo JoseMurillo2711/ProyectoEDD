@@ -140,6 +140,16 @@ public class AgregarVehiculoController {
         usrTipoServ.setDisable(!enabled);
     }
     
+    public void guardarVehiculosEnArchivo(String nombreArchivo) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
+            for (Vehiculo vehiculo : vehiculos) {
+                writer.write(vehiculo.toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
 
     @FXML
@@ -194,6 +204,7 @@ public class AgregarVehiculoController {
                 //System.out.println("Vehículo usado creado: " + nuevoVehiculo);
                 vehiculos.addFirst(nuevoVehiculoUsado);
                 vehiculosUsados.addFirst(nuevoVehiculoUsado);
+                
             } else {
                 //Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, anio, kilometraje, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), foto, new TipoTraccion(tipoTraccion), tipoDireccion, color, climatizado, nHileras, nPuertas, precio, new TipoCosto(tipoCosto));
 
@@ -201,7 +212,7 @@ public class AgregarVehiculoController {
                 vehiculos.addFirst(nuevoVehiculo);
                 vehiculosNuevos.addFirst(nuevoVehiculo);
                 
-                
+                guardarVehiculosEnArchivo("Vehiculo.txt");
             }
         } catch (NumberFormatException e) {
             System.err.println("Error. Revise haber colocado bien los datos." + e.getMessage());
@@ -210,15 +221,6 @@ public class AgregarVehiculoController {
         }
     }
     
-    public void guardarVehiculosEnArchivo(String nombreArchivo) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
-            for (Vehiculo vehiculo : vehiculos) {
-                writer.write(vehiculo.toString());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    
 
 }

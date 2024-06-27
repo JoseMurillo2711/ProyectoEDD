@@ -97,6 +97,26 @@ public class Vehiculo implements Serializable {
         this.fotos = fotos;
     }
 
+    public Vehiculo(String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, DoubleCircleLinkedList<Foto> fotos, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, TipoCosto tipoCosto) {
+        this.marca = marca;
+        this.modelo = modelo;
+        this.año = año;
+        this.kilometraje = kilometraje;
+        this.precio = precio;
+        this.motor = motor;
+        this.transmision = transmision;
+        this.ubicacion = ubicacion;
+        this.historial = historial;
+        this.fotos = fotos;
+        this.traccion = traccion;
+        this.direccion = direccion;
+        this.color = color;
+        this.climatizado = climatizado;
+        this.numHilera = numHilera;
+        this.numPuerta = numPuerta;
+        this.tipoCosto = tipoCosto;
+    }
+    
     public TipoCosto getTipoCosto() {
         return tipoCosto;
     }

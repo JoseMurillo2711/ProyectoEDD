@@ -41,6 +41,16 @@ public class VehiculoUsado extends Vehiculo implements Serializable {
         this.dueno = dueno;
     }
 
+    public VehiculoUsado(Placa placa, Usuario dueno, String marca, String modelo, int año) {
+        super(marca, modelo, año);
+        this.placa = placa;
+        this.dueno = dueno;
+    }
+
+    
+    
+    
+
     public Placa getPlaca() {
         return placa;
     }
@@ -89,3 +99,4 @@ public class VehiculoUsado extends Vehiculo implements Serializable {
     }
 
 }
+

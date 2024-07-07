@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import util.UsuarioDataManager;
+import util.VehiculoDataManager;
 
 public class ProyectoEDD1 extends Application {
 
@@ -15,19 +17,20 @@ public class ProyectoEDD1 extends Application {
             // Cargar el archivo FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../vista/main.fxml"));
             Parent root = loader.load();
-            
             // Configurar la escena y el escenario principal
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Mi Aplicación JavaFX");
             primaryStage.show();
         } catch (IOException e) {
-            // Imprime el stack trace para entender mejor el error
-            
+            System.err.println(e.getMessage());
         }
     }
 
     public static void main(String[] args) {
-        launch(args);        
+        System.out.println(VehiculoDataManager.getInstance().getVehiculos());
+        System.out.println(UsuarioDataManager.getInstance().getUsuarios());
+        launch(args);      
+        
     }
 }

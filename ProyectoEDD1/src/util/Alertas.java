@@ -12,7 +12,7 @@ import javafx.scene.control.Alert;
  */
 public class Alertas {
     public static void alertaConfirmacion(String title, String mensaje){
-        Alert ConfirmacionAdmin = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert ConfirmacionAdmin = new Alert(Alert.AlertType.CONFIRMATION);        
         ConfirmacionAdmin.setTitle(title);
         ConfirmacionAdmin.setContentText(mensaje);
         ConfirmacionAdmin.showAndWait();
@@ -36,6 +36,38 @@ public class Alertas {
         Alert ConfirmacionAdmin = new Alert(Alert.AlertType.INFORMATION);
         ConfirmacionAdmin.setTitle(title);
         ConfirmacionAdmin.setContentText(mensaje);
+        ConfirmacionAdmin.showAndWait();
+    }
+    
+    public static void alertaConfirmacion(String title, String mensaje, String headerText){
+        Alert ConfirmacionAdmin = new Alert(Alert.AlertType.CONFIRMATION);        
+        ConfirmacionAdmin.setTitle(title);
+        ConfirmacionAdmin.setHeaderText(headerText);
+        ConfirmacionAdmin.setContentText(mensaje);
+        ConfirmacionAdmin.showAndWait();
+    }
+    
+    public static void alertaAdvertencia(String title, String mensaje, String headerText){
+        Alert ConfirmacionAdmin = new Alert(Alert.AlertType.WARNING);
+        ConfirmacionAdmin.setTitle(title);
+        ConfirmacionAdmin.setContentText(mensaje);
+        ConfirmacionAdmin.setHeaderText(headerText);
+        ConfirmacionAdmin.showAndWait();
+    }
+    
+    public static void alertaError(String title, String mensaje, String headerText){
+        Alert ConfirmacionAdmin = new Alert(Alert.AlertType.ERROR);
+        ConfirmacionAdmin.setTitle(title);
+        ConfirmacionAdmin.setContentText(mensaje);
+        ConfirmacionAdmin.setHeaderText(headerText);
+        ConfirmacionAdmin.showAndWait();
+    }
+    
+    public static void alertaInfo(String title, String mensaje, String headerText){
+        Alert ConfirmacionAdmin = new Alert(Alert.AlertType.INFORMATION);
+        ConfirmacionAdmin.setTitle(title);
+        ConfirmacionAdmin.setContentText(mensaje);
+        ConfirmacionAdmin.setHeaderText(headerText);
         ConfirmacionAdmin.showAndWait();
     }
 }

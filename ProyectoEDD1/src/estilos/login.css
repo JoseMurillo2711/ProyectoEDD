@@ -1,0 +1,92 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+    -fx-font-family: "Gill Sans MT", sans-serif;
+    -fx-background-color: #BF8F84;
+    -fx-font-size: 14px;
+}
+
+.root{
+    -fx-font-family: "Gill Sans MT", sans-serif;
+    -fx-background-color: #BF8F84;
+    -fx-font-size: 14px;
+}
+
+#borderedContainer {
+    -fx-background-color: #5A758C; /* Color de fondo */
+    -fx-text-fill: white; /* Color del texto */
+    -fx-font-size: 30px; /* Tamaño de la fuente */
+    -fx-font-weight: bold; /* Grosor de la fuente */
+    -fx-padding: 20; /* Relleno */
+    -fx-background-radius: 15; /* Bordes redondeados */
+    -fx-border-radius: 15; /* Bordes redondeados */
+    -fx-border-color: #BF8F84; /* Color del borde */
+    -fx-border-width: 2; /* Grosor del borde */
+
+}
+
+#pass{
+    -fx-font-size: 11px;
+}
+#titulo{
+    -fx-background-color: #5A758C;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-padding: 10;
+    -fx-alignment: center;
+}
+
+#btnIniciar{
+    -fx-background-color: #F2F2F0; /* Fondo del botón */
+    -fx-text-fill: #162440; /* Color del texto */
+    -fx-font-size: 14px; /* Tamaño de la letra */
+    -fx-font-weight: bold;
+    -fx-border-color: #162440; /* Color del borde */
+    -fx-border-width: 1; /* Grosor del borde */
+    -fx-border-radius: 5; /* Bordes redondeados */
+    -fx-background-radius: 5; /* Bordes redondeados */
+    -fx-padding: 10 20 10 20; /* Relleno */
+}
+
+#btnIniciar:pressed {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 10, 0.5, 0, 0); /* Efecto de sombra al hacer clic */
+}
+
+.label{
+    -fx-font-weight: bold;
+}
+
+#lblEtiqeta {
+    -fx-font-size: 14px;
+}
+
+#lblAbajo{
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+}
+
+.transparent-button {
+    -fx-background-color: transparent; /* Fondo transparente */
+    -fx-text-fill: white; /* Color del texto blanco grisáceo */
+    -fx-font-size: 12px; /* Tamaño de la letra */
+   
+    -fx-border: none; /* Sin borde */
+    -fx-padding: 0; /* Sin relleno para ajustar al ancho del texto */
+    -fx-alignment: center-left; /* Alineación del texto */
+}
+
+.transparent-button .text {
+    -fx-padding: 0; /* Sin relleno interno */
+}
+
+.transparent-button:hover {
+    -fx-text-fill: #162440; /* Color del texto al pasar el mouse */
+    -fx-underline: true; /* Subrayar el texto */
+}
+
+.transparent-button:pressed {
+    -fx-text-fill: #030759; /* Color del texto al hacer clic */
+}

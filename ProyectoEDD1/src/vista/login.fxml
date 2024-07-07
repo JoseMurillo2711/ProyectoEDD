@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
@@ -7,15 +10,79 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" stylesheets="@../estilos/estiloBase.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<VBox id="root" prefHeight="424.0" prefWidth="431.0" style="-fx-background-color: #BF8F84;" styleClass="root" stylesheets="@../estilos/login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
    <children>
-      <Button fx:id="btnIniciarSesion" layoutX="257.0" layoutY="188.0" mnemonicParsing="false" onAction="#iniciarSesion" text="Iniciar Sesion" />
-      <VBox alignment="CENTER" layoutX="219.0" layoutY="222.0">
-         <children>
-            <Button mnemonicParsing="false" onAction="#registrarse" style="-fx-background-color: transparent;" text="¿No tienes cuenta? Registrarse" />
-            <Label text="o" />
-            <Button mnemonicParsing="false" onAction="#regresarComoInvitado" style="-fx-background-color: transparent;" text="«Seguir como invitado»" />
-         </children>
-      </VBox>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <top>
+            <HBox id="borderedContainer" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/logo.png" />
+                     </image></ImageView>
+                  <HBox id="titulo" alignment="CENTER" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label prefHeight="104.0" prefWidth="218.0" text="INICIAR SESION" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+         </top>
+         <center>
+            <VBox alignment="CENTER" prefHeight="237.0" prefWidth="422.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane alignment="CENTER" hgap="10.0" prefHeight="94.0">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="109.0" minWidth="-Infinity" prefWidth="96.0" />
+                      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="58.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="73.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label id="lblEtiqeta" text="Usuario:">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </Label>
+                        <Label id="lblEtiqeta" text="Contraseña:" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="txtNickname" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+                           <GridPane.margin>
+                              <Insets right="15.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <PasswordField id="pass" fx:id="txtPass" prefHeight="23.0" prefWidth="325.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets right="15.0" />
+                           </GridPane.margin>
+                        </PasswordField>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </GridPane>
+                  <Button id="btnIniciar" fx:id="btnIniciarSesion" mnemonicParsing="false" onAction="#iniciarSesion" text="Iniciar Sesion" />
+                  <VBox id="vbAbajo" alignment="CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#registrarse" style="-fx-background-color: transparent;" styleClass="transparent-button" text="¿No tienes cuenta? Registrarse" />
+                        <Label id="lblAbajo" text="o" />
+                        <Button mnemonicParsing="false" onAction="#regresarComoInvitado" style="-fx-background-color: transparent;" styleClass="transparent-button" text="«Seguir como invitado»" />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </center>
+      </BorderPane>
    </children>
-</AnchorPane>
+</VBox>

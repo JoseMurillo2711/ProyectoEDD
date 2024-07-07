@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
@@ -7,11 +9,67 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegistroController">
-    <stylesheets>
-        <URL value="@/estilos/estiloBase.css" />
-    </stylesheets>
+<VBox alignment="CENTER" prefHeight="366.0" prefWidth="467.0" style="-fx-background-color: #BF8F84;" stylesheets="@../estilos/login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegistroController">
    <children>
-      <Button fx:id="btnRegresar" layoutX="269.0" layoutY="188.0" mnemonicParsing="false" onAction="#regresar" text="Regresar" />
+      <BorderPane prefHeight="358.0" prefWidth="467.0" VBox.vgrow="ALWAYS">
+         <bottom>
+            <VBox alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button id="btnIniciar" mnemonicParsing="false" onAction="#registrarse" text="Registrarse" />
+                  <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#regresar" styleClass="transparent-button" text="Regresar" BorderPane.alignment="CENTER" />
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" />
+               </BorderPane.margin>
+            </VBox>
+         </bottom>
+         <top>
+            <HBox id="borderedContainer" prefHeight="110.0" prefWidth="452.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="120.0" fitWidth="185.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/logo.png" />
+                     </image>
+                  </ImageView>
+                  <HBox id="titulo" alignment="CENTER" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="REGISTRO" textAlignment="CENTER" textFill="WHITE" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <VBox fx:id="vbCentro" alignment="CENTER">
+               <children>
+                  <GridPane alignment="CENTER" hgap="10.0" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="227.0" minWidth="136.0" prefWidth="136.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label id="lblEtiqeta" prefHeight="30.0" prefWidth="139.0" text="Nombre de Usuario:" textAlignment="RIGHT" wrapText="true" />
+                        <Label id="lblEtiqeta" text="Contraseña:" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtNickname" GridPane.columnIndex="1" />
+                        <PasswordField id="pass" fx:id="txtPass" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets left="15.0" right="20.0" />
+                     </BorderPane.margin>
+                  </GridPane>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <BorderPane.margin>
+                  <Insets left="15.0" right="20.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+      </BorderPane>
    </children>
-</AnchorPane>
+</VBox>

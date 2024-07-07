@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -16,7 +21,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="700.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AgregarVehiculoController">
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="700.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AgregarVehiculoController">
    <stylesheets>
       <URL value="@/estilos/estiloBase.css" />
    </stylesheets>
@@ -88,8 +93,6 @@
                   <Label text="Placa:" GridPane.rowIndex="15" />
                   <Label text="ÚltimoDigito:" GridPane.rowIndex="16" />
                   <Label text="Provincia:" GridPane.columnIndex="3" GridPane.rowIndex="16" />
-                  <Label text="Dueño:" GridPane.rowIndex="17" />
-                  <Label text="Cédula:" GridPane.columnIndex="3" GridPane.rowIndex="17" />
                   <Label text="Historial (Reparaciones):" GridPane.rowIndex="18" />
                   <Label text="Historial (Servicios):" GridPane.columnIndex="3" GridPane.rowIndex="18" />
                   <Label text="Fecha:" GridPane.rowIndex="19" />
@@ -119,8 +122,6 @@
                   <CheckBox fx:id="usrUsado" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="14" />
                   <TextField fx:id="usrUlDigito" GridPane.columnIndex="1" GridPane.rowIndex="16" />
                   <TextField fx:id="usrProvincia" GridPane.columnIndex="4" GridPane.rowIndex="16" />
-                  <TextField fx:id="usrDuenio" GridPane.columnIndex="1" GridPane.rowIndex="17" />
-                  <TextField fx:id="usrCedula" GridPane.columnIndex="4" GridPane.rowIndex="17" />
                   <DatePicker fx:id="usrFechaRep" GridPane.columnIndex="1" GridPane.rowIndex="19" />
                   <DatePicker fx:id="usrFechaServ" GridPane.columnIndex="4" GridPane.rowIndex="19" />
                   <TextArea fx:id="usrTipoRep" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="20" />

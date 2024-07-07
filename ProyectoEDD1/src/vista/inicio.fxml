@@ -7,8 +7,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InicioController">
-    <stylesheets>
-        <URL value="@/estilos/inicio.css"/>
-    </stylesheets>
-</AnchorPane>
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InicioController">
+   <children>
+      <TilePane fx:id="tilePane" prefHeight="245.0" prefWidth="449.0" />
+      <HBox alignment="CENTER" spacing="10.0">
+         <children>
+            <Button fx:id="btnAnterior" text="Anterior" />
+            <Button fx:id="btnSiguiente" text="Siguiente" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

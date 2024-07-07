@@ -10,9 +10,6 @@ import javafx.scene.paint.Color;
 import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
@@ -23,22 +20,22 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import modelo.Foto;
-import modelo.Historial;
-import modelo.Motor;
 import modelo.Placa;
 import modelo.Reparacion;
 import modelo.Servicio;
-import modelo.Transmision;
-import modelo.Ubicacion;
 import modelo.Usuario;
 import modelo.Vehiculo;
+import modelo.VehiculoNuevo;
 import modelo.VehiculoUsado;
 import tipo.TipoCosto;
 import tipo.TipoDireccion;
 import tipo.TipoMotor;
 import tipo.TipoTraccion;
 import tipo.TipoTransmision;
-
+import util.Alertas;
+import util.UsuarioDataManager;
+import static util.Utilitario.abrirNuevaVentana;
+import util.VehiculoDataManager;
 
 public class AgregarVehiculoController {
 
@@ -85,8 +82,6 @@ public class AgregarVehiculoController {
     @FXML
     private TextField usrProvincia;
     @FXML
-    private TextField usrDuenio;
-    @FXML
     private DatePicker usrFechaRep;
     @FXML
     private DatePicker usrFechaServ;
@@ -104,14 +99,11 @@ public class AgregarVehiculoController {
     private DoubleCircleLinkedList<Servicio> tipoServ;
     private DoubleCircleLinkedList<Reparacion> tipoRep;
     private DoubleCircleLinkedList<Foto> fotosList;
-    
-    private List<Vehiculo> vehiculos;
-    private List<Vehiculo> vehiculosNuevos;
-    private List<Vehiculo> vehiculosUsados;
-    @FXML
-    private TextField usrCedula;
-    
+
+    private Usuario usuario;
+
     public void initialize() {
+        usuario = UsuarioDataManager.getInstance().getUsuarioActual();
         initializeMenuButton(usrTipoMotor, TipoMotor.values());
         initializeMenuButton(usrTipoTransmicion, TipoTransmision.values());
         initializeMenuButton(usrTipoTraccion, TipoTraccion.values());
@@ -124,6 +116,7 @@ public class AgregarVehiculoController {
 
         setUsadoFieldsEnabled(false);
     }
+
     private <T extends Enum<T>> void initializeMenuButton(MenuButton menuButton, T[] values) {
         for (T value : values) {
             MenuItem item = new MenuItem(value.name());
@@ -131,29 +124,15 @@ public class AgregarVehiculoController {
             menuButton.getItems().add(item);
         }
     }
-    
+
     private void setUsadoFieldsEnabled(boolean enabled) {
         usrUlDigito.setDisable(!enabled);
-        usrProvincia.setDisable(!enabled);
-        usrDuenio.setDisable(!enabled);
-        usrCedula.setDisable(enabled);
+        usrProvincia.setDisable(!enabled);        
         usrFechaRep.setDisable(!enabled);
         usrFechaServ.setDisable(!enabled);
         usrTipoRep.setDisable(!enabled);
         usrTipoServ.setDisable(!enabled);
     }
-    
-    public void guardarVehiculosEnArchivo(String nombreArchivo) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
-            for (Vehiculo vehiculo : vehiculos) {
-                writer.write(vehiculo.toString());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
 
     @FXML
     private void crearVehiculo(ActionEvent event) {
@@ -184,39 +163,36 @@ public class AgregarVehiculoController {
             if (usado) {
                 int ultimoDigito = Integer.parseInt(usrUlDigito.getText());
                 String provincia = usrProvincia.getText();
-                String duenioNombre = usrDuenio.getText();
-                String dueniocedula = usrCedula.getText();
                 String historialReparaciones = usrTipoRep.getText();
                 String historialServicios = usrTipoServ.getText();
                 Date fechaRep = java.sql.Date.valueOf(usrFechaRep.getValue());
                 Date fechaServ = java.sql.Date.valueOf(usrFechaServ.getValue());
 
-                
                 Reparacion reparaciones = new Reparacion(historialReparaciones, fechaRep);
                 Servicio servicios = new Servicio(historialServicios, fechaServ);
-                
+
                 tipoServ.addFirst(servicios);
                 tipoRep.addFirst(reparaciones);
                 Foto foto = new Foto(fotoNombre, fotoDescripcion);
                 fotosList.addLast(foto);
-                
-                
+
                 //VehiculoUsado nuevoVehiculo = new VehiculoUsado(marca, modelo, anio, kilometraje, precio, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), new Historial(tipoServ, tipoRep), fotosList, new TipoTraccion(tipoTraccion), new TipoDireccion(tipoDireccion), color, climatizado, nHileras, nPuertas, new TipoCosto(tipoCosto), new Placa(ultimoDigito, provincia), new Usuario());
-                VehiculoUsado nuevoVehiculoUsado  = new VehiculoUsado(new Placa(ultimoDigito, provincia), new Usuario(), marca, modelo, anio);
-                
+                Vehiculo nuevoVehiculoUsado = new VehiculoUsado(new Placa(ultimoDigito, provincia), usuario, marca, modelo, anio);
+
                 //System.out.println("Vehículo usado creado: " + nuevoVehiculo);
-                vehiculos.addFirst(nuevoVehiculoUsado);
-                vehiculosUsados.addFirst(nuevoVehiculoUsado);
-                
+                VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculoUsado);
+
             } else {
                 //Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, anio, kilometraje, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), foto, new TipoTraccion(tipoTraccion), tipoDireccion, color, climatizado, nHileras, nPuertas, precio, new TipoCosto(tipoCosto));
 
-                Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, anio);
-                vehiculos.addFirst(nuevoVehiculo);
-                vehiculosNuevos.addFirst(nuevoVehiculo);
-                
-                guardarVehiculosEnArchivo("Vehiculo.txt");
+                Vehiculo nuevoVehiculo = new VehiculoNuevo(usuario, marca, modelo, anio);
+                VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculo);
+
             }
+            
+            Alertas.alertaInfo("Se ha agregado el vehiculo correctamente", "Vehiculo agregado con exito");
+            abrirNuevaVentana("main", "Welcome!");
+            cerrarVentana();
         } catch (NumberFormatException e) {
             System.err.println("Error. Revise haber colocado bien los datos." + e.getMessage());
         } catch (Exception e) {
@@ -224,6 +200,9 @@ public class AgregarVehiculoController {
         }
     }
     
-    
+    private void cerrarVentana() {
+        Stage ventanaActual = (Stage) this.CrearButton.getScene().getWindow();
+        ventanaActual.close();
+    }
 
 }

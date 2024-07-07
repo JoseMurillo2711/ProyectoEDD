@@ -15,9 +15,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import modelo.Usuario;
 import util.Alertas;
+import util.UsuarioDataManager;
+import static util.Utilitario.abrirNuevaVentana;
 
 /**
  * FXML Controller class
@@ -28,72 +31,49 @@ public class LoginController implements Initializable {
 
     @FXML
     private Button btnIniciarSesion;
-    
+
     private Stage stage;
     private Scene scene;
+    @FXML
+    private TextField txtNickname;
+    @FXML
+    private PasswordField txtPass;
 
     /**
      * Initializes the controller class.
+     *
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-
+        // TODO        
     }
 
     @FXML
     private void iniciarSesion(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../vista/main.fxml"));
-        Parent root;
-        try {
-            root = loader.load();
-            MainController controller = loader.getController();
-            controller.controlador(new Usuario());            
-            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setTitle("Welcome!");
-            stage.setScene(scene);
-            stage.setResizable(true);
-            stage.show();
-        } catch (IOException ex) {
-            Alertas.alertaError("Ha ocurrido un error", ex.getMessage());
+        boolean iniciarSesion = UsuarioDataManager.getInstance().iniciarSesion(txtNickname.getText().strip(), txtPass.getText());
+        if (iniciarSesion) {
+            abrirNuevaVentana("main", "Welcome!");
+            cerrarVentana();
+        } else {
+            Alertas.alertaError("No se pudo iniciar sesion", "Usario y/o contraseña incorrecta");
         }
     }
 
     @FXML
     private void registrarse(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../vista/registro.fxml"));
-        Parent root;
-        try {
-            root = loader.load();
-            RegistroController registro = loader.getController();
-            registro.parametros(true);
-            Stage st = new Stage();
-            st.setTitle("Registrarse");
-            Scene sc = new Scene(root);
-            st.setScene(sc);
-            cerrarVentana();
-            st.show();
-        } catch (IOException ex) {
-            Alertas.alertaError("Ha ocurrido un error", ex.getMessage());
-        }
+        FXMLLoader loader = abrirNuevaVentana("registro", "Registro de Usuario");
+        RegistroController registro = loader.getController();
+        registro.parametros(true);
+        cerrarVentana();
+
     }
 
     @FXML
     private void regresarComoInvitado(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../vista/main.fxml"));
-        Parent root;
-        try {
-            root = loader.load();
-            Stage st = new Stage();
-            st.setTitle("Iniciar Sesión");
-            Scene sc = new Scene(root);
-            st.setScene(sc);
-            cerrarVentana();
-            st.show();
-        } catch (IOException ex) {
-            Alertas.alertaError("Ha ocurrido un error", ex.getMessage());
-        }
+        abrirNuevaVentana("main", "Welcome!");
+        cerrarVentana();
     }
 
     private void cerrarVentana() {
@@ -101,5 +81,3 @@ public class LoginController implements Initializable {
         ventanaActual.close();
     }
 }
-
-

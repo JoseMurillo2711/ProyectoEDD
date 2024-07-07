@@ -16,7 +16,7 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
 
     private Node<E> last;
     private int effective;
-    
+
     private static final long serialVersionUID = 58743299253201266L;
 
     public DoubleCircleLinkedList() {
@@ -443,6 +443,39 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
             nodo = nodo.getNext();
         } while (nodo != last.getNext());
         return resultList;
+    }
+
+    public void sort(Comparator<E> comp) {
+        if (isEmpty()) {
+            return;
+        }
+        ArrayList<E> list = new ArrayList<>();
+        for (E element : this) {
+            list.addLast(element);
+        }
+        list.sort(comp);
+        clear();
+
+        for (E element : list) {
+            addLast(element);
+        }
+    }
+
+    @Override
+    public void remove(E element) {
+        if (element == null || isEmpty()) {
+            return;
+        }
+        Node<E> currentNode = last.getNext();
+        do {
+            if (element.equals(currentNode.getContent())) {
+                currentNode.getPrevious().setNext(currentNode.getNext());
+                currentNode.getNext().setPrevious(currentNode.getPrevious());
+                effective--;
+                return;
+            }
+            currentNode = currentNode.getNext();
+        } while (currentNode != last.getNext());
     }
 
 }

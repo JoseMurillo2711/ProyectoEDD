@@ -4,6 +4,8 @@
  */
 package TDA;
 
+import java.util.Comparator;
+
 
 /**
  *
@@ -21,11 +23,13 @@ public interface List<E> extends Iterable<E> {
     public E removeLast(); 
     public void add (int index, E element);
     public E remove (int index); 
+    public void remove (E element); 
+    public int indexOf(E element);
     public E get (int index);
     public E set (int index, E element);
     @Override
     public String toString();
     public List<E> findIntersection(List<E> otherList);
-
+    public void sort(Comparator<E> comp);
     
 }

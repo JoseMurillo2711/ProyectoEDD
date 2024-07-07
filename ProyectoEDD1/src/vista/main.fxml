@@ -28,7 +28,7 @@
                               <Font size="14.0" />
                            </font>
                         </TextField>
-                        <Button id="busqueda" fx:id="btnBuscar" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="30.0" prefWidth="54.0" style="-fx-background-color: #162440;">
+                        <Button id="busqueda" fx:id="btnBuscar" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#buscarAuto" prefHeight="30.0" prefWidth="54.0" style="-fx-background-color: #162440;">
                            <font>
                               <Font size="14.0" />
                            </font>

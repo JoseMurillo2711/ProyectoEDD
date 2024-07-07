@@ -71,7 +71,7 @@ public class UsuarioDataManager {
                 obj.writeObject(this.usuarios);
             } catch (Exception e) {
                 System.err.println("Ha ocurrido un error " + e.getMessage());
-                Platform.runLater(() -> Alertas.alertaError(MENSAJE_ERROR, e.getMessage()+" "+e.getLocalizedMessage()));
+                Platform.runLater(() -> Alertas.alertaError(MENSAJE_ERROR, e.getMessage() + " " + e.getLocalizedMessage()));
             }
         } catch (IOException e) {
             System.err.println("Ha ocurrido un error " + e.getMessage());
@@ -119,7 +119,7 @@ public class UsuarioDataManager {
         }
         throw new Exception("Debe iniciar sesion");
     }
-    
+
     public void agregarUsuario(Usuario nuevoUsuario) throws Exception {
         for (Usuario user : this.usuarios) {
             if (user.getNickname().toLowerCase().equals(nuevoUsuario.getNickname().toLowerCase())) {
@@ -129,4 +129,28 @@ public class UsuarioDataManager {
         this.usuarios.addLast(nuevoUsuario);
         escribirArchivoUsuarios();
     }
+
+    protected void editarVehiculo(Vehiculo vehiculo) throws Exception {
+        for (Usuario user : this.usuarios) {
+            for (Vehiculo v : user.getVehiculosFavoritos()) {
+                if (v.equals(vehiculo)) {
+                    int ind = user.getVehiculosFavoritos().indexOf(vehiculo);
+                    user.getVehiculosFavoritos().set(ind, vehiculo);
+                }
+            }
+            escribirArchivoUsuarios();
+        }
+    }
+    
+    protected void elimimarVehiculo(Vehiculo vehiculo) throws Exception {
+        for (Usuario user : this.usuarios) {
+            for (Vehiculo v : user.getVehiculosFavoritos()) {
+                if (v.equals(vehiculo)) {                    
+                    user.getVehiculosFavoritos().remove(vehiculo);
+                }
+            }
+            escribirArchivoUsuarios();
+        }
+    }
+    
 }

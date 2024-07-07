@@ -4,17 +4,20 @@
  */
 package controller;
 
+import TDA.DoubleCircleLinkedList;
+import TDA.List;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -22,12 +25,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modelo.Usuario;
+import modelo.Vehiculo;
+import modelo.VehiculoNuevo;
+import modelo.VehiculoUsado;
 import util.Alertas;
 import util.UsuarioDataManager;
 import static util.Utilitario.abrirNuevaVentana;
+import static util.Utilitario.panelVehiculos;
+import util.VehiculoDataManager;
+import static util.VehiculoDataManager.buscarVehiculos;
 
 /**
  * FXML Controller class
@@ -49,6 +60,10 @@ public class MainController implements Initializable {
 
     private Usuario usuario;
 
+    private List<Vehiculo> vehiculos;
+    private boolean seccionNuevo;
+    private boolean seccionUsado;
+
     /**
      * Initializes the controller class.
      *
@@ -59,11 +74,18 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO        
         formatoEncabezado();
+        vehiculos = VehiculoDataManager.getInstance().getVehiculos();
+        seccionNuevo = false;
+        seccionUsado = false;
         this.usuario = UsuarioDataManager.getInstance().getUsuarioActual();
         configIniciales();
         cargarPagina("inicio.fxml");
     }
 
+    private void limpiarCampos(){
+        this.txtBusqueda.setText("");
+    }
+    
     private void formatoEncabezado() {
         ImageView lupa = new ImageView(new Image("recursos/lupa.png"));
         lupa.setFitHeight(20);
@@ -111,11 +133,13 @@ public class MainController implements Initializable {
     @FXML
     private void mostrarAutosNuevos(ActionEvent event) {
         cargarPagina("vehiculosNuevos.fxml");
+        seccionNuevo = true;
     }
 
     @FXML
     private void mostrarAutosViejos(ActionEvent event) {
         cargarPagina("vehiculosViejos.fxml");
+        seccionUsado = true;
     }
 
     @FXML
@@ -134,6 +158,7 @@ public class MainController implements Initializable {
     }
 
     private void cargarPagina(String fxmlFile) {
+        limpiarCampos();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../vista/" + fxmlFile));
             Node pagina = loader.load();
@@ -141,6 +166,8 @@ public class MainController implements Initializable {
         } catch (IOException e) {
             Alertas.alertaError("Ha ocurrido un error", e.getMessage());
         }
+        seccionNuevo = false;
+        seccionUsado = false;
     }
 
     @FXML
@@ -159,4 +186,28 @@ public class MainController implements Initializable {
         abrirNuevaVentana("login", "Iniciar Sesión");
         cerrarVentana();
     }
+
+    @FXML
+    private void buscarAuto(ActionEvent event) {
+        List<Vehiculo> vehiculosBuscados;
+        if(this.seccionNuevo)
+            vehiculosBuscados = buscarVehiculos(this.txtBusqueda.getText().strip() + "NUEVO");
+        else if(this.seccionUsado)
+            vehiculosBuscados = buscarVehiculos(this.txtBusqueda.getText().strip() + "USADO");
+        else
+            vehiculosBuscados = buscarVehiculos(this.txtBusqueda.getText().strip());
+        
+        if(vehiculosBuscados.isEmpty()){
+            VBox vbox = new VBox();
+            Label lbl = new Label("No se encontró ningun resultado =(");
+            vbox.getChildren().add(lbl);
+            vbox.setAlignment(Pos.CENTER);
+            Platform.runLater(()->this.rootBorderPane.setCenter(vbox));
+        }            
+        else
+            Platform.runLater(()->this.rootBorderPane.setCenter(panelVehiculos(vehiculosBuscados)));
+    }
+
+    
+    
 }

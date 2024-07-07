@@ -7,6 +7,7 @@ package modelo;
 import TDA.*;
 import java.awt.Color;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Objects;
 import tipo.TipoCosto;
 import tipo.TipoDireccion;
@@ -17,19 +18,19 @@ import static util.Utilitario.generateUniqueId;
  *
  * @author Michelle
  */
-public abstract class Vehiculo implements Serializable {
+public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
 
     private String id;
     private String marca;
     private String modelo;
-    private int año;
+    private int ano;
     private int kilometraje;
     private double precio;
     private Motor motor;
     private Transmision transmision;
     private Ubicacion ubicacion;
     private Historial historial;
-    private DoubleCircleLinkedList<Foto> fotos;
+    private DoubleCircleLinkedList<String> url_fotos;
     private TipoTraccion traccion;
     private TipoDireccion direccion;
     private Color color;
@@ -38,54 +39,57 @@ public abstract class Vehiculo implements Serializable {
     private int numPuerta;
     private TipoCosto tipoCosto;
     private Usuario dueno;
+    private boolean vendido;
 
     private static final long serialVersionUID = 587432992201266L;
 
-    public Vehiculo() {
+    private Vehiculo() {
         this.id = generateUniqueId();
-        this.fotos = new DoubleCircleLinkedList<>();
+        this.url_fotos = new DoubleCircleLinkedList<>();
+        this.vendido = false;
     }
 
-    public Vehiculo(Usuario dueno, String marca, String modelo, int año) {
+    public Vehiculo(Usuario dueno, String marca, String modelo, int ano, int kilometraje, double precio) {
         this();
-        this.dueno = dueno;
         this.marca = marca;
         this.modelo = modelo;
-        this.año = año;        
-        
+        this.ano = ano;
+        this.kilometraje = kilometraje;
+        this.precio = precio;
+        this.dueno = dueno;
     }
 
     //constructor para agregar una sola foto a la lista de fotos
-    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, Foto foto) {
+    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int ano, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, String foto) {
         this();
         this.dueno = dueno;
         this.tipoCosto = tipoCosto;
         this.marca = marca;
         this.modelo = modelo;
-        this.año = año;
+        this.ano = ano;
         this.kilometraje = kilometraje;
         this.precio = precio;
         this.motor = motor;
         this.transmision = transmision;
         this.ubicacion = ubicacion;
         this.historial = historial;
-        this.fotos.addLast(foto);        
+        this.url_fotos.addLast(foto);        
         this.traccion = traccion;
         this.direccion = direccion;
         this.color = color;
         this.climatizado = climatizado;
         this.numHilera = numHilera;
-        this.numPuerta = numPuerta;
+        this.numPuerta = numPuerta;        
     }
 
     //Recibe la lista de fotos y reemplaza la actual inicializada
-    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<Foto> fotos) {
+    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<String> fotos) {
         this();
         this.dueno = dueno;
         this.tipoCosto = tipoCosto;
         this.marca = marca;
         this.modelo = modelo;
-        this.año = año;
+        this.ano = año;
         this.kilometraje = kilometraje;
         this.precio = precio;
         this.motor = motor;
@@ -98,7 +102,7 @@ public abstract class Vehiculo implements Serializable {
         this.climatizado = climatizado;
         this.numHilera = numHilera;
         this.numPuerta = numPuerta;
-        this.fotos = fotos;
+        this.url_fotos = fotos;
     }
 
     public TipoCosto getTipoCosto() {
@@ -126,11 +130,11 @@ public abstract class Vehiculo implements Serializable {
     }
 
     public int getAño() {
-        return año;
+        return ano;
     }
 
     public void setAño(int año) {
-        this.año = año;
+        this.ano = año;
     }
 
     public int getKilometraje() {
@@ -189,12 +193,12 @@ public abstract class Vehiculo implements Serializable {
         this.historial = historial;
     }
 
-    public DoubleCircleLinkedList<Foto> getFotos() {
-        return fotos;
+    public DoubleCircleLinkedList<String> getFotos() {
+        return url_fotos;
     }
 
-    public void setFotos(DoubleCircleLinkedList<Foto> fotos) {
-        this.fotos = fotos;
+    public void setFotos(DoubleCircleLinkedList<String> fotos) {
+        this.url_fotos = fotos;
     }
 
     public TipoTraccion getTraccion() {
@@ -245,6 +249,26 @@ public abstract class Vehiculo implements Serializable {
         this.numPuerta = numPuerta;
     }
 
+    public DoubleCircleLinkedList<String> getUrl_fotos() {
+        return url_fotos;
+    }
+
+    public void setUrl_fotos(DoubleCircleLinkedList<String> url_fotos) {
+        this.url_fotos = url_fotos;
+    }
+
+    public boolean isVendido() {
+        return vendido;
+    }
+
+    public void setVendido(boolean vendido) {
+        this.vendido = vendido;
+    }
+
+    public void venderAuto(){
+        this.vendido = true;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 3;
@@ -269,18 +293,37 @@ public abstract class Vehiculo implements Serializable {
 
     @Override
     public String toString() {
-        return "Vehiculo{" + "marca=" + marca + ", modelo=" + modelo + ", a\u00f1o=" + año + ", kilometraje=" + kilometraje + ", precio=" + precio + ", motor=" + motor + ", transmision=" + transmision + ", ubicacion=" + ubicacion + ", historial=" + historial + ", fotos=" + fotos + ", traccion=" + traccion + ", direccion=" + direccion + ", color=" + color + ", climatizado=" + climatizado + ", numHilera=" + numHilera + ", numPuerta=" + numPuerta + '}';
+        return "Vehiculo{" + "marca=" + marca + ", modelo=" + modelo + ", a\u00f1o=" + ano + ", kilometraje=" + kilometraje + ", precio=" + precio + ", motor=" + motor + ", transmision=" + transmision + ", ubicacion=" + ubicacion + ", historial=" + historial + ", fotos=" + url_fotos + ", traccion=" + traccion + ", direccion=" + direccion + ", color=" + color + ", climatizado=" + climatizado + ", numHilera=" + numHilera + ", numPuerta=" + numPuerta + '}';
     }
 
-    public void agregarFoto(Foto foto) {
-        this.fotos.addLast(foto);
+    public void agregarFoto(String foto) {
+        this.url_fotos.addLast(foto);
     }
 
-    public void eliminarFoto(Foto foto) {
-        int ind = this.fotos.indexOf(foto);
+    public void eliminarFoto(String foto) {
+        int ind = this.url_fotos.indexOf(foto);
         if (ind == -1) {
             throw new NullPointerException("No se encuentra esa foto en la lista de fotos");
         }
-        this.fotos.remove(ind);
+        this.url_fotos.remove(ind);
     }
+    
+    @Override
+    public int compareTo(Vehiculo other) {
+        int precioComp = Double.compare(this.precio, other.precio);
+        if (precioComp != 0) {
+            return precioComp;
+        } else {
+            return Integer.compare(this.kilometraje, other.kilometraje);
+        }
+    }
+    
+    public static final Comparator<Vehiculo> COMPARATOR = (v1, v2) -> {
+        int precioComp = Double.compare(v1.getPrecio(), v2.getPrecio());
+        if (precioComp != 0) {
+            return precioComp;
+        } else {
+            return Integer.compare(v1.getKilometraje(), v2.getKilometraje());
+        }
+    };
 }

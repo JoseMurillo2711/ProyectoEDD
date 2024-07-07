@@ -4,18 +4,30 @@
  */
 package util;
 
+import TDA.List;
+import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Random;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import modelo.Vehiculo;
 import proyectoedd1.ProyectoEDD1;
 import static util.CONSTANTES.CHARACTERS;
 import static util.CONSTANTES.ID_LENGTH;
+import static util.CONSTANTES.IMAGEN_NOT_FOUND;
+import static util.CONSTANTES.RUTA_IMAGEN_CARROS;
+import static util.CONSTANTES.VEHICULOS_FILE;
 
 /**
  *
@@ -44,19 +56,64 @@ public class Utilitario {
         }
         return sb.toString();
     }
-    
-    public static FXMLLoader abrirNuevaVentana(String vista, String titulo){        
-        try {            
+
+    public static FXMLLoader abrirNuevaVentana(String vista, String titulo) {
+        try {
             FXMLLoader loader = new FXMLLoader(ProyectoEDD1.class.getResource("/vista/" + vista + ".fxml"));
-            Parent root = loader.load();                   
+            Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle(titulo);
             stage.setScene(new Scene(root));
-            stage.show();  
+            stage.show();
             return loader;
         } catch (IOException ex) {
-            Alertas.alertaError("Ha ocurrido un error", ex.getMessage());            
+            Alertas.alertaError("Ha ocurrido un error", ex.getMessage());
             return null;
         }
+    }
+
+    public static FlowPane panelVehiculos(List<Vehiculo> vehiculos) {
+        FlowPane panel = new FlowPane();
+        for (Vehiculo ve : vehiculos) {
+            VBox carta = createCard(ve);
+            carta.setOnMouseClicked((MouseEvent event) -> {
+                System.out.println("Mostrar Vehiculo");
+            });
+            panel.getChildren().add(carta);
+
+        }
+        return panel;
+    }
+
+    private static VBox createCard(Vehiculo vehiculo) {
+        VBox card = new VBox(10);
+        card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-border-color: black; -fx-border-width: 1;");
+
+        Label marcaLabel = new Label("Marca: " + vehiculo.getMarca());
+        Label modeloLabel = new Label("Modelo: " + vehiculo.getModelo());
+        Label anoLabel = new Label("Año: " + vehiculo.getAño());
+
+        ImageView imageView = new ImageView();
+        File archivo = new File(IMAGEN_NOT_FOUND);
+        System.out.println(archivo.getAbsolutePath());
+        if (!vehiculo.getUrl_fotos().isEmpty()) {
+            String imageUrl = vehiculo.getUrl_fotos().getFirst();
+            try {
+                archivo = new File(RUTA_IMAGEN_CARROS + imageUrl);
+                Image image = new Image(archivo.toURI().toString(), true);
+                imageView.setImage(image);
+            } catch (Exception e) {
+                imageView.setImage(new Image(archivo.toURI().toString()));
+            }
+        } else {
+            imageView.setImage(new Image(archivo.toURI().toString()));
+        }
+
+        imageView.setFitWidth(80);
+        imageView.setFitHeight(55);
+        imageView.setPreserveRatio(true);
+        
+        card.getChildren().addAll(imageView, marcaLabel, modeloLabel, anoLabel);
+        return card;
     }
 }

@@ -2,10 +2,6 @@ package controller;
 
 //import java.awt.Color;
 import TDA.DoubleCircleLinkedList;
-import TDA.List;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import javafx.scene.paint.Color;
 import java.util.Date;
 import javafx.event.ActionEvent;
@@ -19,7 +15,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import modelo.Foto;
 import modelo.Placa;
 import modelo.Reparacion;
 import modelo.Servicio;
@@ -92,13 +87,11 @@ public class AgregarVehiculoController {
     @FXML
     private Button CrearButton;
     @FXML
-    private TextField usrFotoNombre;
-    @FXML
-    private TextField usrDescripcionFoto;
+    private TextField usrFotoNombre;    
 
     private DoubleCircleLinkedList<Servicio> tipoServ;
     private DoubleCircleLinkedList<Reparacion> tipoRep;
-    private DoubleCircleLinkedList<Foto> fotosList;
+    private DoubleCircleLinkedList<String> fotosList;
 
     private Usuario usuario;
 
@@ -148,8 +141,7 @@ public class AgregarVehiculoController {
             int velocidades = Integer.parseInt(usrVelocidades.getText());
             String ciudad = usrCiudad.getText();
             String direccion = udrDireccion.getText();
-            String fotoNombre = usrFotoNombre.getText();
-            String fotoDescripcion = usrDescripcionFoto.getText();
+            String fotoNombre = usrFotoNombre.getText();            
             String tipoTraccion = usrTipoTraccion.getText();
             String tipoDireccion = usrTipoDireccion.getText();
             Color color = usrColor.getValue();
@@ -172,20 +164,17 @@ public class AgregarVehiculoController {
                 Servicio servicios = new Servicio(historialServicios, fechaServ);
 
                 tipoServ.addFirst(servicios);
-                tipoRep.addFirst(reparaciones);
-                Foto foto = new Foto(fotoNombre, fotoDescripcion);
-                fotosList.addLast(foto);
+                tipoRep.addFirst(reparaciones);                
+                fotosList.addLast(fotoNombre);
 
                 //VehiculoUsado nuevoVehiculo = new VehiculoUsado(marca, modelo, anio, kilometraje, precio, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), new Historial(tipoServ, tipoRep), fotosList, new TipoTraccion(tipoTraccion), new TipoDireccion(tipoDireccion), color, climatizado, nHileras, nPuertas, new TipoCosto(tipoCosto), new Placa(ultimoDigito, provincia), new Usuario());
-                Vehiculo nuevoVehiculoUsado = new VehiculoUsado(new Placa(ultimoDigito, provincia), usuario, marca, modelo, anio);
-
+                Vehiculo nuevoVehiculoUsado = new VehiculoUsado(usuario, marca, modelo, anio, kilometraje, precio);
                 //System.out.println("Vehículo usado creado: " + nuevoVehiculo);
                 VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculoUsado);
 
             } else {
                 //Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, anio, kilometraje, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), foto, new TipoTraccion(tipoTraccion), tipoDireccion, color, climatizado, nHileras, nPuertas, precio, new TipoCosto(tipoCosto));
-
-                Vehiculo nuevoVehiculo = new VehiculoNuevo(usuario, marca, modelo, anio);
+                Vehiculo nuevoVehiculo = new VehiculoNuevo(usuario, marca, modelo, anio, kilometraje, precio);
                 VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculo);
 
             }

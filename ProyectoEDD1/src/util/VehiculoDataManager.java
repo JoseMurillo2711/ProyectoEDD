@@ -3,9 +3,10 @@ package util;
 import TDA.DoubleCircleLinkedList;
 import TDA.List;
 import modelo.Vehiculo;
-
 import java.io.*;
 import javafx.application.Platform;
+import modelo.VehiculoNuevo;
+import modelo.VehiculoUsado;
 
 import static util.CONSTANTES.MENSAJE_ERROR;
 import static util.CONSTANTES.VEHICULOS_FILE;
@@ -22,6 +23,7 @@ public class VehiculoDataManager {
 
     private VehiculoDataManager() {
         vehiculos = leerArchivoVehiculos();
+        ordenarVehiculos(); 
     }
 
     public static VehiculoDataManager getInstance() {
@@ -34,9 +36,10 @@ public class VehiculoDataManager {
     public List<Vehiculo> getVehiculos() {
         return vehiculos;
     }
-
+    
     public void setVehiculos(List<Vehiculo> vehiculos) {
         this.vehiculos = vehiculos;
+        ordenarVehiculos(); 
         escribirArchivoVehiculos();
     }
 
@@ -57,7 +60,7 @@ public class VehiculoDataManager {
         try {
             if (!archivo.exists()) {
                 archivo.getParentFile().mkdirs();
-                archivo.createNewFile(); 
+                archivo.createNewFile();
             }
             try (ObjectOutputStream obj = new ObjectOutputStream(new FileOutputStream(archivo))) {
                 obj.writeObject(vehiculos);
@@ -73,17 +76,52 @@ public class VehiculoDataManager {
 
     public void agregarVehiculo(Vehiculo vehiculo) {
         vehiculos.addFirst(vehiculo);
+        ordenarVehiculos(); 
         escribirArchivoVehiculos();
     }
 
     public void borrarVehiculo(Vehiculo vehiculo) {
         vehiculos.remove(vehiculo);
+        ordenarVehiculos(); 
         escribirArchivoVehiculos();
     }
 
-    public void editarVehiculo(Vehiculo vehiculo) {
+    public void editarVehiculo(Vehiculo vehiculo) throws Exception {
         int ind = this.vehiculos.indexOf(vehiculo);
         this.vehiculos.set(ind, vehiculo);
+        ordenarVehiculos(); 
         escribirArchivoVehiculos();
+        UsuarioDataManager.getInstance().editarVehiculo(vehiculo);
+    }
+
+    private void ordenarVehiculos() {
+        vehiculos.sort(Vehiculo.COMPARATOR);
+    }
+    
+    public static List<Vehiculo> buscarVehiculos(String criterio) {
+        String[] palabrasClave = criterio.toLowerCase().split("\\s+");
+        List<Vehiculo> resultados = new DoubleCircleLinkedList<>();
+
+        for (Vehiculo vehiculo : VehiculoDataManager.getInstance().getVehiculos()) {
+            boolean coincide = false;
+            boolean ano = false;
+            for (String palabra : palabrasClave) {
+                if (vehiculo.getMarca().toLowerCase().contains(palabra)
+                        || vehiculo.getModelo().toLowerCase().contains(palabra)
+                        || (palabra.toLowerCase().equals("usado") && vehiculo instanceof VehiculoUsado)
+                        || (palabra.toLowerCase().equals("nuevo") && vehiculo instanceof VehiculoNuevo)) {
+                    coincide = true;
+                }
+                if (Integer.toString(vehiculo.getAño()).contains(palabra)) {
+                    ano = true;
+                }
+            }
+            if (coincide || (ano && palabrasClave.length > 1)) 
+                resultados.addLast(vehiculo);            
+        }
+
+        resultados.sort((Vehiculo.COMPARATOR));
+
+        return resultados;
     }
 }

@@ -80,7 +80,6 @@
                   <Label text="Ciudad: " GridPane.rowIndex="6" />
                   <Label text="Dirección:" GridPane.columnIndex="3" GridPane.rowIndex="6" />
                   <Label text="Foto (Nombre):" GridPane.rowIndex="7" />
-                  <Label text="Descripción Foto:" GridPane.columnIndex="3" GridPane.rowIndex="7" />
                   <Label text="Tipo de tracción:" GridPane.rowIndex="8" />
                   <Label text="Tipo de dirección:" GridPane.columnIndex="3" GridPane.rowIndex="8" />
                   <Label text="Color:" GridPane.rowIndex="9" />
@@ -110,7 +109,6 @@
                   <TextField fx:id="usrCiudad" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <TextField fx:id="udrDireccion" GridPane.columnIndex="4" GridPane.rowIndex="6" />
                   <TextField fx:id="usrFotoNombre" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                  <TextField fx:id="usrDescripcionFoto" GridPane.columnIndex="4" GridPane.rowIndex="7" />
                   <MenuButton fx:id="usrTipoTraccion" mnemonicParsing="false" text="SELECCIONE" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                   <MenuButton fx:id="usrTipoDireccion" mnemonicParsing="false" text="SELECCIONE" GridPane.columnIndex="4" GridPane.rowIndex="8" />
                   <ColorPicker fx:id="usrColor" GridPane.columnIndex="1" GridPane.rowIndex="9" />

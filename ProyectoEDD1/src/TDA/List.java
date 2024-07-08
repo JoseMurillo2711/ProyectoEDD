@@ -32,4 +32,5 @@ public interface List<E> extends Iterable<E> {
     public List<E> findIntersection(List<E> otherList);
     public void sort(Comparator<E> comp);
     
+    public List<E> subList(int inicio, int fin);
 }

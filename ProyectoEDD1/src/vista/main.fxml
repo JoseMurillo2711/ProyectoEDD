@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="TOP_CENTER" stylesheets="@../estilos/estiloBase.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<VBox alignment="TOP_CENTER" styleClass="mainFxmlClass" stylesheets="@../estilos/estiloBase.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
       <BorderPane fx:id="rootBorderPane" prefHeight="550.0" prefWidth="750.0" style="-fx-background-color: #F2F2F0;" VBox.vgrow="ALWAYS">
          <top>
@@ -21,7 +21,7 @@
                         <Image url="@../recursos/logo.png" />
                      </image>
                   </ImageView>
-                  <HBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="283.0" HBox.hgrow="ALWAYS">
+                  <HBox fx:id="hbBusqueda" alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="283.0" HBox.hgrow="ALWAYS">
                      <children>
                         <TextField fx:id="txtBusqueda" prefHeight="25.0" prefWidth="261.0" HBox.hgrow="ALWAYS">
                            <font>
@@ -95,8 +95,9 @@
          <left>
             <VBox alignment="CENTER" prefHeight="413.0" prefWidth="121.0" spacing="5.0" style="-fx-background-color: #BF8F84;" stylesheets="@../estilos/lateral.css" BorderPane.alignment="CENTER">
                <children>
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irPaginaPrincipal" text="Inicio" />
                   <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarAutosNuevos" text="Nuevo" VBox.vgrow="ALWAYS" />
-                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarAutosViejos" text="Viejos" VBox.vgrow="ALWAYS" />
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarAutosViejos" text="Usados" VBox.vgrow="ALWAYS" />
                   <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarAuto" text="Agregar Auto" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS" />
                </children>
                <padding>

@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
@@ -15,7 +16,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import modelo.Placa;
 import modelo.Reparacion;
 import modelo.Servicio;
 import modelo.Usuario;
@@ -69,7 +69,7 @@ public class AgregarVehiculoController {
     @FXML
     private TextField usrPrecio;
     @FXML
-    private MenuButton usrTipoCosto;
+    private ChoiceBox<TipoCosto> usrTipoCosto;
     @FXML
     private CheckBox usrUsado;
     @FXML
@@ -87,7 +87,7 @@ public class AgregarVehiculoController {
     @FXML
     private Button CrearButton;
     @FXML
-    private TextField usrFotoNombre;    
+    private TextField usrFotoNombre;
 
     private DoubleCircleLinkedList<Servicio> tipoServ;
     private DoubleCircleLinkedList<Reparacion> tipoRep;
@@ -101,7 +101,7 @@ public class AgregarVehiculoController {
         initializeMenuButton(usrTipoTransmicion, TipoTransmision.values());
         initializeMenuButton(usrTipoTraccion, TipoTraccion.values());
         initializeMenuButton(usrTipoDireccion, TipoDireccion.values());
-        initializeMenuButton(usrTipoCosto, TipoCosto.values());
+        inicializarValores();
 
         usrUsado.selectedProperty().addListener((observable, oldValue, newValue) -> {
             setUsadoFieldsEnabled(newValue);
@@ -118,9 +118,16 @@ public class AgregarVehiculoController {
         }
     }
 
+    private void inicializarValores() {
+        for (TipoCosto tp : TipoCosto.values()) {
+            this.usrTipoCosto.getItems().addAll(tp);
+        }
+        usrTipoCosto.setValue(TipoCosto.FIJO);
+    }
+
     private void setUsadoFieldsEnabled(boolean enabled) {
         usrUlDigito.setDisable(!enabled);
-        usrProvincia.setDisable(!enabled);        
+        usrProvincia.setDisable(!enabled);
         usrFechaRep.setDisable(!enabled);
         usrFechaServ.setDisable(!enabled);
         usrTipoRep.setDisable(!enabled);
@@ -141,7 +148,7 @@ public class AgregarVehiculoController {
             int velocidades = Integer.parseInt(usrVelocidades.getText());
             String ciudad = usrCiudad.getText();
             String direccion = udrDireccion.getText();
-            String fotoNombre = usrFotoNombre.getText();            
+            String fotoNombre = usrFotoNombre.getText();
             String tipoTraccion = usrTipoTraccion.getText();
             String tipoDireccion = usrTipoDireccion.getText();
             Color color = usrColor.getValue();
@@ -149,7 +156,7 @@ public class AgregarVehiculoController {
             int nHileras = Integer.parseInt(usrNHileras.getText());
             int nPuertas = Integer.parseInt(usrNPuertas.getText());
             double precio = Double.parseDouble(usrPrecio.getText());
-            String tipoCosto = usrTipoCosto.getText();
+            TipoCosto tipoCosto = usrTipoCosto.getValue();
             boolean usado = usrUsado.isSelected();
 
             if (usado) {
@@ -164,21 +171,21 @@ public class AgregarVehiculoController {
                 Servicio servicios = new Servicio(historialServicios, fechaServ);
 
                 tipoServ.addFirst(servicios);
-                tipoRep.addFirst(reparaciones);                
+                tipoRep.addFirst(reparaciones);
                 fotosList.addLast(fotoNombre);
 
                 //VehiculoUsado nuevoVehiculo = new VehiculoUsado(marca, modelo, anio, kilometraje, precio, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), new Historial(tipoServ, tipoRep), fotosList, new TipoTraccion(tipoTraccion), new TipoDireccion(tipoDireccion), color, climatizado, nHileras, nPuertas, new TipoCosto(tipoCosto), new Placa(ultimoDigito, provincia), new Usuario());
-                Vehiculo nuevoVehiculoUsado = new VehiculoUsado(usuario, marca, modelo, anio, kilometraje, precio);
+                Vehiculo nuevoVehiculoUsado = new VehiculoUsado(usuario, marca, modelo, anio, kilometraje, precio, tipoCosto);
                 //System.out.println("Vehículo usado creado: " + nuevoVehiculo);
                 VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculoUsado);
 
             } else {
                 //Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, anio, kilometraje, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), foto, new TipoTraccion(tipoTraccion), tipoDireccion, color, climatizado, nHileras, nPuertas, precio, new TipoCosto(tipoCosto));
-                Vehiculo nuevoVehiculo = new VehiculoNuevo(usuario, marca, modelo, anio, kilometraje, precio);
+                Vehiculo nuevoVehiculo = new VehiculoNuevo(usuario, marca, modelo, anio, kilometraje, precio, tipoCosto);
                 VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculo);
 
             }
-            
+
             Alertas.alertaInfo("Se ha agregado el vehiculo correctamente", "Vehiculo agregado con exito");
             abrirNuevaVentana("main", "Welcome!");
             cerrarVentana();
@@ -188,7 +195,7 @@ public class AgregarVehiculoController {
             System.err.println("Error al crear el vehículo: " + e.getMessage());
         }
     }
-    
+
     private void cerrarVentana() {
         Stage ventanaActual = (Stage) this.CrearButton.getScene().getWindow();
         ventanaActual.close();

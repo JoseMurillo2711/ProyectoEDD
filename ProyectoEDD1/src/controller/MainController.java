@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package controller;
 
 import TDA.DoubleCircleLinkedList;
@@ -27,26 +23,24 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modelo.Usuario;
 import modelo.Vehiculo;
-import modelo.VehiculoNuevo;
-import modelo.VehiculoUsado;
 import util.Alertas;
+import static util.CONSTANTES.PER_PAGE;
 import util.UsuarioDataManager;
 import static util.Utilitario.abrirNuevaVentana;
 import static util.Utilitario.panelVehiculos;
 import util.VehiculoDataManager;
 import static util.VehiculoDataManager.buscarVehiculos;
+import static util.VehiculoDataManager.buscarVehiculosPorMarca;
 
 /**
  * FXML Controller class
- *
- * @author COTRINA
  */
 public class MainController implements Initializable {
-
     @FXML
     private Button btnBuscar;
     @FXML
@@ -57,35 +51,36 @@ public class MainController implements Initializable {
     private HBox hbIniciarSesion;
     @FXML
     private MenuBar menuUser;
+    @FXML
+    private HBox hbBusqueda;
 
     private Usuario usuario;
-
     private List<Vehiculo> vehiculos;
+    private List<Vehiculo> vehiculosBuscados;
     private boolean seccionNuevo;
     private boolean seccionUsado;
+    private NuevosController nuevosController;
+    private int currentStartIndex;
 
-    /**
-     * Initializes the controller class.
-     *
-     * @param url
-     * @param rb
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO        
         formatoEncabezado();
         vehiculos = VehiculoDataManager.getInstance().getVehiculos();
         seccionNuevo = false;
         seccionUsado = false;
         this.usuario = UsuarioDataManager.getInstance().getUsuarioActual();
         configIniciales();
-        cargarPagina("inicio.fxml");
+        cargarPagina("inicio");
     }
 
-    private void limpiarCampos(){
+    private void limpiarCampos() {
         this.txtBusqueda.setText("");
+        seccionNuevo = false;
+        seccionUsado = false;
+        this.hbBusqueda.setVisible(true);
+        this.txtBusqueda.setPromptText("Buscar un auto...");
     }
-    
+
     private void formatoEncabezado() {
         ImageView lupa = new ImageView(new Image("recursos/lupa.png"));
         lupa.setFitHeight(20);
@@ -108,6 +103,7 @@ public class MainController implements Initializable {
             this.hbIniciarSesion.setVisible(false);
             this.hbIniciarSesion.setManaged(false);
         }
+        this.txtBusqueda.setPromptText("Buscar un auto...");
     }
 
     @FXML
@@ -127,19 +123,21 @@ public class MainController implements Initializable {
 
     @FXML
     private void verFavoritos(ActionEvent event) {
-
     }
 
     @FXML
     private void mostrarAutosNuevos(ActionEvent event) {
-        cargarPagina("vehiculosNuevos.fxml");
+        cargarPagina("vehiculosNuevos");
+        this.hbBusqueda.setVisible(false);
         seccionNuevo = true;
+        this.txtBusqueda.setPromptText("Buscar un auto nuevo");
     }
 
     @FXML
     private void mostrarAutosViejos(ActionEvent event) {
-        cargarPagina("vehiculosViejos.fxml");
+        cargarPagina("vehiculosViejos");
         seccionUsado = true;
+        this.txtBusqueda.setPromptText("Buscar un auto usado");
     }
 
     @FXML
@@ -154,20 +152,23 @@ public class MainController implements Initializable {
 
     @FXML
     private void inicioDePagina(MouseEvent event) {
-        cargarPagina("inicio.fxml");
+        cargarPagina("inicio");
+        this.txtBusqueda.setPromptText("Buscar un auto...");
     }
 
-    private void cargarPagina(String fxmlFile) {
+    public void cargarPagina(String fxmlFile) {
         limpiarCampos();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../vista/" + fxmlFile));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../vista/" + fxmlFile + ".fxml"));
             Node pagina = loader.load();
+            if (fxmlFile.equals("vehiculosNuevos")) {
+                nuevosController = loader.getController();
+                nuevosController.setMainController(this);
+            }
             rootBorderPane.setCenter(pagina);
         } catch (IOException e) {
             Alertas.alertaError("Ha ocurrido un error", e.getMessage());
         }
-        seccionNuevo = false;
-        seccionUsado = false;
     }
 
     @FXML
@@ -189,25 +190,92 @@ public class MainController implements Initializable {
 
     @FXML
     private void buscarAuto(ActionEvent event) {
-        List<Vehiculo> vehiculosBuscados;
-        if(this.seccionNuevo)
-            vehiculosBuscados = buscarVehiculos(this.txtBusqueda.getText().strip() + "NUEVO");
-        else if(this.seccionUsado)
-            vehiculosBuscados = buscarVehiculos(this.txtBusqueda.getText().strip() + "USADO");
-        else
-            vehiculosBuscados = buscarVehiculos(this.txtBusqueda.getText().strip());
-        
-        if(vehiculosBuscados.isEmpty()){
+        if (this.txtBusqueda.getText().strip().isBlank()) {
+            Alertas.alertaError("Campo vacio", "No se puede realizar la busqueda porque no ha ingresado los criterios");
+        } else {
+            if (this.seccionNuevo) {
+                vehiculosBuscados = buscarVehiculosPorMarca(this.txtBusqueda.getText().strip() + " NUEVO ", this.nuevosController.getVehiculosPorMarca());
+                System.out.println("VEHICULO BUSCADOS " + vehiculosBuscados);
+            } else if (this.seccionUsado) {
+                vehiculosBuscados = buscarVehiculos(this.txtBusqueda.getText().strip() + " USADO ");
+            } else {
+                vehiculosBuscados = buscarVehiculos(this.txtBusqueda.getText().strip());
+            }
+            currentStartIndex = 0;
+            mostrarResultados();
+        }
+    }
+
+    private void mostrarResultados() {
+        if (vehiculosBuscados.isEmpty()) {
             VBox vbox = new VBox();
             Label lbl = new Label("No se encontró ningun resultado =(");
             vbox.getChildren().add(lbl);
             vbox.setAlignment(Pos.CENTER);
-            Platform.runLater(()->this.rootBorderPane.setCenter(vbox));
-        }            
-        else
-            Platform.runLater(()->this.rootBorderPane.setCenter(panelVehiculos(vehiculosBuscados)));
+            Platform.runLater(() -> this.rootBorderPane.setCenter(vbox));
+        } else {
+            List<Vehiculo> subList = getSubList(vehiculosBuscados, currentStartIndex, PER_PAGE);
+            FlowPane panelAutos = panelVehiculos(subList);
+            panelAutos.setId("vehiculosPane");
+
+            VBox vbox = new VBox(panelAutos);
+            vbox.setMaxWidth(Double.MAX_VALUE);
+            VBox.setVgrow(panelAutos, Priority.ALWAYS);
+            vbox.setAlignment(Pos.TOP_CENTER);
+            vbox.setSpacing(10);
+
+            if (vehiculosBuscados.size() > PER_PAGE) {
+                HBox navigationBox = new HBox();
+                navigationBox.setAlignment(Pos.CENTER);
+                navigationBox.setSpacing(10);
+
+                Button btnPrevious = new Button("«");
+                btnPrevious.setId("boton");
+                btnPrevious.setOnAction(e -> previousResults());
+
+                Button btnNext = new Button("»");
+                btnNext.setOnAction(e -> nextResults());
+                btnNext.setId("boton");
+
+                navigationBox.getChildren().addAll(btnPrevious, btnNext);
+                vbox.getChildren().add(navigationBox);
+            }
+
+            Platform.runLater(() -> this.rootBorderPane.setCenter(vbox));
+        }
     }
 
-    
-    
+    private List<Vehiculo> getSubList(List<Vehiculo> list, int startIndex, int count) {
+        DoubleCircleLinkedList<Vehiculo> subList = new DoubleCircleLinkedList<>();
+        int size = list.size();
+
+        for (int i = 0; i < count && i < size; i++) {
+            int index = (startIndex + i) % size;
+            if (!subList.contains(list.get(index))) {
+                subList.addLast(list.get(index));
+            }
+        }
+
+        return subList;
+    }
+
+    private void previousResults() {
+        currentStartIndex = (currentStartIndex - PER_PAGE + vehiculosBuscados.size()) % vehiculosBuscados.size();
+        mostrarResultados();
+    }
+
+    private void nextResults() {
+        currentStartIndex = (currentStartIndex + PER_PAGE) % vehiculosBuscados.size();
+        mostrarResultados();
+    }
+
+    @FXML
+    private void irPaginaPrincipal(ActionEvent event) {
+        cargarPagina("inicio");
+        this.txtBusqueda.setPromptText("Buscar un auto...");
+    }
+
+    public void showSearchBar() {
+        this.hbBusqueda.setVisible(true);
+    }
 }

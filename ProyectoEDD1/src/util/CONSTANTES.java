@@ -14,8 +14,9 @@ public class CONSTANTES {
     public static final String USUARIOS_FILE = "src/recursos/info/usuarios.dat";
     public static final String IMAGEN_NOT_FOUND = "src/recursos/noImagen.jpg";
     public static final String RUTA_IMAGEN_CARROS = "src/recursos/fotosCarros/";
+    public static final String RUTA_IMAGEN_LOGO = "src/recursos/logos/";
     public static final String MENSAJE_ERROR = "Ha ocurrido un error, lo sentimos";
     public static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     public static final int ID_LENGTH = 10;
-    public static final int PER_PAGE = 6;
+    public static final int PER_PAGE = 4;
 }

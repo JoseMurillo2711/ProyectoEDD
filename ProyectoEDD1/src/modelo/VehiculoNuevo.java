@@ -19,16 +19,16 @@ public class VehiculoNuevo extends Vehiculo implements Serializable {
 
     private static final long serialVersionUID = 58992201266L;
 
-    public VehiculoNuevo(Usuario dueno, String marca, String modelo, int ano, int kilometraje, double precio) {
-        super(dueno, marca, modelo, ano, kilometraje, precio);
+    public VehiculoNuevo(Usuario dueno, String marca, String modelo, int ano, int kilometraje, double precio, TipoCosto tipoCosto) {
+        super(dueno, marca, modelo, ano, kilometraje, precio, tipoCosto);
+    }  
+
+    public VehiculoNuevo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, String foto) {
+        super(dueno, tipoCosto, marca, modelo, año, kilometraje, precio, motor, transmision, ubicacion, traccion, direccion, color, climatizado, numHilera, numPuerta, foto);
     }
 
-    public VehiculoNuevo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, String foto) {
-        super(dueno, tipoCosto, marca, modelo, año, kilometraje, precio, motor, transmision, ubicacion, historial, traccion, direccion, color, climatizado, numHilera, numPuerta, foto);
-    }
-
-    public VehiculoNuevo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<String> fotos) {
-        super(dueno, tipoCosto, marca, modelo, año, kilometraje, precio, motor, transmision, ubicacion, historial, traccion, direccion, color, climatizado, numHilera, numPuerta, fotos);
+    public VehiculoNuevo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<String> fotos) {
+        super(dueno, tipoCosto, marca, modelo, año, kilometraje, precio, motor, transmision, ubicacion, traccion, direccion, color, climatizado, numHilera, numPuerta, fotos);
     }
 
     /**

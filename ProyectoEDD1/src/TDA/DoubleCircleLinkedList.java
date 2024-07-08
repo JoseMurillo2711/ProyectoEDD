@@ -478,4 +478,25 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
         } while (currentNode != last.getNext());
     }
 
+    @Override
+    public List<E> subList(int inicio, int fin) {
+        if (inicio < 0 || fin >= size() || inicio > fin) {
+            throw new IndexOutOfBoundsException("Invalid subList range.");
+        }
+
+        DoubleCircleLinkedList<E> subList = new DoubleCircleLinkedList<>();
+        Node<E> nodo = last.getNext();
+        int cont = 0;
+
+        do {
+            if (cont >= inicio && cont <= fin) {
+                subList.addLast(nodo.getContent());
+            }
+            nodo = nodo.getNext();
+            cont++;
+        } while (nodo != last.getNext() && cont <= fin);
+
+        return subList;
+    }
+
 }

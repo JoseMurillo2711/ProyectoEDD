@@ -4,6 +4,7 @@ import TDA.DoubleCircleLinkedList;
 import TDA.List;
 import modelo.Vehiculo;
 import java.io.*;
+import java.util.Arrays;
 import javafx.application.Platform;
 import modelo.VehiculoNuevo;
 import modelo.VehiculoUsado;
@@ -23,7 +24,7 @@ public class VehiculoDataManager {
 
     private VehiculoDataManager() {
         vehiculos = leerArchivoVehiculos();
-        ordenarVehiculos(); 
+        ordenarVehiculos();
     }
 
     public static VehiculoDataManager getInstance() {
@@ -36,12 +37,6 @@ public class VehiculoDataManager {
     public List<Vehiculo> getVehiculos() {
         return vehiculos;
     }
-    
-    public void setVehiculos(List<Vehiculo> vehiculos) {
-        this.vehiculos = vehiculos;
-        ordenarVehiculos(); 
-        escribirArchivoVehiculos();
-    }
 
     private List<Vehiculo> leerArchivoVehiculos() {
         File archivo = new File(VEHICULOS_FILE);
@@ -51,6 +46,8 @@ public class VehiculoDataManager {
         try (ObjectInputStream obj = new ObjectInputStream(new FileInputStream(archivo))) {
             return (List<Vehiculo>) obj.readObject();
         } catch (IOException | ClassNotFoundException e) {
+            System.out.println("NO SE QUE TIRO " + e.toString());
+
             return new DoubleCircleLinkedList<>();
         }
     }
@@ -76,20 +73,21 @@ public class VehiculoDataManager {
 
     public void agregarVehiculo(Vehiculo vehiculo) {
         vehiculos.addFirst(vehiculo);
-        ordenarVehiculos(); 
+        ordenarVehiculos();
         escribirArchivoVehiculos();
     }
 
-    public void borrarVehiculo(Vehiculo vehiculo) {
+    public void borrarVehiculo(Vehiculo vehiculo) throws Exception {
         vehiculos.remove(vehiculo);
-        ordenarVehiculos(); 
+        ordenarVehiculos();
         escribirArchivoVehiculos();
+        UsuarioDataManager.getInstance().elimimarVehiculo(vehiculo);
     }
 
     public void editarVehiculo(Vehiculo vehiculo) throws Exception {
         int ind = this.vehiculos.indexOf(vehiculo);
         this.vehiculos.set(ind, vehiculo);
-        ordenarVehiculos(); 
+        ordenarVehiculos();
         escribirArchivoVehiculos();
         UsuarioDataManager.getInstance().editarVehiculo(vehiculo);
     }
@@ -97,11 +95,10 @@ public class VehiculoDataManager {
     private void ordenarVehiculos() {
         vehiculos.sort(Vehiculo.COMPARATOR);
     }
-    
+
     public static List<Vehiculo> buscarVehiculos(String criterio) {
         String[] palabrasClave = criterio.toLowerCase().split("\\s+");
         List<Vehiculo> resultados = new DoubleCircleLinkedList<>();
-
         for (Vehiculo vehiculo : VehiculoDataManager.getInstance().getVehiculos()) {
             boolean coincide = false;
             boolean ano = false;
@@ -116,12 +113,36 @@ public class VehiculoDataManager {
                     ano = true;
                 }
             }
-            if (coincide || (ano && palabrasClave.length > 1)) 
-                resultados.addLast(vehiculo);            
+            if (coincide || (ano && palabrasClave.length > 1)) {
+                resultados.addLast(vehiculo);
+            }
         }
-
         resultados.sort((Vehiculo.COMPARATOR));
 
         return resultados;
     }
+
+    public static List<Vehiculo> buscarVehiculosPorMarca(String criterio, List<Vehiculo> porMarca) {
+        String[] palabrasClave = criterio.toLowerCase().split("\\s+");
+        List<Vehiculo> resultados = new DoubleCircleLinkedList<>();
+        for (Vehiculo vehiculo : porMarca) {
+            boolean coincide = false;
+            boolean ano = false;
+            for (String palabra : palabrasClave) {
+                if (vehiculo.getMarca().toLowerCase().contains(palabra)
+                        || vehiculo.getModelo().toLowerCase().contains(palabra)) {
+                    coincide = true;
+                }
+                if (Integer.toString(vehiculo.getAño()).contains(palabra)) {
+                    ano = true;
+                }
+            }
+            if (coincide || (ano && palabrasClave.length > 1)) {
+                resultados.addLast(vehiculo);
+            }
+        }
+        resultados.sort((Vehiculo.COMPARATOR));
+        return resultados;
+    }
+
 }

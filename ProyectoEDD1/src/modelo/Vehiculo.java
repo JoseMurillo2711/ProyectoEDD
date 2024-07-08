@@ -28,8 +28,7 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
     private double precio;
     private Motor motor;
     private Transmision transmision;
-    private Ubicacion ubicacion;
-    private Historial historial;
+    private Ubicacion ubicacion;    
     private DoubleCircleLinkedList<String> url_fotos;
     private TipoTraccion traccion;
     private TipoDireccion direccion;
@@ -49,7 +48,7 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
         this.vendido = false;
     }
 
-    public Vehiculo(Usuario dueno, String marca, String modelo, int ano, int kilometraje, double precio) {
+    public Vehiculo(Usuario dueno, String marca, String modelo, int ano, int kilometraje, double precio, TipoCosto tipoCosto) {
         this();
         this.marca = marca;
         this.modelo = modelo;
@@ -57,10 +56,11 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
         this.kilometraje = kilometraje;
         this.precio = precio;
         this.dueno = dueno;
+        this.tipoCosto = tipoCosto;
     }
 
     //constructor para agregar una sola foto a la lista de fotos
-    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int ano, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, String foto) {
+    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int ano, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, String foto) {
         this();
         this.dueno = dueno;
         this.tipoCosto = tipoCosto;
@@ -72,7 +72,6 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
         this.motor = motor;
         this.transmision = transmision;
         this.ubicacion = ubicacion;
-        this.historial = historial;
         this.url_fotos.addLast(foto);        
         this.traccion = traccion;
         this.direccion = direccion;
@@ -83,7 +82,7 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
     }
 
     //Recibe la lista de fotos y reemplaza la actual inicializada
-    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<String> fotos) {
+    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<String> fotos) {
         this();
         this.dueno = dueno;
         this.tipoCosto = tipoCosto;
@@ -95,7 +94,6 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
         this.motor = motor;
         this.transmision = transmision;
         this.ubicacion = ubicacion;
-        this.historial = historial;
         this.traccion = traccion;
         this.direccion = direccion;
         this.color = color;
@@ -183,14 +181,6 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
 
     public void setUbicacion(Ubicacion ubicacion) {
         this.ubicacion = ubicacion;
-    }
-
-    public Historial getHistorial() {
-        return historial;
-    }
-
-    public void setHistorial(Historial historial) {
-        this.historial = historial;
     }
 
     public DoubleCircleLinkedList<String> getFotos() {
@@ -293,7 +283,7 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
 
     @Override
     public String toString() {
-        return "Vehiculo{" + "marca=" + marca + ", modelo=" + modelo + ", a\u00f1o=" + ano + ", kilometraje=" + kilometraje + ", precio=" + precio + ", motor=" + motor + ", transmision=" + transmision + ", ubicacion=" + ubicacion + ", historial=" + historial + ", fotos=" + url_fotos + ", traccion=" + traccion + ", direccion=" + direccion + ", color=" + color + ", climatizado=" + climatizado + ", numHilera=" + numHilera + ", numPuerta=" + numPuerta + '}';
+        return "Vehiculo{" + "marca=" + marca + ", modelo=" + modelo + ", ano=" + ano + ", kilometraje=" + kilometraje + ", precio=" + precio + ", tipoCosto=" + tipoCosto + '}';
     }
 
     public void agregarFoto(String foto) {

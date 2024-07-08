@@ -132,25 +132,37 @@ public class UsuarioDataManager {
 
     protected void editarVehiculo(Vehiculo vehiculo) throws Exception {
         for (Usuario user : this.usuarios) {
-            for (Vehiculo v : user.getVehiculosFavoritos()) {
-                if (v.equals(vehiculo)) {
-                    int ind = user.getVehiculosFavoritos().indexOf(vehiculo);
-                    user.getVehiculosFavoritos().set(ind, vehiculo);
+            if (user.getVehiculosFavoritos() != null) {
+                for (Vehiculo v : user.getVehiculosFavoritos()) {
+                    if (v.equals(vehiculo)) {
+                        int ind = user.getVehiculosFavoritos().indexOf(vehiculo);
+                        user.getVehiculosFavoritos().set(ind, vehiculo);
+                    }
                 }
+                escribirArchivoUsuarios();
             }
-            escribirArchivoUsuarios();
         }
     }
-    
+
     protected void elimimarVehiculo(Vehiculo vehiculo) throws Exception {
         for (Usuario user : this.usuarios) {
-            for (Vehiculo v : user.getVehiculosFavoritos()) {
-                if (v.equals(vehiculo)) {                    
-                    user.getVehiculosFavoritos().remove(vehiculo);
+            if (user.getVehiculosFavoritos() != null) {
+                for (Vehiculo v : user.getVehiculosFavoritos()) {
+                    if (v.equals(vehiculo)) {
+                        user.getVehiculosFavoritos().remove(vehiculo);
+                    }
                 }
+                escribirArchivoUsuarios();
             }
-            escribirArchivoUsuarios();
         }
     }
     
+    public Usuario obtenerUsuario(String nickname){        
+        Usuario user = null;
+        for (Usuario u : usuarios) {
+            if (nickname.equalsIgnoreCase(u.getNickname()))
+                return u;
+        }
+        return user;
+    }
 }

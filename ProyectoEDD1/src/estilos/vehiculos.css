@@ -3,5 +3,129 @@
  */
 
 .mainFxmlClass {
+    -fx-font-family: "Gill Sans MT", sans-serif;
+    -fx-background-color: #F2F2F0;
+}
 
+.cuadro{
+    -fx-background-color: white; /* Color de fondo */
+    -fx-font-size: 13px; /* Tamaño de la fuente */
+    -fx-padding: 20; /* Relleno */
+    -fx-background-radius: 15; /* Bordes redondeados */
+    -fx-border-radius: 15; /* Bordes redondeados */
+    -fx-border-color: #030759; /* Color del borde */
+    -fx-border-width: 0.5; /* Grosor del borde */
+}
+
+.button{
+    -fx-background-color: #030759;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#lblAutos{
+    -fx-font-size: 20px;
+}
+
+#card{
+    -fx-background-color: white;
+    -fx-padding: 10;
+    -fx-border-color: black;
+    -fx-border-width: 1;
+}
+
+#card:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+    -fx-padding: 0;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #f0f0f0;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.combo-box .arrow-button .arrow {
+    -fx-background-color: #ccc;
+    -fx-padding: 5;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z";
+}
+
+.combo-box .text-field {
+    -fx-background-color: white;
+    -fx-padding: 2;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5;
+    -fx-prompt-text-fill: #aaa;
+}
+
+.combo-box .text-field:focused {
+    -fx-border-color: #666;
+}
+
+.combo-box-popup {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+}
+
+.combo-box .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+}
+
+.combo-box .list-view .list-cell {
+    -fx-padding: 5;
+    -fx-background-color: white;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #ccc;
+}
+
+.combo-box .list-view .list-cell:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #030759;
+}
+
+.combo-box .list-view .list-cell:focused {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #030759;
+}
+
+.combo-box .list-view .list-cell:selected {
+    -fx-background-color: #d0d0d0;
+}
+
+#botones{
+    -fx-alignment: center;
+    -fx-border-color: #030759;
+    -fx-border-width: 4 0 0 0;
+    -fx-border-style: solid hidden hidden hidden;
+    -fx-padding: 20 20 15 20;
+}
+
+#buttonFill {
+    -fx-pref-width: 100%;
+    -fx-max-width: Infinity;
+    -fx-font-size: 20px;
+}
+
+.flow-pane-custom {
+    -fx-hgap: 10; 
+    -fx-vgap: 10; 
+    -fx-padding: 10;
+    -fx-background-color: transparent; 
+}
+
+.flow-pane-custom .flow-pane-child {
+    -fx-margin: 10; 
 }

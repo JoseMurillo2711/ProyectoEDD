@@ -4,12 +4,16 @@
  */
 package util;
 
+import TDA.DoubleCircleLinkedList;
 import TDA.List;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -23,11 +27,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modelo.Vehiculo;
 import proyectoedd1.ProyectoEDD1;
+import tipo.TipoCosto;
 import static util.CONSTANTES.CHARACTERS;
 import static util.CONSTANTES.ID_LENGTH;
 import static util.CONSTANTES.IMAGEN_NOT_FOUND;
 import static util.CONSTANTES.RUTA_IMAGEN_CARROS;
-import static util.CONSTANTES.VEHICULOS_FILE;
+import static util.CONSTANTES.RUTA_IMAGEN_LOGO;
 
 /**
  *
@@ -80,7 +85,6 @@ public class Utilitario {
                 System.out.println("Mostrar Vehiculo");
             });
             panel.getChildren().add(carta);
-
         }
         return panel;
     }
@@ -88,11 +92,13 @@ public class Utilitario {
     private static VBox createCard(Vehiculo vehiculo) {
         VBox card = new VBox(10);
         card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-border-color: black; -fx-border-width: 1;");
+        card.setId("card");
 
-        Label marcaLabel = new Label("Marca: " + vehiculo.getMarca());
-        Label modeloLabel = new Label("Modelo: " + vehiculo.getModelo());
+        Label marcaLabel = new Label(vehiculo.getMarca() + " " + vehiculo.getModelo());
         Label anoLabel = new Label("Año: " + vehiculo.getAño());
-
+        Label precioLbl = new Label("Precio: $: " + vehiculo.getPrecio());
+        Label ngociable = new Label("Precio " + vehiculo.getTipoCosto().toString());
+        ngociable.setId("lblPrecio");
         ImageView imageView = new ImageView();
         File archivo = new File(IMAGEN_NOT_FOUND);
         System.out.println(archivo.getAbsolutePath());
@@ -112,8 +118,45 @@ public class Utilitario {
         imageView.setFitWidth(80);
         imageView.setFitHeight(55);
         imageView.setPreserveRatio(true);
-        
-        card.getChildren().addAll(imageView, marcaLabel, modeloLabel, anoLabel);
+        if (vehiculo.getTipoCosto() != TipoCosto.FIJO) {
+            card.getChildren().addAll(imageView, marcaLabel, anoLabel, precioLbl, ngociable);
+        } else {
+            card.getChildren().addAll(imageView, marcaLabel, anoLabel, precioLbl);
+        }
+        return card;
+    }
+
+    public static VBox createCardMarca(Vehiculo vehiculo) {
+        VBox card = new VBox(10);
+        card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-border-color: black; -fx-border-width: 1;");
+        card.setId("card");
+        Label marcaLabel = new Label(vehiculo.getMarca());
+        marcaLabel.setId("lblPrecio");
+        ImageView imageView = new ImageView();
+        File archivo;
+        String baseImageUrl = vehiculo.getMarca().strip().toLowerCase();
+        String imageUrlJpg = baseImageUrl + ".jpg";
+        String imageUrlPng = baseImageUrl + ".png";
+
+        try {
+            archivo = new File(RUTA_IMAGEN_LOGO + imageUrlJpg);
+            Image image = new Image(archivo.toURI().toString(), true);
+            imageView.setImage(image);
+        } catch (Exception e1) {
+            try {
+                archivo = new File(RUTA_IMAGEN_LOGO + imageUrlPng);
+                Image image = new Image(archivo.toURI().toString(), true);
+                imageView.setImage(image);
+            } catch (Exception e2) {
+                imageView.setImage(new Image(new File(IMAGEN_NOT_FOUND).toURI().toString()));
+            }
+        }
+
+        imageView.setFitWidth(110);
+        imageView.setFitHeight(90);
+        imageView.setPreserveRatio(true);
+        card.getChildren().addAll(imageView, marcaLabel);
+        card.setAlignment(Pos.CENTER);
         return card;
     }
 }

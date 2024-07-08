@@ -230,4 +230,27 @@ public class ArrayList<E> implements List<E>, Serializable {
             this.addLast(element);
         }
     }
+
+    public static <E> ArrayList<E> asList(E[] array) {
+        ArrayList<E> list = new ArrayList<>();
+        for (E element : array) {
+            list.addLast(element);
+        }
+        return list;
+    }
+
+    @Override
+    public List<E> subList(int inicio, int fin) {
+        if (inicio < 0 || fin > effectiveSize || inicio > fin) {
+            throw new IndexOutOfBoundsException("Invalid subList range.");
+        }
+
+        ArrayList<E> subList = new ArrayList<>();
+        for (int i = inicio; i < fin; i++) {
+            subList.addLast(elements[i]);
+        }
+
+        return subList;
+    }
+
 }

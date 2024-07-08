@@ -116,7 +116,6 @@
                   <TextField fx:id="usrNHileras" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                   <TextField fx:id="usrNPuertas" GridPane.columnIndex="1" GridPane.rowIndex="12" />
                   <TextField fx:id="usrPrecio" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-                  <MenuButton fx:id="usrTipoCosto" mnemonicParsing="false" text="SELECCIONE" GridPane.columnIndex="4" GridPane.rowIndex="13" />
                   <CheckBox fx:id="usrUsado" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="14" />
                   <TextField fx:id="usrUlDigito" GridPane.columnIndex="1" GridPane.rowIndex="16" />
                   <TextField fx:id="usrProvincia" GridPane.columnIndex="4" GridPane.rowIndex="16" />
@@ -125,6 +124,7 @@
                   <TextArea fx:id="usrTipoRep" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="20" />
                   <TextArea fx:id="usrTipoServ" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="20" />
                   <Button fx:id="CrearButton" mnemonicParsing="false" onAction="#crearVehiculo" text="Crear" GridPane.columnIndex="4" GridPane.rowIndex="21" />
+                  <ChoiceBox fx:id="usrTipoCosto" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="13" />
                </children>
             </GridPane>
          </center>

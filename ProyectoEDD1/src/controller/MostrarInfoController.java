@@ -6,7 +6,11 @@ package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import modelo.Vehiculo;
 
 /**
  * FXML Controller class
@@ -15,6 +19,14 @@ import javafx.fxml.Initializable;
  */
 public class MostrarInfoController implements Initializable {
 
+    private Vehiculo vehiculo;
+    private boolean editable;
+    @FXML
+    private Button btnAtras;
+    @FXML
+    private ImageView imgVehiculo;
+    @FXML
+    private Button btnAdelante;
     /**
      * Initializes the controller class.
      */
@@ -23,4 +35,9 @@ public class MostrarInfoController implements Initializable {
         // TODO
     }    
     
+    public void recibirVehiculo(Vehiculo vehiculo, boolean editable){
+        this.vehiculo = vehiculo;
+        System.out.println(this.vehiculo);
+        this.editable = editable;
+    }
 }

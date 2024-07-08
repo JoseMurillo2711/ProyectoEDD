@@ -194,8 +194,7 @@ public class MainController implements Initializable {
             Alertas.alertaError("Campo vacio", "No se puede realizar la busqueda porque no ha ingresado los criterios");
         } else {
             if (this.seccionNuevo) {
-                vehiculosBuscados = buscarVehiculosPorMarca(this.txtBusqueda.getText().strip() + " NUEVO ", this.nuevosController.getVehiculosPorMarca());
-                System.out.println("VEHICULO BUSCADOS " + vehiculosBuscados);
+                vehiculosBuscados = buscarVehiculosPorMarca(this.txtBusqueda.getText().strip() + " NUEVO ", this.nuevosController.getVehiculosPorMarca());                
             } else if (this.seccionUsado) {
                 vehiculosBuscados = buscarVehiculos(this.txtBusqueda.getText().strip() + " USADO ");
             } else {
@@ -278,4 +277,8 @@ public class MainController implements Initializable {
     public void showSearchBar() {
         this.hbBusqueda.setVisible(true);
     }
+
+    public void setSeccionNuevo(boolean seccionNuevo) {
+        this.seccionNuevo = seccionNuevo;
+    }  
 }

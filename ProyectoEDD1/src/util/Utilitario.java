@@ -6,6 +6,7 @@ package util;
 
 import TDA.DoubleCircleLinkedList;
 import TDA.List;
+import controller.MostrarInfoController;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -83,13 +84,20 @@ public class Utilitario {
             VBox carta = createCard(ve);
             carta.setOnMouseClicked((MouseEvent event) -> {
                 System.out.println("Mostrar Vehiculo");
+                mostrarInformacion(ve);
             });
             panel.getChildren().add(carta);
         }
         return panel;
     }
+    
+    private static void mostrarInformacion(Vehiculo vehiculo) {
+        FXMLLoader loader = abrirNuevaVentana("mostrarInfo", "Informacion del vehiculo");
+        MostrarInfoController info = loader.getController();
+        info.recibirVehiculo(vehiculo, false);
+    }
 
-    private static VBox createCard(Vehiculo vehiculo) {
+    public static VBox createCard(Vehiculo vehiculo) {
         VBox card = new VBox(10);
         card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-border-color: black; -fx-border-width: 1;");
         card.setId("card");

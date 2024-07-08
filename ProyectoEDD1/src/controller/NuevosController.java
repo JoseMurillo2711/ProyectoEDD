@@ -35,6 +35,7 @@ import javafx.scene.layout.VBox;
 import modelo.Vehiculo;
 import modelo.VehiculoNuevo;
 import tipo.TipoCosto;
+import util.Alertas;
 import static util.CONSTANTES.PER_PAGE;
 import static util.Utilitario.abrirNuevaVentana;
 import static util.Utilitario.createCardMarca;
@@ -70,6 +71,7 @@ public class NuevosController implements Initializable {
     private MainController mainController;
     private String selectedMarca;
     private HBox bottom;
+
     @FXML
     private ScrollPane scroll;
 
@@ -83,7 +85,6 @@ public class NuevosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO        
         configBotones();
-
         vehiculos = (DoubleCircleLinkedList) VehiculoDataManager.getInstance().getVehiculos();
         mapMarcas = vehiculosMarcas();
         congfigBottom();
@@ -114,17 +115,11 @@ public class NuevosController implements Initializable {
     @FXML
     private void buscarAutoNuevo(ActionEvent event) {
         if (cbMarca.getValue() != null && cbModelo.getValue() != null) {
-            mostrarInformacion(vehiculoMarcaModelo());
+            this.mainController.cargarPagina("vehiculosNuevos");
+            this.mainController.setSeccionNuevo(true);
+        } else {
+            Alertas.alertaError("Debe ingresar los parametros de busqueda", "No se pudo realizar la busqueda, debe seleccionar la marca y el modelo del auto");
         }
-        cbMarca.getSelectionModel().clearSelection();
-        cbModelo.getSelectionModel().clearSelection();
-        cbModelo.setDisable(true);
-        cbMarca.setPromptText("Seleccionar marca");
-        cbModelo.setPromptText("Seleccionar modelo");
-    }
-
-    private void mostrarInformacion(Vehiculo vehiculo) {
-        FXMLLoader loader = abrirNuevaVentana("mostrarInfo", "Informacion del vehiculo");
     }
 
     private Vehiculo vehiculoMarcaModelo() {
@@ -147,14 +142,14 @@ public class NuevosController implements Initializable {
             VBox carta = createCardMarca(v.get(0));
             flowPane.getChildren().add(carta);
             carta.setOnMouseClicked((MouseEvent event) -> {
-                lblTitulo.setText("MODELOS "+v.get(0).getMarca());
+                lblTitulo.setText("MODELOS " + v.get(0).getMarca().toUpperCase());
                 this.borderPane.setTop(null);
                 this.borderPane.setBottom(bottom);
                 mainController.showSearchBar();
                 selectedMarca = v.get(0).getMarca();
                 vehiculosPorMarca = mapMarcas.get(selectedMarca.toUpperCase());
                 iteratorVehiculo = vehiculosPorMarca.listIterator();
-                llenarPantallaModelos(true, false);
+                llenarPantallaModelos(true);
             });
         });
     }
@@ -179,11 +174,13 @@ public class NuevosController implements Initializable {
         btnAnterior = new Button("«");
         this.btnAnterior.setId("buttonFill");
         this.btnRegresar = new Button("Regresar");
-        this.btnRegresar.setPrefWidth(200);
         this.btnRegresar.setId("buttonFill");
         btnSiguiente.setOnAction(e -> adelante());
         this.btnAnterior.setOnAction(eh -> atras());
-        this.btnRegresar.setOnAction(e -> this.mainController.cargarPagina("vehiculosNuevos"));
+        this.btnRegresar.setOnAction(e -> {
+            this.mainController.cargarPagina("vehiculosNuevos");
+            this.mainController.setSeccionNuevo(true);
+        });
     }
 
     private void congfigBottom() {
@@ -194,31 +191,57 @@ public class NuevosController implements Initializable {
     }
 
     private void adelante() {
-        llenarPantallaModelos(true, false);
+        llenarPantallaModelos(true);
     }
 
     private void atras() {
-        llenarPantallaModelos(false, false);
+        llenarPantallaModelos(false);
     }
 
-    private void llenarPantallaModelos(boolean adelante, boolean busqueda) {
+    private void llenarPantallaModelos(boolean adelante) {
         vehiculosMostrados.clear();
         Set<Vehiculo> vehiculosUnicos = new HashSet<>();
-        int cont = 0;
 
-        while (iteratorVehiculo.hasNext() && vehiculosMostrados.size() < PER_PAGE) {
-            Vehiculo vehiculo = iteratorVehiculo.next();
-            if (vehiculo.getTipoCosto().equals(TipoCosto.FIJO) && vehiculosUnicos.add(vehiculo)) {
-                vehiculosMostrados.addLast(vehiculo);
-            }
+        if (vehiculosPorMarca == null || vehiculosPorMarca.isEmpty()) {
+            System.out.println("La lista de vehículos por marca está vacía.");
+            return;
         }
-        System.out.println("LISTA: "+iteratorVehiculo);
+        System.out.println("Vehículos por marca: " + vehiculosPorMarca.size());
+        int count = 0;
+        int iteraciones = 0;
 
-        while (iteratorVehiculo.hasPrevious() && vehiculosMostrados.size() < PER_PAGE) {
-            Vehiculo vehiculo = iteratorVehiculo.previous();
-            if (vehiculo.getTipoCosto().equals(TipoCosto.FIJO) && vehiculosUnicos.add(vehiculo)) {
-                vehiculosMostrados.addFirst(vehiculo);
+        try {
+            if (adelante) {
+                while (iteratorVehiculo.hasNext() && count < PER_PAGE && iteraciones < vehiculosPorMarca.size()) {
+                    Vehiculo vehiculo = iteratorVehiculo.next();
+                    iteraciones++;
+                    System.out.println("Iterando adelante: " + vehiculo.getMarca() + " " + vehiculo.getModelo());
+                    if (vehiculo.getTipoCosto().equals(TipoCosto.FIJO) && vehiculosUnicos.add(vehiculo)) {
+                        vehiculosMostrados.addLast(vehiculo);
+                        count++;
+                    }
+                }
+            } else {
+                while (iteratorVehiculo.hasPrevious() && count < PER_PAGE && iteraciones < vehiculosPorMarca.size()) {
+                    Vehiculo vehiculo = iteratorVehiculo.previous();
+                    iteraciones++;
+                    System.out.println("Iterando atrás: " + vehiculo.getMarca() + " " + vehiculo.getModelo());
+                    if (vehiculo.getTipoCosto().equals(TipoCosto.FIJO) && vehiculosUnicos.add(vehiculo)) {
+                        vehiculosMostrados.addFirst(vehiculo);
+                        count++;
+                    }
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Error durante la iteración: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        System.out.println("Vehículos mostrados: " + vehiculosMostrados.size());
+
+        if (vehiculosMostrados.isEmpty()) {
+            System.out.println("No se encontraron vehículos para mostrar.");
+            return;
         }
 
         FlowPane flowNuevo = panelVehiculos(vehiculosMostrados);
@@ -228,7 +251,7 @@ public class NuevosController implements Initializable {
             FlowPane.setMargin(child, new Insets(10));
         }
 
-        this.scroll.setContent(flowNuevo);
+        Platform.runLater(() -> this.scroll.setContent(flowNuevo));
 
         if (vehiculosMostrados.size() < PER_PAGE) {
             ocultarBotones();

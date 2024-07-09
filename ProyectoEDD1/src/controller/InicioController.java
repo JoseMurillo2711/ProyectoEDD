@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import modelo.Vehiculo;
+import static util.Utilitario.createCard;
 import util.VehiculoDataManager;
 
 /**
@@ -101,14 +102,5 @@ public class InicioController implements Initializable {
             }
         }
     }
-
-    private VBox createCard(Vehiculo vehiculo) {
-        VBox card = new VBox(10);
-        card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-border-color: black; -fx-border-width: 1;");
-        Label marcaLabel = new Label("Marca: " + vehiculo.getMarca());
-        Label modeloLabel = new Label("Modelo: " + vehiculo.getModelo());
-        Label anoLabel = new Label("Año: " + vehiculo.getAño());
-        card.getChildren().addAll(marcaLabel, modeloLabel, anoLabel);
-        return card;
-    }      
+     
 }

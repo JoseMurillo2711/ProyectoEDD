@@ -58,7 +58,7 @@ public class InicioController implements Initializable {
         ArrayList<Vehiculo> vehiculos = new ArrayList<>(); // Implementa este método según tus necesidades
         vehiculos.addAll(VehiculoDataManager.getInstance().getVehiculos());
         // Dividir la lista de vehículos en páginas
-        int totalPages = (int) Math.ceil(vehiculos.size() / (double) ITEMS_PER_PAGE);
+        int totalPages = vehiculos.size() /  ITEMS_PER_PAGE;
         for (int i = 0; i < totalPages; i++) {
             ArrayList<Vehiculo> page = new ArrayList<>();
             for (int j = i * ITEMS_PER_PAGE; j < (i + 1) * ITEMS_PER_PAGE && j < vehiculos.size(); j++) {

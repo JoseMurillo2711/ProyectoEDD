@@ -9,19 +9,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox prefHeight="710.0" prefWidth="581.0" styleClass="mainFxmlClass" stylesheets="@../estilos/mostrarInfo.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MostrarInfoController">
+<VBox prefHeight="805.0" prefWidth="601.0" styleClass="mainFxmlClass" stylesheets="@../estilos/mostrarInfo.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MostrarInfoController">
    <children>
       <BorderPane prefHeight="473.0" prefWidth="405.0" VBox.vgrow="ALWAYS">
          <bottom>
             <VBox alignment="TOP_CENTER" spacing="5.0">
                <children>
-                  <Label text="Imagenes del vehiculo" />
+                  <Label text="Imagenes del vehiculo" underline="true" />
                   <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="100.0" spacing="10.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="btnAtras" mnemonicParsing="false" text="«" />
+                        <Button fx:id="btnAtras" mnemonicParsing="false" onAction="#mostrarAnterior" text="«" />
                         <ImageView fx:id="imgVehiculo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="image-view" />
-                        <Button fx:id="btnAdelante" mnemonicParsing="false" text="»" />
+                        <Button fx:id="btnAdelante" mnemonicParsing="false" onAction="#mostrarSgte" text="»" />
+                        <Button fx:id="btnAgregarImagen" mnemonicParsing="false" onAction="#agregarImagen" text="Agregar Imagen" textAlignment="CENTER" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -33,7 +33,12 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </HBox>
-                  <Button mnemonicParsing="false" text="Agregar imagen" />
+                  <HBox fx:id="hbEdicion" alignment="CENTER" spacing="10.0" styleClass="hbEdicion" stylesheets="@../estilos/mostrarInfo.css">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#guardarEdicion" text="Guardar cambios de edición" />
+                        <Button mnemonicParsing="false" onAction="#cancelarEdicion" text="Cancelar" />
+                     </children>
+                  </HBox>
                </children>
                <padding>
                   <Insets bottom="10.0" />
@@ -48,19 +53,24 @@
             </HBox>
          </top>
          <center>
-            <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="430.0" prefWidth="581.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </BorderPane.margin>
                <content>
-                  <VBox alignment="CENTER" maxWidth="1.7976931348623157E308">
+                  <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" spacing="5.0">
                      <children>
-                        <GridPane hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="5.0" VBox.vgrow="ALWAYS">
+                        <HBox layoutX="10.0" layoutY="185.0" prefHeight="2.0" prefWidth="561.0" styleClass="hbox-gradient" stylesheets="@../estilos/mostrarInfo.css">
+                           <children>
+                              <Label text="Datos de Generales del vehiculo" />
+                           </children>
+                        </HBox>
+                        <GridPane hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="553.0" vgap="5.0" VBox.vgrow="ALWAYS">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
-                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="105.0" minWidth="92.0" prefWidth="92.0" />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="196.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="9.0" minWidth="9.0" prefWidth="9.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="110.0" prefWidth="123.0" />
                               <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                           </columnConstraints>
                           <rowConstraints>
@@ -69,6 +79,8 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Label text="Marca:" />
@@ -76,22 +88,146 @@
                               <Label text="Año:" GridPane.rowIndex="2" />
                               <Label text="Kilometraje:" GridPane.rowIndex="3" />
                               <Label text="Precio:" GridPane.rowIndex="4" />
-                              <TextField GridPane.columnIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Label text="Tipo de motor:" GridPane.columnIndex="3" />
-                              <ComboBox maxWidth="1.7976931348623157E308" promptText="Seleccionar" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
+                              <TextField fx:id="txtMarca" GridPane.columnIndex="1" />
+                              <TextField fx:id="txtModelo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="txtAnio" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="txtKm" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField fx:id="txtPrecio" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label text="Tipo de motor:" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                              <ComboBox fx:id="cboMotor" maxWidth="1.7976931348623157E308" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
                               <Label text="Tipo de traccion:" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                              <ComboBox prefWidth="150.0" promptText="Seleccionar" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                              <Label text="Tipo de direccion:" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                              <ComboBox prefWidth="150.0" promptText="Seleccionar" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                              <ComboBox fx:id="cbTraccion" maxWidth="1.7976931348623157E308" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                              <Label text="Tipo de direccion:" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                              <ComboBox fx:id="cbDireccion" maxWidth="1.7976931348623157E308" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+                              <Label text="Color:" GridPane.columnIndex="3" />
+                              <ComboBox fx:id="cbTipoPrecio" maxWidth="1.7976931348623157E308" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+                              <ColorPicker fx:id="cbColor" GridPane.columnIndex="4" />
+                              <Label text="Tipo de precio:" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                              <Label text="Climatización:" GridPane.rowIndex="6" />
+                              <CheckBox fx:id="chkClima" mnemonicParsing="false" text="está climatizado" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Label text="N° de hileras:" GridPane.rowIndex="5" />
+                              <TextField fx:id="txtNumHileras" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextField fx:id="txtNumPuertas" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                              <Label text="N° de puertas:" GridPane.columnIndex="3" GridPane.rowIndex="5" />
                            </children>
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </GridPane>
+                        <HBox prefHeight="2.0" prefWidth="561.0" styleClass="hbox-gradient" stylesheets="@../estilos/mostrarInfo.css" VBox.vgrow="NEVER">
+                           <children>
+                              <Label text="Datos de la ubicacion del vehiculo" />
+                           </children>
+                        </HBox>
+                        <GridPane hgap="5.0" layoutX="10.0" layoutY="31.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="553.0" vgap="5.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Ciudad" />
+                              <Label text="Dirección:" GridPane.columnIndex="3" />
+                              <TextField fx:id="txtCiudad" GridPane.columnIndex="1" />
+                              <TextField fx:id="txtDireccion" GridPane.columnIndex="4" />
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                        <HBox layoutX="10.0" layoutY="206.0" prefHeight="2.0" prefWidth="561.0" styleClass="hbox-gradient" stylesheets="@../estilos/mostrarInfo.css">
+                           <children>
+                              <Label text="Datos de la transmisión del vehiculo" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <GridPane hgap="5.0" layoutX="10.0" layoutY="227.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="553.0" vgap="5.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label prefHeight="30.0" prefWidth="147.0" text="Numero de velocidades:" GridPane.hgrow="ALWAYS" />
+                              <Label text="Tipo de transmision:" GridPane.columnIndex="3" />
+                              <TextField fx:id="txtVelo" GridPane.columnIndex="1" />
+                              <ComboBox fx:id="cbTransmision" prefWidth="150.0" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" />
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="90.0" prefWidth="148.0" />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="123.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="5.0" prefWidth="5.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.0" minWidth="110.0" prefWidth="121.0" />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="140.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                        <HBox layoutX="10.0" layoutY="332.0" prefHeight="2.0" prefWidth="561.0" styleClass="hbox-gradient" stylesheets="@../estilos/mostrarInfo.css">
+                           <children>
+                              <Label text="Datos del publicante" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <GridPane hgap="5.0" layoutX="10.0" layoutY="353.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="553.0" vgap="5.0">
+                           <children>
+                              <Label prefHeight="30.0" text="Nombre de usuario del publicante:" GridPane.hgrow="ALWAYS" />
+                              <TextField fx:id="txtUsuario" GridPane.columnIndex="1" />
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.0" minWidth="90.0" prefWidth="212.0" />
+                              <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="327.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                        <VBox fx:id="vbInfoUsado" spacing="5.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <HBox prefHeight="2.0" prefWidth="561.0" styleClass="hbox-gradient" stylesheets="@../estilos/mostrarInfo.css">
+                                 <children>
+                                    <Label text="Datos de las placas del vehiculo" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <GridPane hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="5.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Label prefHeight="30.0" prefWidth="147.0" text="Ultimo dígito de placa:" GridPane.hgrow="ALWAYS" />
+                                    <Label text="Provincia de placa:" GridPane.columnIndex="3" />
+                                    <TextField fx:id="txtPlaca" GridPane.columnIndex="1" />
+                                    <TextField fx:id="txtProvincia" GridPane.columnIndex="4" />
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="180.0" minWidth="90.0" prefWidth="148.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="123.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="110.0" prefWidth="120.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="140.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                              <HBox layoutX="10.0" layoutY="10.0" prefHeight="2.0" prefWidth="561.0" styleClass="hbox-gradient" stylesheets="@../estilos/mostrarInfo.css" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Historial del Vehiculo" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                              <Label text="Servicios:" />
+                              <TableView fx:id="tableServicios" minHeight="75.0" prefHeight="75.0" />
+                              <HBox fx:id="hbEdicionServicios" spacing="10.0">
+                                 <children>
+                                    <Button id="transparent-button" mnemonicParsing="false" onAction="#agregarServicio" style="-fx-background-color: transparent;" text="Agregar servicio" />
+                                    <Button id="transparent-button" mnemonicParsing="false" onAction="#editarServicio" text="Editar servicio" />
+                                    <Button id="transparent-button" mnemonicParsing="false" onAction="#eliminarServicio" text="Eliminar servicio" />
+                                 </children>
+                              </HBox>
+                              <Label text="Reparaciones:" />
+                              <TableView fx:id="tablaReparacion" maxWidth="1.7976931348623157E308" minHeight="75.0" prefHeight="75.0" VBox.vgrow="ALWAYS" />
+                              <HBox fx:id="hbEdicionReparaciones" spacing="10.0">
+                                 <children>
+                                    <Button id="transparent-button" mnemonicParsing="false" onAction="#agregarReparacion" text="Agregar Reparacion" />
+                                    <Button id="transparent-button" mnemonicParsing="false" onAction="#editarReparacion" text="Editar Reparacion" />
+                                    <Button id="transparent-button" mnemonicParsing="false" onAction="#eliminarReparacion" text="Eliminar Reparacion" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
                   </VBox>
                </content>

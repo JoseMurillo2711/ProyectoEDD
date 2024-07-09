@@ -4,18 +4,12 @@ import TDA.DoubleCircleLinkedList;
 import TDA.List;
 import modelo.Vehiculo;
 import java.io.*;
-import java.util.Arrays;
 import javafx.application.Platform;
 import modelo.VehiculoNuevo;
 import modelo.VehiculoUsado;
-
 import static util.CONSTANTES.MENSAJE_ERROR;
 import static util.CONSTANTES.VEHICULOS_FILE;
 
-/**
- *
- * @autor Michelle
- */
 public class VehiculoDataManager {
 
     private static VehiculoDataManager instance;
@@ -47,7 +41,6 @@ public class VehiculoDataManager {
             return (List<Vehiculo>) obj.readObject();
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("NO SE QUE TIRO " + e.toString());
-
             return new DoubleCircleLinkedList<>();
         }
     }

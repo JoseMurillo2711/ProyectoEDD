@@ -31,6 +31,7 @@ import modelo.Vehiculo;
 import util.Alertas;
 import static util.CONSTANTES.PER_PAGE;
 import util.UsuarioDataManager;
+import util.Utilitario;
 import static util.Utilitario.abrirNuevaVentana;
 import static util.Utilitario.panelVehiculos;
 import util.VehiculoDataManager;
@@ -55,7 +56,7 @@ public class MainController implements Initializable {
     private HBox hbBusqueda;
 
     private Usuario usuario;
-    private List<Vehiculo> vehiculos;
+   private List<Vehiculo> vehiculos;
     private List<Vehiculo> vehiculosBuscados;
     private boolean seccionNuevo;
     private boolean seccionUsado;
@@ -119,6 +120,8 @@ public class MainController implements Initializable {
 
     @FXML
     private void mostrarMisAutos(ActionEvent event) {
+        Utilitario.abrirNuevaVentana("misAutos", "Autos registrados");
+        cerrarVentana();
     }
 
     @FXML

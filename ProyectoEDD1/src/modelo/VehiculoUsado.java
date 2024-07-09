@@ -5,7 +5,7 @@
 package modelo;
 
 import TDA.DoubleCircleLinkedList;
-import java.awt.Color;
+import javafx.scene.paint.Color;
 import java.io.Serializable;
 import tipo.TipoCosto;
 import tipo.TipoDireccion;
@@ -45,6 +45,14 @@ public class VehiculoUsado extends Vehiculo implements Serializable {
 
     public VehiculoUsado(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<String> fotos) {
         super(dueno, tipoCosto, marca, modelo, año, kilometraje, precio, motor, transmision, ubicacion, traccion, direccion, color, climatizado, numHilera, numPuerta, fotos);
+    }
+
+    public Historial getHistorial() {
+        return historial;
+    }
+
+    public void setHistorial(Historial historial) {
+        this.historial = historial;
     }
 
     public Placa getPlaca() {

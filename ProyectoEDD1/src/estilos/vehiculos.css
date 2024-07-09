@@ -113,8 +113,7 @@
     -fx-padding: 20 20 15 20;
 }
 
-#buttonFill {
-    
+#buttonFill {    
     -fx-max-width: Infinity;
     -fx-font-size: 20px;
 }

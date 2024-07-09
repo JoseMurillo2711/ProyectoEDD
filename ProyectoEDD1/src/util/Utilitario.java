@@ -55,6 +55,18 @@ public class Utilitario {
         textField.setTextFormatter(textFormatter);
     }
 
+    public static void formatoNumerico(TextField textField) {
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            String nuevoTexto = change.getControlNewText();
+            if (nuevoTexto.matches("\\d*")) { 
+                return change;
+            } else {
+                return null;
+            }
+        });
+        textField.setTextFormatter(textFormatter);
+    }
+
     public static String generateUniqueId() {
         StringBuilder sb = new StringBuilder(ID_LENGTH);
         for (int i = 0; i < ID_LENGTH; i++) {
@@ -90,7 +102,7 @@ public class Utilitario {
         }
         return panel;
     }
-    
+
     private static void mostrarInformacion(Vehiculo vehiculo) {
         FXMLLoader loader = abrirNuevaVentana("mostrarInfo", "Informacion del vehiculo");
         MostrarInfoController info = loader.getController();

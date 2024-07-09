@@ -14,11 +14,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -37,7 +34,6 @@ import modelo.VehiculoNuevo;
 import tipo.TipoCosto;
 import util.Alertas;
 import static util.CONSTANTES.PER_PAGE;
-import static util.Utilitario.abrirNuevaVentana;
 import static util.Utilitario.createCardMarca;
 import static util.Utilitario.panelVehiculos;
 import util.VehiculoDataManager;
@@ -60,8 +56,7 @@ public class NuevosController implements Initializable {
     @FXML
     private VBox vbMarcas;
 
-    private Map<String, DoubleCircleLinkedList<Vehiculo>> mapMarcas;
-    private DoubleCircleLinkedList<Vehiculo> vehiculos;
+    private Map<String, DoubleCircleLinkedList<Vehiculo>> mapMarcas;    
     private DoubleCircleLinkedList<Vehiculo> vehiculosMostrados;
     private DoubleCircleLinkedList<Vehiculo> vehiculosPorMarca;
     private ListIterator<Vehiculo> iteratorVehiculo;
@@ -84,8 +79,7 @@ public class NuevosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO        
-        configBotones();
-        vehiculos = (DoubleCircleLinkedList) VehiculoDataManager.getInstance().getVehiculos();
+        configBotones();        
         mapMarcas = vehiculosMarcas();
         congfigBottom();
         vehiculosMostrados = new DoubleCircleLinkedList<>();

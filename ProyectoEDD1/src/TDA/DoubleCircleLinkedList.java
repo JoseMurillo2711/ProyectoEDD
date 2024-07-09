@@ -499,4 +499,39 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
         return subList;
     }
 
+    @Override
+    public Object[] toArray() {
+        Object[] array = new Object[size()];
+        if (isEmpty()) {
+            return array;
+        }
+        int index = 0;
+        Node<E> current = last.getNext();
+        do {
+            array[index++] = current.getContent();
+            current = current.getNext();
+        } while (current != last.getNext());
+        return array;
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        int size = size();
+        if (a.length < size) {
+            // Create a new array of a's runtime type, but with my contents:
+            a = (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
+        }
+        int index = 0;
+        Object[] result = a;
+        Node<E> current = last.getNext();
+        do {
+            result[index++] = current.getContent();
+            current = current.getNext();
+        } while (current != last.getNext());
+        if (a.length > size) {
+            a[size] = null;
+        }
+        return a;
+    }
+
 }

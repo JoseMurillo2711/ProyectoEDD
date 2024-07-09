@@ -5,10 +5,10 @@
 package modelo;
 
 import TDA.*;
-import java.awt.Color;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
+import javafx.scene.paint.Color;
 import tipo.TipoCosto;
 import tipo.TipoDireccion;
 import tipo.TipoTraccion;

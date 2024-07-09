@@ -253,4 +253,23 @@ public class ArrayList<E> implements List<E>, Serializable {
         return subList;
     }
 
+    @Override
+    public Object[] toArray() {
+        Object[] array = new Object[effectiveSize];
+        System.arraycopy(elements, 0, array, 0, effectiveSize);
+        return array;
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        if (a.length < effectiveSize) {
+            return (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), effectiveSize);
+        }
+        System.arraycopy(elements, 0, a, 0, effectiveSize);
+        if (a.length > effectiveSize) {
+            a[effectiveSize] = null;
+        }
+        return a;
+    }
+
 }

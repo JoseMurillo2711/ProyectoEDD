@@ -5,7 +5,7 @@
 package modelo;
 
 import TDA.DoubleCircleLinkedList;
-import java.awt.Color;
+import javafx.scene.paint.Color;
 import java.io.Serializable;
 import tipo.TipoCosto;
 import tipo.TipoDireccion;

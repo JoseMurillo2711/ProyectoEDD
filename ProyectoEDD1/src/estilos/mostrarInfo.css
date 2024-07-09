@@ -9,26 +9,183 @@
 }
 
 .image-view {
-    -fx-border-color: #030759;
-    -fx-border-width: 1; 
-    -fx-border-style: solid;
+    -fx-background-color: white; /* Color de fondo, opcional */
+    -fx-border-color: black; /* Color del borde */
+    -fx-border-width: 2; /* Ancho del borde */
+    -fx-border-radius: 50%; /* Radio del borde */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0); /* Sombra opcional */
 }
 
-.hbTitulo{
+
+.hbTitulo {
     -fx-background-color: #5A758C;
-    -fx-font-size: 25px;    
+    -fx-font-size: 25px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
 
-.hbTitulo .label{
-    -fx-font-size: 25px;    
+.hbTitulo .label {
+    -fx-font-size: 25px;
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
 
-.mainFxmlClass .button{
+.mainFxmlClass .button {
     -fx-background-color: #030759;
     -fx-text-fill: white;
     -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+    -fx-padding: 0;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #f0f0f0;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.combo-box .arrow-button .arrow {
+    -fx-background-color: #ccc;
+    -fx-padding: 5;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z";
+}
+
+.combo-box .text-field {
+    -fx-background-color: white;
+    -fx-padding: 2;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5;
+    -fx-prompt-text-fill: #aaa;
+}
+
+.combo-box .text-field:focused {
+    -fx-border-color: #666;
+}
+
+.combo-box-popup {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+}
+
+.combo-box .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+}
+
+.combo-box .list-view .list-cell {
+    -fx-padding: 5;
+    -fx-background-color: white;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #ccc;
+}
+
+.combo-box .list-view .list-cell:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #030759;
+}
+
+.combo-box .list-view .list-cell:focused {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #030759;
+}
+
+.combo-box .list-view .list-cell:selected {
+    -fx-background-color: #d0d0d0;
+}
+
+/* Estilo para el HBox con fondo degradado */
+.hbox-gradient {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #162440, #3a3f5c);
+}
+
+/* Estilo para los Labels dentro del HBox */
+.hbox-gradient .label {
+    -fx-font-style: italic;
+    -fx-text-fill: white;
+}
+
+.hbEdicion .button {
+    -fx-background-color: #162440;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+.hbEdicion {
+    -fx-border-color: #030759;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-style: solid hidden hidden hidden;
+    -fx-padding: 5 5 0 5;
+}
+
+.button:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+#transparent-button {
+    -fx-background-color: transparent; /* Fondo transparente */
+    -fx-text-fill: #5A758C;
+    -fx-font-size: 11px; /* Tamaño de la letra */   
+    -fx-border: none; /* Sin borde */
+    -fx-padding: 0; /* Sin relleno para ajustar al ancho del texto */
+    -fx-alignment: center-left; /* Alineación del texto */
+}
+
+#transparent-button .text {
+    -fx-padding: 0; 
+}
+
+#transparent-button:hover {
+    -fx-text-fill: #BF8F84; 
+    -fx-underline: true;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+#transparent-button:pressed {
+    -fx-text-fill: #030759; 
+}
+
+/* Estilo para campos deshabilitados */
+.text-field:disabled {
+    -fx-opacity: 1.0; /* Mantiene la opacidad completa */
+    -fx-background-color: white; /* Fondo blanco */
+    -fx-text-fill: black; /* Texto negro */
+    -fx-border-color: #ccc; /* Bordes del mismo color que los habilitados */
+}
+
+.combo-box:disabled {
+    -fx-opacity: 1.0; /* Mantiene la opacidad completa */
+    -fx-background-color: white; /* Fondo blanco */
+    -fx-text-fill: black; /* Texto negro */
+    -fx-border-color: #ccc; /* Bordes del mismo color que los habilitados */
+}
+
+.check-box:disabled {
+    -fx-opacity: 1.0; /* Mantiene la opacidad completa */
+    -fx-text-fill: black; /* Texto negro */
+}
+
+.color-picker:disabled {
+    -fx-opacity: 1.0; /* Mantiene la opacidad completa */
+    -fx-background-color: white; /* Fondo blanco */
+}
+
+.table-view:disabled {
+    -fx-opacity: 1.0; /* Mantiene la opacidad completa */
+}
+
+#tituloVehicuos{
+    -fx-font-weight: bold;
+    -fx-font-size: 25px;
 }

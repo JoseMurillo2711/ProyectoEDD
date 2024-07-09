@@ -16,8 +16,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import modelo.Historial;
+import modelo.Motor;
+import modelo.Placa;
 import modelo.Reparacion;
 import modelo.Servicio;
+import modelo.Transmision;
+import modelo.Ubicacion;
 import modelo.Usuario;
 import modelo.Vehiculo;
 import modelo.VehiculoNuevo;
@@ -91,9 +96,17 @@ public class AgregarVehiculoController {
     private DoubleCircleLinkedList<Reparacion> tipoRep;
     private DoubleCircleLinkedList<String> fotosList;
 
+    //Esta variable es verdadera sí y solo sí se accedió a registro mediante la ventana del login
+    private boolean isInicioSesion;
+    
+    
     private Usuario usuario;
     @FXML
+
     private TextField usrColor;
+
+    private Button RegresarButton;
+
 
     public void initialize() {
         usuario = UsuarioDataManager.getInstance().getUsuarioActual();
@@ -108,6 +121,12 @@ public class AgregarVehiculoController {
         });
 
         setUsadoFieldsEnabled(false);
+        
+        isInicioSesion = false;
+    }
+    
+    public void parametros(boolean inicioSesion) {
+        this.isInicioSesion = inicioSesion;
     }
 
     private <T extends Enum<T>> void initializeMenuButton(MenuButton menuButton, T[] values) {
@@ -137,7 +156,6 @@ public class AgregarVehiculoController {
     @FXML
     private void crearVehiculo(ActionEvent event) {
         try {
-
             String marca = usrMarca.getText();
             String modelo = usrModelo.getText();
             int anio = Integer.parseInt(usranio.getText());
@@ -156,6 +174,7 @@ public class AgregarVehiculoController {
             int nHileras = Integer.parseInt(usrNHileras.getText());
             int nPuertas = Integer.parseInt(usrNPuertas.getText());
             double precio = Double.parseDouble(usrPrecio.getText());
+            //String tipoCosto = ""+ usrTipoCosto.getValue();
             TipoCosto tipoCosto = usrTipoCosto.getValue();
             boolean usado = usrUsado.isSelected();
 
@@ -173,10 +192,10 @@ public class AgregarVehiculoController {
                 tipoServ.addFirst(servicios);
                 tipoRep.addFirst(reparaciones);
                 fotosList.addLast(fotoNombre);
-
-                //VehiculoUsado nuevoVehiculo = new VehiculoUsado(marca, modelo, anio, kilometraje, precio, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), new Historial(tipoServ, tipoRep), fotosList, new TipoTraccion(tipoTraccion), new TipoDireccion(tipoDireccion), color, climatizado, nHileras, nPuertas, new TipoCosto(tipoCosto), new Placa(ultimoDigito, provincia), new Usuario());
+                //public VehiculoUsado(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<String> fotos, Placa placa) {
+                //VehiculoUsado nuevoVehiculoUsado = new VehiculoUsado(usuario, new TipoCosto(tipoCosto), marca, modelo, anio, kilometraje, precio, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), velocidades, new Historial(tipoServ, tipoRep), new TipoTraccion(tipoTraccion), new TipoDireccion(tipoDireccion), color, climatizado, nHileras, nPuertas, fotosList, new Placa(ultimoDigito, provincia));
                 Vehiculo nuevoVehiculoUsado = new VehiculoUsado(usuario, marca, modelo, anio, kilometraje, precio, tipoCosto);
-                //System.out.println("Vehículo usado creado: " + nuevoVehiculo);
+                
                 VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculoUsado);
 
             } else {
@@ -199,6 +218,16 @@ public class AgregarVehiculoController {
     private void cerrarVentana() {
         Stage ventanaActual = (Stage) this.CrearButton.getScene().getWindow();
         ventanaActual.close();
+    }
+
+    @FXML
+    private void regresar(ActionEvent event) {
+        String ruta = "main";
+        if (this.isInicioSesion) {
+            ruta = "login";
+        }
+        abrirNuevaVentana("main", "Welcome!");
+        cerrarVentana();
     }
 
 }

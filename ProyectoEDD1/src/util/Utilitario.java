@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -126,6 +127,7 @@ public class Utilitario {
         card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-border-color: black; -fx-border-width: 1;");
         card.setId("card");
 
+        Button favorite = new Button(vehiculo.getStar());
         Label marcaLabel = new Label(vehiculo.getMarca() + " " + vehiculo.getModelo());
         Label anoLabel = new Label("Año: " + vehiculo.getAño());
         Label precioLbl = new Label("Precio: $: " + vehiculo.getPrecio());
@@ -134,6 +136,10 @@ public class Utilitario {
         ImageView imageView = new ImageView();
         File archivo = new File(IMAGEN_NOT_FOUND);
         System.out.println(archivo.getAbsolutePath());
+        favorite.setOnAction(event -> {
+            vehiculo.onchangeFavorite();
+            favorite.setText(vehiculo.getStar());
+        });
         if (!vehiculo.getUrl_fotos().isEmpty()) {
             String imageUrl = vehiculo.getUrl_fotos().getFirst();
             try {
@@ -151,9 +157,9 @@ public class Utilitario {
         imageView.setFitHeight(55);
         imageView.setPreserveRatio(true);
         if (vehiculo.getTipoCosto() != TipoCosto.FIJO) {
-            card.getChildren().addAll(imageView, marcaLabel, anoLabel, precioLbl, ngociable);
+            card.getChildren().addAll(imageView, favorite, marcaLabel, anoLabel, precioLbl, ngociable);
         } else {
-            card.getChildren().addAll(imageView, marcaLabel, anoLabel, precioLbl);
+            card.getChildren().addAll(imageView, favorite, marcaLabel, anoLabel, precioLbl);
         }
         return card;
     }

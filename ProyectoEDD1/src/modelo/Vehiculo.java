@@ -38,6 +38,7 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
     private TipoCosto tipoCosto;
     private Usuario dueno;
     private boolean vendido;
+    private boolean favorite;
 
     private static final long serialVersionUID = 587432992201266L;
 
@@ -45,6 +46,7 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
         this.id = generateUniqueId();
         this.url_fotos = new DoubleCircleLinkedList<>();
         this.vendido = false;
+        this.favorite = false;
     }
 
     public Vehiculo(Usuario dueno, String marca, String modelo, int ano, int kilometraje, double precio, TipoCosto tipoCosto) {
@@ -256,6 +258,26 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
 
     public void venderAuto(){
         this.vendido = true;
+    }
+    
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+    
+    public String getStar(){
+        String star = "☆";
+        if (favorite){
+            star = "★";
+        }
+        return star;
+    }
+    
+    public void onchangeFavorite(){
+        favorite = !favorite;
     }
     
     @Override

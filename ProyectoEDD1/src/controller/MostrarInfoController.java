@@ -1,7 +1,10 @@
 package controller;
 
+import TDA.List;
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ListIterator;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -11,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
@@ -20,13 +22,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import modelo.*;
 import modelo.Vehiculo;
 import tipo.*;
+import util.Alertas;
 import static util.CONSTANTES.IMAGEN_NOT_FOUND;
 import static util.CONSTANTES.RUTA_IMAGEN_CARROS;
 import util.Utilitario;
+import static util.Utilitario.abrirNuevaVentana;
+import static util.Utilitario.formatoNumerico;
+import static util.Utilitario.formatoNumericoDecimal;
+import util.VehiculoDataManager;
 
 /**
  * FXML Controller class
@@ -97,16 +105,27 @@ public class MostrarInfoController implements Initializable {
     @FXML
     private HBox hbEdicionReparaciones;
     @FXML
-    private ColorPicker cbColor;
-    @FXML
     private TextField txtNumHileras;
+    @FXML
+    private TextField txtCilindraje;
+    @FXML
+    private CheckBox chkNuevo;
+    @FXML
+    private TextField txtColor;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // TODO        
+        modificarFormto();
+        txtUsuario.setEditable(false);
+        txtUsuario.setDisable(true);
+        chkNuevo.setDisable(true);
+        //txtKm.setEditable(false);
+        txtKm.setDisable(true);
+
     }
 
     public void recibirVehiculo(Vehiculo vehiculo, boolean editable) {
@@ -121,7 +140,13 @@ public class MostrarInfoController implements Initializable {
 
         if (!(vehiculo instanceof VehiculoUsado)) {
             ocultarAtributosUsados();
+            chkNuevo.setSelected(true);
+        } else {
+            chkNuevo.setSelected(false);
+            txtKm.setEditable(true);
+            txtKm.setDisable(false);
         }
+
         confMensajeTablas();
         llenarInfoCampos();
     }
@@ -136,6 +161,17 @@ public class MostrarInfoController implements Initializable {
         tablaReparacion.setPlaceholder(noDataLabelReparaciones);
     }
 
+    private void modificarFormto() {
+        formatoNumerico(txtAnio);
+        formatoNumerico(txtKm);
+        formatoNumericoDecimal(txtPrecio);
+        formatoNumerico(txtNumPuertas);
+        formatoNumerico(txtVelo);
+        formatoNumerico(txtPlaca);
+        formatoNumerico(txtNumHileras);
+        formatoNumerico(txtCilindraje);
+    }
+
     private void desactivarEdicion() {
         txtMarca.setEditable(false);
         txtMarca.setDisable(true);
@@ -145,9 +181,6 @@ public class MostrarInfoController implements Initializable {
 
         txtAnio.setEditable(false);
         txtAnio.setDisable(true);
-
-        txtKm.setEditable(false);
-        txtKm.setDisable(true);
 
         txtPrecio.setEditable(false);
         txtPrecio.setDisable(true);
@@ -164,9 +197,6 @@ public class MostrarInfoController implements Initializable {
         txtVelo.setEditable(false);
         txtVelo.setDisable(true);
 
-        txtUsuario.setEditable(false);
-        txtUsuario.setDisable(true);
-
         txtNumHileras.setEditable(false);
         txtNumHileras.setDisable(true);
 
@@ -181,8 +211,8 @@ public class MostrarInfoController implements Initializable {
         cbDireccion.setDisable(true);
         cbTipoPrecio.setDisable(true);
         cbTransmision.setDisable(true);
-        cbColor.setDisable(true);
         chkClima.setDisable(true);
+
         tableServicios.setDisable(true);
         tablaReparacion.setDisable(true);
     }
@@ -205,19 +235,55 @@ public class MostrarInfoController implements Initializable {
         txtMarca.setText(vehiculo.getMarca() != null ? vehiculo.getMarca() : "");
         txtModelo.setText(vehiculo.getModelo() != null ? vehiculo.getModelo() : "");
         txtAnio.setText(vehiculo.getAño() != 0 ? String.valueOf(vehiculo.getAño()) : "");
-        txtKm.setText(vehiculo.getKilometraje() != 0 ? String.valueOf(vehiculo.getKilometraje()) : "");
-        txtPrecio.setText(vehiculo.getPrecio() != 0 ? String.valueOf(vehiculo.getPrecio()) : "");
+        txtKm.setText(String.valueOf(vehiculo.getKilometraje()));
+        txtPrecio.setText(String.valueOf(vehiculo.getPrecio()));
+        System.out.println("");
         txtNumPuertas.setText(vehiculo.getNumPuerta() != 0 ? String.valueOf(vehiculo.getNumPuerta()) : "");
         txtCiudad.setText(vehiculo.getUbicacion() != null ? vehiculo.getUbicacion().getCiudad() : "");
         txtDireccion.setText(vehiculo.getUbicacion() != null ? vehiculo.getUbicacion().getDireccion() : "");
         txtVelo.setText(String.valueOf(vehiculo.getMotor() != null ? vehiculo.getTransmision().getVelocidades() : 0));
         txtUsuario.setText(vehiculo.getDueno() != null ? vehiculo.getDueno().getNickname() : "");
-        cboMotor.setValue(vehiculo.getMotor() != null ? vehiculo.getMotor().getTipo() : null);
-        cbTraccion.setValue(vehiculo.getTraccion() != null ? vehiculo.getTraccion() : null);
-        cbDireccion.setValue(vehiculo.getDireccion() != null ? vehiculo.getDireccion() : null);
-        cbTipoPrecio.setValue(vehiculo.getTipoCosto() != null ? vehiculo.getTipoCosto() : null);
-        cbTransmision.setValue(vehiculo.getTransmision() != null ? vehiculo.getTransmision().getTipo() : null);
-        cbColor.setValue(vehiculo.getColor() != null ? vehiculo.getColor() : null);
+        cboMotor.getItems().clear();
+        for (TipoMotor tm : TipoMotor.values()) {
+            cboMotor.getItems().add(tm);
+        }
+        if (vehiculo.getMotor() != null) {
+            cboMotor.setValue(vehiculo.getMotor().getTipo());
+            txtCilindraje.setText(String.valueOf(vehiculo.getMotor().getCilindrada()));
+        }
+
+        cbTraccion.getItems().clear();
+        for (TipoTraccion tt : TipoTraccion.values()) {
+            cbTraccion.getItems().add(tt);
+        }
+        if (vehiculo.getTraccion() != null) {
+            cbTraccion.setValue(vehiculo.getTraccion());
+        }
+
+        cbDireccion.getItems().clear();
+        for (TipoDireccion td : TipoDireccion.values()) {
+            cbDireccion.getItems().add(td);
+        }
+        if (vehiculo.getDireccion() != null) {
+            cbDireccion.setValue(vehiculo.getDireccion());
+        }
+
+        cbTipoPrecio.getItems().clear();
+        for (TipoCosto tp : TipoCosto.values()) {
+            cbTipoPrecio.getItems().add(tp);
+        }
+        if (vehiculo.getTipoCosto() != null) {
+            cbTipoPrecio.setValue(vehiculo.getTipoCosto());
+        }
+
+        cbTransmision.getItems().clear();
+        for (TipoTransmision tt : TipoTransmision.values()) {
+            cbTransmision.getItems().add(tt);
+        }
+        if (vehiculo.getTransmision() != null) {
+            cbTransmision.setValue(vehiculo.getTransmision().getTipo());
+        }
+
         chkClima.setSelected(vehiculo.isClimatizado());
         mostrarImagenes();
         if (vehiculo instanceof VehiculoUsado vehiculoUsado) {
@@ -310,10 +376,34 @@ public class MostrarInfoController implements Initializable {
 
     @FXML
     private void agregarImagen(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        List<File> selectedFiles = (List<File>) fileChooser.showOpenMultipleDialog(imgVehiculo.getScene().getWindow());
+
+        if (selectedFiles != null) {
+            for (File file : selectedFiles) {
+                try {
+                    File dest = new File(RUTA_IMAGEN_CARROS + file.getName());
+                    Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    vehiculo.getFotos().addLast(file.getName());
+                } catch (Exception e) {
+                    Alertas.alertaError("Error", "Error al agregar la imagen", e.getMessage());
+                }
+            }
+            mostrarImagenes();
+        }
     }
 
     @FXML
     private void guardarEdicion(ActionEvent event) {
+        modificarVehiculo();
+        try {
+            VehiculoDataManager.getInstance().editarVehiculo(this.vehiculo);
+            abrirNuevaVentana("misAutos", "Mis autos");
+            this.cerrarVentana();
+        } catch (Exception ex) {
+            Alertas.alertaError("Error", "No se pudo editar el vehiculo", "Error en edicion: " + ex.getCause());
+        }
     }
 
     @FXML
@@ -321,13 +411,12 @@ public class MostrarInfoController implements Initializable {
         if (!this.editable) {
             Utilitario.abrirNuevaVentana("main", "Bienvenido!");
             this.cerrarVentana();
-            
         } else {
             Utilitario.abrirNuevaVentana("misAutos", "Mis autos");
             this.cerrarVentana();
         }
     }
-    
+
     private void cerrarVentana() {
         Stage ventanaActual = (Stage) this.btnAdelante.getScene().getWindow();
         ventanaActual.close();
@@ -356,4 +445,34 @@ public class MostrarInfoController implements Initializable {
     @FXML
     private void eliminarReparacion(ActionEvent event) {
     }
+
+    private void modificarVehiculo() {
+        // Verificar si los campos obligatorios están llenos
+        if (txtMarca.getText().isEmpty() || txtModelo.getText().isEmpty() || txtKm.getText().isEmpty() || txtPrecio.getText().isEmpty()) {
+            Alertas.alertaError("Error", "Campos obligatorios vacíos", "Por favor, complete los campos de Marca, Modelo, Km y Precio.");
+            return;
+        }
+
+        this.vehiculo.setMarca(this.txtMarca.getText().strip());
+        this.vehiculo.setModelo(this.txtModelo.getText().strip());
+        this.vehiculo.setAño(!this.txtAnio.getText().isEmpty() ? Integer.parseInt(this.txtAnio.getText().strip()) : 0);
+        this.vehiculo.setKilometraje(Integer.parseInt(this.txtKm.getText().strip()));
+        this.vehiculo.setPrecio(Double.parseDouble(this.txtPrecio.getText().strip()));
+        this.vehiculo.setNumPuerta(!this.txtNumPuertas.getText().isEmpty() ? Integer.parseInt(this.txtNumPuertas.getText().strip()) : 0);
+        this.vehiculo.setUbicacion(new Ubicacion(this.txtCiudad.getText().strip(), this.txtDireccion.getText().strip()));
+        this.vehiculo.setTransmision(new Transmision(cbTransmision.getValue(), !this.txtVelo.getText().isEmpty() ? Integer.parseInt(this.txtVelo.getText().strip()) : 0));
+        this.vehiculo.setTipoCosto(cbTipoPrecio.getValue());
+        this.vehiculo.setMotor(new Motor(this.cboMotor.getValue(), !this.txtCilindraje.getText().isEmpty() ? Integer.parseInt(this.txtCilindraje.getText().strip()) : 0));
+        this.vehiculo.setTraccion(cbTraccion.getValue());
+        this.vehiculo.setDireccion(cbDireccion.getValue());
+        this.vehiculo.setColor(this.txtColor.getText().strip());
+        this.vehiculo.setClimatizado(chkClima.isSelected());
+        this.vehiculo.setNumHilera(!this.txtNumHileras.getText().isEmpty() ? Integer.parseInt(this.txtNumHileras.getText().strip()) : 0);
+
+        if (vehiculo instanceof VehiculoUsado vehiculoUsado) {
+            Placa placa = new Placa(!this.txtPlaca.getText().isEmpty() ? Integer.parseInt(this.txtPlaca.getText().strip()) : 0, this.txtProvincia.getText().strip());
+            vehiculoUsado.setPlaca(placa);
+        }
+    }
+
 }

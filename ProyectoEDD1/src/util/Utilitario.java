@@ -58,7 +58,19 @@ public class Utilitario {
     public static void formatoNumerico(TextField textField) {
         TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
             String nuevoTexto = change.getControlNewText();
-            if (nuevoTexto.matches("\\d*")) { 
+            if (nuevoTexto.matches("\\d*")) {
+                return change;
+            } else {
+                return null;
+            }
+        });
+        textField.setTextFormatter(textFormatter);
+    }
+
+    public static void formatoNumericoDecimal(TextField textField) {
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            String nuevoTexto = change.getControlNewText();
+            if (nuevoTexto.matches("\\d*|\\d+\\.\\d*")) {
                 return change;
             } else {
                 return null;

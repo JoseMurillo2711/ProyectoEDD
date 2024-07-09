@@ -57,9 +57,7 @@ public class AgregarVehiculoController {
     @FXML
     private MenuButton usrTipoTraccion;
     @FXML
-    private MenuButton usrTipoDireccion;
-    @FXML
-    private ColorPicker usrColor;
+    private MenuButton usrTipoDireccion;    
     @FXML
     private CheckBox usrClimatizado;
     @FXML
@@ -94,6 +92,8 @@ public class AgregarVehiculoController {
     private DoubleCircleLinkedList<String> fotosList;
 
     private Usuario usuario;
+    @FXML
+    private TextField usrColor;
 
     public void initialize() {
         usuario = UsuarioDataManager.getInstance().getUsuarioActual();
@@ -151,7 +151,7 @@ public class AgregarVehiculoController {
             String fotoNombre = usrFotoNombre.getText();
             String tipoTraccion = usrTipoTraccion.getText();
             String tipoDireccion = usrTipoDireccion.getText();
-            Color color = usrColor.getValue();
+            String color = usrColor.getText();
             boolean climatizado = usrClimatizado.isSelected();
             int nHileras = Integer.parseInt(usrNHileras.getText());
             int nPuertas = Integer.parseInt(usrNPuertas.getText());

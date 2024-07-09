@@ -4,13 +4,18 @@
  */
 package modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Michelle
  */
-public class Placa {
+public class Placa implements Serializable {
+
     private int ultimoDigito;
     private String provincia;
+
+    private static final long serialVersionUID = 5201266L;
 
     public int getUltimoDigito() {
         return ultimoDigito;
@@ -32,6 +37,5 @@ public class Placa {
         this.ultimoDigito = ultimoDigito;
         this.provincia = provincia;
     }
-    
-    
+
 }

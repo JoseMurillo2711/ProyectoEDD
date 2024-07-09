@@ -8,7 +8,6 @@ import TDA.*;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
-import javafx.scene.paint.Color;
 import tipo.TipoCosto;
 import tipo.TipoDireccion;
 import tipo.TipoTraccion;
@@ -32,7 +31,7 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
     private DoubleCircleLinkedList<String> url_fotos;
     private TipoTraccion traccion;
     private TipoDireccion direccion;
-    private Color color;
+    private String color;
     private boolean climatizado;
     private int numHilera;
     private int numPuerta;
@@ -60,7 +59,7 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
     }
 
     //constructor para agregar una sola foto a la lista de fotos
-    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int ano, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, String foto) {
+    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int ano, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, TipoTraccion traccion, TipoDireccion direccion, String color, boolean climatizado, int numHilera, int numPuerta, String foto) {
         this();
         this.dueno = dueno;
         this.tipoCosto = tipoCosto;
@@ -82,7 +81,7 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
     }
 
     //Recibe la lista de fotos y reemplaza la actual inicializada
-    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<String> fotos) {
+    public Vehiculo(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, TipoTraccion traccion, TipoDireccion direccion, String color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<String> fotos) {
         this();
         this.dueno = dueno;
         this.tipoCosto = tipoCosto;
@@ -207,11 +206,11 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
         this.direccion = direccion;
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 

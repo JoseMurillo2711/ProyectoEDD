@@ -111,7 +111,6 @@
                   <TextField fx:id="usrFotoNombre" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                   <MenuButton fx:id="usrTipoTraccion" mnemonicParsing="false" text="SELECCIONE" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                   <MenuButton fx:id="usrTipoDireccion" mnemonicParsing="false" text="SELECCIONE" GridPane.columnIndex="4" GridPane.rowIndex="8" />
-                  <ColorPicker fx:id="usrColor" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                   <CheckBox fx:id="usrClimatizado" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                   <TextField fx:id="usrNHileras" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                   <TextField fx:id="usrNPuertas" GridPane.columnIndex="1" GridPane.rowIndex="12" />
@@ -125,6 +124,7 @@
                   <TextArea fx:id="usrTipoServ" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="20" />
                   <Button fx:id="CrearButton" mnemonicParsing="false" onAction="#crearVehiculo" text="Crear" GridPane.columnIndex="4" GridPane.rowIndex="21" />
                   <ChoiceBox fx:id="usrTipoCosto" prefWidth="150.0" GridPane.columnIndex="4" GridPane.rowIndex="13" />
+                  <TextField fx:id="usrColor" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                </children>
             </GridPane>
          </center>

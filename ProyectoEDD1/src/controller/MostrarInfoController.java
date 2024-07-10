@@ -1,14 +1,12 @@
 package controller;
 
-import TDA.List;
 import java.io.File;
-import java.net.URL;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.net.URL;
 import java.util.ListIterator;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,7 +23,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import modelo.*;
-import modelo.Vehiculo;
 import tipo.*;
 import util.Alertas;
 import static util.CONSTANTES.IMAGEN_NOT_FOUND;
@@ -35,18 +32,15 @@ import static util.Utilitario.abrirNuevaVentana;
 import static util.Utilitario.formatoNumerico;
 import static util.Utilitario.formatoNumericoDecimal;
 import util.VehiculoDataManager;
+import TDA.DoubleCircleLinkedList;
+import TDA.List;
 
-/**
- * FXML Controller class
- *
- * @author Michelle
- */
 public class MostrarInfoController implements Initializable {
 
     private Vehiculo vehiculo;
     private boolean editable;
     private ListIterator<String> imageIterator;
-    private ObservableList<String> imagenes;
+    private DoubleCircleLinkedList<String> listaImagenes;
 
     @FXML
     private Button btnAtras;
@@ -112,20 +106,19 @@ public class MostrarInfoController implements Initializable {
     private CheckBox chkNuevo;
     @FXML
     private TextField txtColor;
+    @FXML
+    private VBox vbImagenesEdicion;
+    @FXML
+    private Button btnEliminar;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO        
         modificarFormto();
         txtUsuario.setEditable(false);
         txtUsuario.setDisable(true);
         chkNuevo.setDisable(true);
-        //txtKm.setEditable(false);
         txtKm.setDisable(true);
-
+        listaImagenes = new DoubleCircleLinkedList<>();
     }
 
     public void recibirVehiculo(Vehiculo vehiculo, boolean editable) {
@@ -175,44 +168,32 @@ public class MostrarInfoController implements Initializable {
     private void desactivarEdicion() {
         txtMarca.setEditable(false);
         txtMarca.setDisable(true);
-
         txtModelo.setEditable(false);
         txtModelo.setDisable(true);
-
         txtAnio.setEditable(false);
         txtAnio.setDisable(true);
-
         txtPrecio.setEditable(false);
         txtPrecio.setDisable(true);
-
         txtNumPuertas.setEditable(false);
         txtNumPuertas.setDisable(true);
-
         txtCiudad.setEditable(false);
         txtCiudad.setDisable(true);
-
         txtDireccion.setEditable(false);
         txtDireccion.setDisable(true);
-
         txtVelo.setEditable(false);
         txtVelo.setDisable(true);
-
         txtNumHileras.setEditable(false);
         txtNumHileras.setDisable(true);
-
         txtPlaca.setEditable(false);
         txtPlaca.setDisable(true);
-
         txtProvincia.setEditable(false);
         txtProvincia.setDisable(true);
-
         cboMotor.setDisable(true);
         cbTraccion.setDisable(true);
         cbDireccion.setDisable(true);
         cbTipoPrecio.setDisable(true);
         cbTransmision.setDisable(true);
         chkClima.setDisable(true);
-
         tableServicios.setDisable(true);
         tablaReparacion.setDisable(true);
     }
@@ -224,8 +205,8 @@ public class MostrarInfoController implements Initializable {
         hbEdicionServicios.setManaged(false);
         hbEdicionReparaciones.setVisible(false);
         hbEdicionReparaciones.setManaged(false);
-        btnAgregarImagen.setVisible(false);
-        btnAgregarImagen.setManaged(false);
+        vbImagenesEdicion.setVisible(false);
+        vbImagenesEdicion.setManaged(false);
     }
 
     private void llenarInfoCampos() {
@@ -237,7 +218,6 @@ public class MostrarInfoController implements Initializable {
         txtAnio.setText(vehiculo.getAño() != 0 ? String.valueOf(vehiculo.getAño()) : "");
         txtKm.setText(String.valueOf(vehiculo.getKilometraje()));
         txtPrecio.setText(String.valueOf(vehiculo.getPrecio()));
-        System.out.println("");
         txtNumPuertas.setText(vehiculo.getNumPuerta() != 0 ? String.valueOf(vehiculo.getNumPuerta()) : "");
         txtCiudad.setText(vehiculo.getUbicacion() != null ? vehiculo.getUbicacion().getCiudad() : "");
         txtDireccion.setText(vehiculo.getUbicacion() != null ? vehiculo.getUbicacion().getDireccion() : "");
@@ -297,25 +277,25 @@ public class MostrarInfoController implements Initializable {
             Historial historial = vehiculoUsado.getHistorial();
             if (historial != null) {
                 if (historial.getServicios() != null && !historial.getServicios().isEmpty()) {
-                    ObservableList<Servicio> serviciosObservableList = FXCollections.observableArrayList(historial.getServicios().toArray(new Servicio[0]));
-                    tableServicios.setItems(serviciosObservableList);
+                    List<Servicio> serviciosObservableList = historial.getServicios();
+                    tableServicios.getItems().setAll(serviciosObservableList.toArray(new Servicio[0]));
                 } else {
-                    tableServicios.setItems(FXCollections.observableArrayList());
+                    tableServicios.getItems().clear();
                 }
 
                 if (historial.getReparaciones() != null && !historial.getReparaciones().isEmpty()) {
-                    ObservableList<Reparacion> reparacionesObservableList = FXCollections.observableArrayList(historial.getReparaciones().toArray(new Reparacion[0]));
-                    tablaReparacion.setItems(reparacionesObservableList);
+                    List<Reparacion> reparacionesObservableList = historial.getReparaciones();
+                    tablaReparacion.getItems().setAll(reparacionesObservableList.toArray(new Reparacion[0]));
                 } else {
-                    tablaReparacion.setItems(FXCollections.observableArrayList());
+                    tablaReparacion.getItems().clear();
                 }
             } else {
-                tableServicios.setItems(FXCollections.observableArrayList());
-                tablaReparacion.setItems(FXCollections.observableArrayList());
+                tableServicios.getItems().clear();
+                tablaReparacion.getItems().clear();
             }
         } else {
-            tableServicios.setItems(FXCollections.observableArrayList());
-            tablaReparacion.setItems(FXCollections.observableArrayList());
+            tableServicios.getItems().clear();
+            tablaReparacion.getItems().clear();
         }
     }
 
@@ -323,10 +303,12 @@ public class MostrarInfoController implements Initializable {
         File archivo = new File(IMAGEN_NOT_FOUND);
         if (vehiculo == null || vehiculo.getFotos() == null || vehiculo.getFotos().isEmpty()) {
             imgVehiculo.setImage(new Image(archivo.toURI().toString(), true));
+            btnEliminar.setVisible(false);
             return;
         }
-        imagenes = FXCollections.observableArrayList(vehiculo.getFotos().toArray(new String[0]));
-        imageIterator = imagenes.listIterator();
+        listaImagenes = vehiculo.getFotos();
+        imageIterator = listaImagenes.listIterator();
+        btnEliminar.setVisible(true);
 
         if (imageIterator.hasNext()) {
             setImagen(imageIterator.next());
@@ -356,41 +338,56 @@ public class MostrarInfoController implements Initializable {
 
     @FXML
     private void mostrarAnterior(ActionEvent event) {
-        if (imagenes != null && !imagenes.isEmpty()) {
+        if (listaImagenes != null && !listaImagenes.isEmpty()) {
             if (!imageIterator.hasPrevious()) {
-                imageIterator = imagenes.listIterator(imagenes.size());
+                imageIterator = listaImagenes.listIterator(listaImagenes.size());
             }
-            setImagen(imageIterator.previous());
+            if (imageIterator.hasPrevious()) {
+                setImagen(imageIterator.previous());
+            }
         }
     }
 
     @FXML
     private void mostrarSgte(ActionEvent event) {
-        if (imagenes != null && !imagenes.isEmpty()) {
+        if (listaImagenes != null && !listaImagenes.isEmpty()) {
             if (!imageIterator.hasNext()) {
-                imageIterator = imagenes.listIterator();
+                imageIterator = listaImagenes.listIterator();
             }
-            setImagen(imageIterator.next());
+            if (imageIterator.hasNext()) {
+                setImagen(imageIterator.next());
+            }
         }
     }
 
     @FXML
     private void agregarImagen(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
-        List<File> selectedFiles = (List<File>) fileChooser.showOpenMultipleDialog(imgVehiculo.getScene().getWindow());
+        fileChooser.setTitle("Seleccionar imagen");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Archivos de imagen", "*.png", "*.jpg", "*.jpeg"));
+        Stage stage = (Stage) btnAgregarImagen.getScene().getWindow();
+        File archivoSeleccionado = fileChooser.showOpenDialog(stage);
 
-        if (selectedFiles != null) {
-            for (File file : selectedFiles) {
-                try {
-                    File dest = new File(RUTA_IMAGEN_CARROS + file.getName());
-                    Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    vehiculo.getFotos().addLast(file.getName());
-                } catch (Exception e) {
-                    Alertas.alertaError("Error", "Error al agregar la imagen", e.getMessage());
-                }
+        if (archivoSeleccionado != null) {
+            String nombreArchivo = archivoSeleccionado.getName();
+            File destino = new File(RUTA_IMAGEN_CARROS + nombreArchivo);
+
+            int i = 1;
+            while (destino.exists()) {
+                String nuevoNombre = nombreArchivo.substring(0, nombreArchivo.lastIndexOf('.')) + i + nombreArchivo.substring(nombreArchivo.lastIndexOf('.'));
+                destino = new File(RUTA_IMAGEN_CARROS + nuevoNombre);
+                i++;
             }
-            mostrarImagenes();
+
+            try {
+                Files.copy(archivoSeleccionado.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                listaImagenes.addLast(destino.getName());
+                imageIterator = listaImagenes.listIterator(listaImagenes.size() - 1); // Adjust index to new last item
+                setImagen(destino.getName());
+                Alertas.alertaInfo("Imagen agregada", "La imagen ha sido agregada exitosamente.");
+            } catch (IOException e) {
+                Alertas.alertaError("Error", "No se pudo guardar la imagen", "Error: " + e.getMessage());
+            }
         }
     }
 
@@ -411,6 +408,7 @@ public class MostrarInfoController implements Initializable {
         if (!this.editable) {
             Utilitario.abrirNuevaVentana("main", "Bienvenido!");
             this.cerrarVentana();
+
         } else {
             Utilitario.abrirNuevaVentana("misAutos", "Mis autos");
             this.cerrarVentana();
@@ -447,12 +445,10 @@ public class MostrarInfoController implements Initializable {
     }
 
     private void modificarVehiculo() {
-        // Verificar si los campos obligatorios están llenos
         if (txtMarca.getText().isEmpty() || txtModelo.getText().isEmpty() || txtKm.getText().isEmpty() || txtPrecio.getText().isEmpty()) {
             Alertas.alertaError("Error", "Campos obligatorios vacíos", "Por favor, complete los campos de Marca, Modelo, Km y Precio.");
             return;
         }
-
         this.vehiculo.setMarca(this.txtMarca.getText().strip());
         this.vehiculo.setModelo(this.txtModelo.getText().strip());
         this.vehiculo.setAño(!this.txtAnio.getText().isEmpty() ? Integer.parseInt(this.txtAnio.getText().strip()) : 0);
@@ -469,10 +465,35 @@ public class MostrarInfoController implements Initializable {
         this.vehiculo.setClimatizado(chkClima.isSelected());
         this.vehiculo.setNumHilera(!this.txtNumHileras.getText().isEmpty() ? Integer.parseInt(this.txtNumHileras.getText().strip()) : 0);
 
+        this.vehiculo.setFotos(listaImagenes);
+
         if (vehiculo instanceof VehiculoUsado vehiculoUsado) {
             Placa placa = new Placa(!this.txtPlaca.getText().isEmpty() ? Integer.parseInt(this.txtPlaca.getText().strip()) : 0, this.txtProvincia.getText().strip());
             vehiculoUsado.setPlaca(placa);
         }
     }
 
+    @FXML
+    private void eliminarImagen(ActionEvent event) {
+        if (listaImagenes != null && !listaImagenes.isEmpty()) {
+            if (Alertas.alertaConfirmacion("Eliminar Imagen", "¿Está seguro de eliminar esta imagen?")) {
+                String imagenActual = imageIterator.previous();
+                imageIterator.remove();
+                File archivo = new File(RUTA_IMAGEN_CARROS + imagenActual);
+                archivo.delete();
+                if (listaImagenes.isEmpty()) {
+                    File archivoN = new File(IMAGEN_NOT_FOUND);
+                    imgVehiculo.setImage(new Image(archivoN.toURI().toString()));
+                    btnEliminar.setVisible(false);
+                } else {
+                    if (imageIterator.hasNext()) {
+                        setImagen(imageIterator.next());
+                    } else if (imageIterator.hasPrevious()) {
+                        setImagen(imageIterator.previous());
+                    }
+                }
+                Alertas.alertaInfo("Imagen eliminada", "La imagen ha sido eliminada exitosamente.");
+            }
+        }
+    }
 }

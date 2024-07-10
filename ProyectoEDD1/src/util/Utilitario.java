@@ -25,9 +25,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modelo.Vehiculo;
+import modelo.VehiculoNuevo;
 import proyectoedd1.ProyectoEDD1;
 import tipo.TipoCosto;
 import static util.CONSTANTES.CHARACTERS;
@@ -196,5 +198,43 @@ public class Utilitario {
         card.getChildren().addAll(imageView, marcaLabel);
         card.setAlignment(Pos.CENTER);
         return card;
+    }
+    
+    public static HBox createCardMios(Vehiculo vehiculo) {
+        VBox card = new VBox(10);
+        HBox info = new HBox(10);
+        info.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-border-color: black; -fx-border-width: 1;");
+        info.setId("card");
+        
+        
+        Label marcaLabel = new Label(vehiculo.getMarca() + " " + vehiculo.getModelo());
+        Label anoLabel = new Label("Año: " + vehiculo.getAño());
+        Label precioLbl = new Label("Precio: $: " + vehiculo.getPrecio());
+        String antes = vehiculo instanceof VehiculoNuevo?"Nuevo - ":"Usado - ";
+        String valor = antes+"Precio " + vehiculo.getTipoCosto().toString();
+        Label ngociable = new Label(valor);
+        ngociable.setMaxWidth(Double.MAX_VALUE);
+        ngociable.setId("lblPrecio");
+        ImageView imageView = new ImageView();
+        File archivo = new File(IMAGEN_NOT_FOUND);
+        if (!vehiculo.getUrl_fotos().isEmpty()) {
+            String imageUrl = vehiculo.getUrl_fotos().getFirst();
+            try {
+                archivo = new File(RUTA_IMAGEN_CARROS + imageUrl);
+                Image image = new Image(archivo.toURI().toString(), true);
+                imageView.setImage(image);
+            } catch (Exception e) {
+                imageView.setImage(new Image(archivo.toURI().toString()));
+            }
+        } else {
+            imageView.setImage(new Image(archivo.toURI().toString()));
+        }
+
+        imageView.setFitWidth(85);
+        imageView.setFitHeight(75);
+        imageView.setPreserveRatio(true);
+        card.getChildren().addAll(marcaLabel, anoLabel, precioLbl, ngociable);
+        info.getChildren().addAll(imageView,card);
+        return info;
     }
 }

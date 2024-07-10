@@ -8,11 +8,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modelo.Usuario;
@@ -21,7 +23,7 @@ import util.Alertas;
 import util.UsuarioDataManager;
 import util.Utilitario;
 import static util.Utilitario.abrirNuevaVentana;
-import static util.Utilitario.createCard;
+import static util.Utilitario.createCardMios;
 import util.VehiculoDataManager;
 
 public class MisAutosController implements Initializable {
@@ -61,14 +63,19 @@ public class MisAutosController implements Initializable {
     private void llenarVentana() {
         List<Vehiculo> listV = obtenerVehiculos();
         if (!listV.isEmpty()) {
-            this.vbAutos.getChildren().clear();            
+            this.vbAutos.getChildren().clear();
             for (Vehiculo v : listV) {
                 HBox nuevo = new HBox(10);
-                VBox auto = createCard(v);
+                HBox auto = createCardMios(v);
+                HBox.setHgrow(auto, Priority.ALWAYS);
+                VBox.setVgrow(nuevo, Priority.ALWAYS);
+                nuevo.setMaxWidth(Double.MAX_VALUE);
+                HBox.setHgrow(nuevo, Priority.ALWAYS);
+
                 nuevo.getChildren().addAll(auto, opciones(v));
                 vbAutos.getChildren().add(nuevo);
             }
-            
+
         } else {
             Label noAutosLabel = new Label("No tienes autos registrados.");
             vbAutos.getChildren().add(noAutosLabel);
@@ -77,7 +84,17 @@ public class MisAutosController implements Initializable {
 
     private VBox opciones(Vehiculo v) {
         VBox opciones = new VBox(10);
+        opciones.setAlignment(Pos.CENTER);
         Button editar = new Button("Editar");
+        Button eliminar = new Button("Eliminar");
+        
+        editar.setMaxWidth(Double.MAX_VALUE);
+        eliminar.setMaxWidth(Double.MAX_VALUE);
+
+        opciones.getChildren().addAll(editar, eliminar);
+        VBox.setVgrow(editar, Priority.ALWAYS);
+        VBox.setVgrow(eliminar, Priority.ALWAYS);
+
         editar.setOnAction(e -> {
             FXMLLoader loader = abrirNuevaVentana("mostrarInfo", "Modificar Auto");
             MostrarInfoController controller = loader.getController();
@@ -85,10 +102,8 @@ public class MisAutosController implements Initializable {
             this.cerrarVentana();
         });
 
-        Button eliminar = new Button("Eliminar");
         eliminar.setOnAction(e -> confirmarEliminacion(v));
 
-        opciones.getChildren().addAll(editar, eliminar);
         return opciones;
     }
 
@@ -97,7 +112,7 @@ public class MisAutosController implements Initializable {
         confirmDialog.setTitle("Confirmación");
         confirmDialog.setHeaderText("Confirmar eliminación");
         String detalles = "Marca: " + v.getMarca() + "\nModelo: " + v.getModelo() + " " + v.getAño();
-        confirmDialog.setContentText(detalles+"\n¿Estás seguro de que deseas eliminar este vehículo?");
+        confirmDialog.setContentText(detalles + "\n¿Estás seguro de que deseas eliminar este vehículo?");
         confirmDialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 eliminarVehiculo(v);

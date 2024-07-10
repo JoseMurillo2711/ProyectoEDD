@@ -21,7 +21,12 @@
                         <Button fx:id="btnAtras" mnemonicParsing="false" onAction="#mostrarAnterior" text="«" />
                         <ImageView fx:id="imgVehiculo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="image-view" />
                         <Button fx:id="btnAdelante" mnemonicParsing="false" onAction="#mostrarSgte" text="»" />
-                        <Button fx:id="btnAgregarImagen" mnemonicParsing="false" onAction="#agregarImagen" text="Agregar Imagen" textAlignment="CENTER" />
+                        <VBox fx:id="vbImagenesEdicion" alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Button fx:id="btnAgregarImagen" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarImagen" text="Agregar Imagen" textAlignment="CENTER" />
+                              <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#eliminarImagen" text="Eliminar Imagen " />
+                           </children>
+                        </VBox>
                      </children>
                      <opaqueInsets>
                         <Insets />

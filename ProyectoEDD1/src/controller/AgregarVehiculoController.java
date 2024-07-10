@@ -2,27 +2,20 @@ package controller;
 
 //import java.awt.Color;
 import TDA.DoubleCircleLinkedList;
-import javafx.scene.paint.Color;
 import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import modelo.Historial;
-import modelo.Motor;
-import modelo.Placa;
 import modelo.Reparacion;
 import modelo.Servicio;
-import modelo.Transmision;
-import modelo.Ubicacion;
 import modelo.Usuario;
 import modelo.Vehiculo;
 import modelo.VehiculoNuevo;
@@ -105,6 +98,7 @@ public class AgregarVehiculoController {
 
     private TextField usrColor;
 
+    @FXML
     private Button RegresarButton;
 
 

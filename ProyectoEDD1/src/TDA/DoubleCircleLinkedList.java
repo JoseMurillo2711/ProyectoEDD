@@ -1,16 +1,12 @@
 package TDA;
 
 import java.io.Serializable;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
+ * Double Circle Linked List implementation
  *
- * @author Michelle
- * @param <E>
+ * @param <E> the type of elements in this list
  */
 public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, List<E> {
 
@@ -272,70 +268,11 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
     }
 
     public ListIterator<E> listIterator() {
-        return new ListIterator<E>() {
-            Node<E> nodo = last != null ? last.getNext() : null;
-            Node<E> lastReturned = null;
+        return new DoubleCircleListIterator(0);
+    }
 
-            @Override
-            public boolean hasNext() {
-                return size() > 0 && nodo != null;
-            }
-
-            @Override
-            public E next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                E value = nodo.getContent();
-                lastReturned = nodo;
-                nodo = nodo.getNext();
-                return value;
-            }
-
-            @Override
-            public boolean hasPrevious() {
-                return size() > 0 && nodo != null;
-            }
-
-            @Override
-            public E previous() {
-                if (!hasPrevious()) {
-                    throw new NoSuchElementException();
-                }
-                if (lastReturned == null) {
-                    lastReturned = last;
-                } else {
-                    lastReturned = lastReturned.getPrevious();
-                }
-                nodo = lastReturned;
-                return nodo.getContent();
-            }
-
-            @Override
-            public int nextIndex() {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public int previousIndex() {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void set(E e) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void add(E e) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        };
+    public ListIterator<E> listIterator(int index) {
+        return new DoubleCircleListIterator(index);
     }
 
     @Override
@@ -534,4 +471,133 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
         return a;
     }
 
+    private class DoubleCircleListIterator implements ListIterator<E>, Serializable {
+        private Node<E> current;
+        private Node<E> lastReturned;
+        private int nextIndex;
+
+        DoubleCircleListIterator(int index) {
+            if (index < 0 || index > size()) {
+                throw new IndexOutOfBoundsException("Index: " + index);
+            }
+            nextIndex = index;
+            current = (index == size()) ? last.getNext() : getNode(index);
+        }
+
+        private Node<E> getNode(int index) {
+            Node<E> x = last.getNext();
+            for (int i = 0; i < index; i++) {
+                x = x.getNext();
+            }
+            return x;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return nextIndex < size();
+        }
+
+        @Override
+        public E next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            lastReturned = current;
+            current = current.getNext();
+            nextIndex++;
+            return lastReturned.getContent();
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return nextIndex > 0;
+        }
+
+        @Override
+        public E previous() {
+            if (!hasPrevious()) {
+                throw new NoSuchElementException();
+            }
+            current = (current == null) ? last : current.getPrevious();
+            lastReturned = current;
+            nextIndex--;
+            return lastReturned.getContent();
+        }
+
+        @Override
+        public int nextIndex() {
+            return nextIndex;
+        }
+
+        @Override
+        public int previousIndex() {
+            return nextIndex - 1;
+        }
+
+        @Override
+        public void remove() {
+            if (lastReturned == null) {
+                throw new IllegalStateException();
+            }
+            Node<E> nextNode = lastReturned.getNext();
+            Node<E> prevNode = lastReturned.getPrevious();
+
+            prevNode.setNext(nextNode);
+            nextNode.setPrevious(prevNode);
+
+            if (lastReturned == current) {
+                current = nextNode;
+            } else {
+                nextIndex--;
+            }
+            effective--;
+            lastReturned = null;
+        }
+
+        @Override
+        public void set(E e) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public void add(E e) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+    }
+
+    private static class Node<E> implements Serializable {
+        private E content;
+        private Node<E> next;
+        private Node<E> previous;
+
+        Node(E content) {
+            this.content = content;
+            this.next = this;
+            this.previous = this;
+        }
+
+        public E getContent() {
+            return content;
+        }
+
+        public void setContent(E content) {
+            this.content = content;
+        }
+
+        public Node<E> getNext() {
+            return next;
+        }
+
+        public void setNext(Node<E> next) {
+            this.next = next;
+        }
+
+        public Node<E> getPrevious() {
+            return previous;
+        }
+
+        public void setPrevious(Node<E> previous) {
+            this.previous = previous;
+        }
+    }
 }

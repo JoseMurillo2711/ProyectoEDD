@@ -13,6 +13,7 @@ public class CONSTANTES {
     public static final String VEHICULOS_FILE = "src/recursos/info/vehiculos.dat";
     public static final String USUARIOS_FILE = "src/recursos/info/usuarios.dat";
     public static final String IMAGEN_NOT_FOUND = "src/recursos/noImagen.jpg";
+    public static final String SIN_IMAGEN = "src/recursos/noFoto.jpg";
     public static final String RUTA_IMAGEN_CARROS = "src/recursos/fotosCarros/";
     public static final String RUTA_IMAGEN_LOGO = "src/recursos/logos/";
     public static final String MENSAJE_ERROR = "Ha ocurrido un error, lo sentimos";

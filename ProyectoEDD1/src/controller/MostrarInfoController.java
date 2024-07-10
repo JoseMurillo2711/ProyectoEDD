@@ -32,8 +32,8 @@ import static util.Utilitario.abrirNuevaVentana;
 import static util.Utilitario.formatoNumerico;
 import static util.Utilitario.formatoNumericoDecimal;
 import util.VehiculoDataManager;
+import TDA.ArrayList;
 import TDA.DoubleCircleLinkedList;
-import TDA.List;
 
 public class MostrarInfoController implements Initializable {
 
@@ -41,6 +41,9 @@ public class MostrarInfoController implements Initializable {
     private boolean editable;
     private ListIterator<String> imageIterator;
     private DoubleCircleLinkedList<String> listaImagenes;
+    private ArrayList<String> imagenesOriginales;
+    private ArrayList<String> imagenesAEliminar;
+    private ArrayList<String> imagenesAAgregar;
 
     @FXML
     private Button btnAtras;
@@ -119,12 +122,23 @@ public class MostrarInfoController implements Initializable {
         chkNuevo.setDisable(true);
         txtKm.setDisable(true);
         listaImagenes = new DoubleCircleLinkedList<>();
+        imagenesAEliminar = new ArrayList<>();
+        imagenesAAgregar = new ArrayList<>();
     }
 
     public void recibirVehiculo(Vehiculo vehiculo, boolean editable) {
         this.vehiculo = vehiculo;
         System.out.println(this.vehiculo);
         this.editable = editable;
+
+        if (vehiculo != null && vehiculo.getFotos() != null) {
+            imagenesOriginales = new ArrayList<>();
+            for (String foto : vehiculo.getFotos()) {
+                imagenesOriginales.addLast(foto);
+            }
+        } else {
+            imagenesOriginales = new ArrayList<>();
+        }
 
         if (!editable) {
             ocultarAtributosEdicion();
@@ -277,14 +291,20 @@ public class MostrarInfoController implements Initializable {
             Historial historial = vehiculoUsado.getHistorial();
             if (historial != null) {
                 if (historial.getServicios() != null && !historial.getServicios().isEmpty()) {
-                    List<Servicio> serviciosObservableList = historial.getServicios();
+                    ArrayList<Servicio> serviciosObservableList = new ArrayList<>();
+                    for (Servicio servicio : historial.getServicios()) {
+                        serviciosObservableList.addLast(servicio);
+                    }
                     tableServicios.getItems().setAll(serviciosObservableList.toArray(new Servicio[0]));
                 } else {
                     tableServicios.getItems().clear();
                 }
 
                 if (historial.getReparaciones() != null && !historial.getReparaciones().isEmpty()) {
-                    List<Reparacion> reparacionesObservableList = historial.getReparaciones();
+                    ArrayList<Reparacion> reparacionesObservableList = new ArrayList<>();
+                    for (Reparacion reparacion : historial.getReparaciones()) {
+                        reparacionesObservableList.addLast(reparacion);
+                    }
                     tablaReparacion.getItems().setAll(reparacionesObservableList.toArray(new Reparacion[0]));
                 } else {
                     tablaReparacion.getItems().clear();
@@ -382,7 +402,8 @@ public class MostrarInfoController implements Initializable {
             try {
                 Files.copy(archivoSeleccionado.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 listaImagenes.addLast(destino.getName());
-                imageIterator = listaImagenes.listIterator(listaImagenes.size() - 1); // Adjust index to new last item
+                imagenesAAgregar.addLast(destino.getName());
+                imageIterator = listaImagenes.listIterator(listaImagenes.size() - 1); 
                 setImagen(destino.getName());
                 Alertas.alertaInfo("Imagen agregada", "La imagen ha sido agregada exitosamente.");
             } catch (IOException e) {
@@ -396,6 +417,15 @@ public class MostrarInfoController implements Initializable {
         modificarVehiculo();
         try {
             VehiculoDataManager.getInstance().editarVehiculo(this.vehiculo);
+
+            // Eliminar las imágenes físicamente
+            for (String imagen : imagenesAEliminar) {
+                File archivo = new File(RUTA_IMAGEN_CARROS + imagen);
+                if (archivo.exists()) {
+                    archivo.delete();
+                }
+            }
+
             abrirNuevaVentana("misAutos", "Mis autos");
             this.cerrarVentana();
         } catch (Exception ex) {
@@ -405,6 +435,20 @@ public class MostrarInfoController implements Initializable {
 
     @FXML
     private void cancelarEdicion(ActionEvent event) {
+        listaImagenes.clear();
+        listaImagenes.addAll(imagenesOriginales);
+
+        for (String imagen : imagenesAAgregar) {
+            File archivo = new File(RUTA_IMAGEN_CARROS + imagen);
+            if (archivo.exists()) {
+                archivo.delete();
+            }
+        }
+        imagenesAEliminar.clear();
+        imagenesAAgregar.clear();
+
+        mostrarImagenes();
+
         if (!this.editable) {
             Utilitario.abrirNuevaVentana("main", "Bienvenido!");
             this.cerrarVentana();
@@ -476,11 +520,25 @@ public class MostrarInfoController implements Initializable {
     @FXML
     private void eliminarImagen(ActionEvent event) {
         if (listaImagenes != null && !listaImagenes.isEmpty()) {
-            if (Alertas.alertaConfirmacion("Eliminar Imagen", "¿Está seguro de eliminar esta imagen?")) {
-                String imagenActual = imageIterator.previous();
-                imageIterator.remove();
-                File archivo = new File(RUTA_IMAGEN_CARROS + imagenActual);
-                archivo.delete();
+            if (Alertas.alertaConfirmacion("Eliminar Imagen", "¿Está seguro de eliminar esta imagen?")) {                
+                String imagenActual;
+                if (imageIterator.hasPrevious()) {
+                    imagenActual = imageIterator.previous();
+                    imageIterator.remove();
+                } else {                    
+                    imageIterator = listaImagenes.listIterator();
+                    if (imageIterator.hasNext()) {
+                        imagenActual = imageIterator.next();
+                        imageIterator.remove();
+                    } else {
+                        return;
+                    }
+                }
+
+                if (!imagenesAEliminar.contains(imagenActual)) {
+                    imagenesAEliminar.addLast(imagenActual);
+                }
+
                 if (listaImagenes.isEmpty()) {
                     File archivoN = new File(IMAGEN_NOT_FOUND);
                     imgVehiculo.setImage(new Image(archivoN.toURI().toString()));

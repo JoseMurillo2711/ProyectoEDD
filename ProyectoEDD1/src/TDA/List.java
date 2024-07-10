@@ -33,6 +33,6 @@ public interface List<E> extends Iterable<E> {
     public void sort(Comparator<E> comp);
     Object[] toArray();
     public <T> T[] toArray(T[] a);
-    
+    public boolean contains(E e);
     public List<E> subList(int inicio, int fin);
 }

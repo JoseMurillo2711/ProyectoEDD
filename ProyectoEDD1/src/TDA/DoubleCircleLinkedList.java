@@ -48,7 +48,7 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
         }
     }
 
-    public void addAll(DoubleCircleLinkedList<E> lista) {
+    public void addAll(List<E> lista) {
         for (E value : lista) {
             this.addLast(value);
         }

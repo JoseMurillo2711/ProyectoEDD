@@ -83,7 +83,10 @@ public class ArrayList<E> implements List<E>, Serializable {
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (int i = 0; i < effectiveSize; i++) {
+            elements[i] = null;
+        }
+        effectiveSize = 0;
     }
 
     @Override
@@ -270,6 +273,19 @@ public class ArrayList<E> implements List<E>, Serializable {
             a[effectiveSize] = null;
         }
         return a;
+    }
+
+    @Override
+    public boolean contains(E e) {
+        if (e == null) {
+            return false;
+        }
+        for (int i = 0; i < effectiveSize; i++) {
+            if (elements[i].equals(e)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

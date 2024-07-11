@@ -38,7 +38,12 @@ public class InicioController implements Initializable {
     private ListIterator<ArrayList<Vehiculo>> current;
     
     private static final int ITEMS_PER_PAGE = 10;
+    @FXML
+    private Label ControlPaginas;
 
+    private int currentPage = 0;
+    private int totalPages = 0;
+    
     /**
      * Initializes the controller class.
      * @param url
@@ -48,6 +53,7 @@ public class InicioController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         mostrarAutos();
+        actualizarContadorPaginas();
     }    
     
     private void mostrarAutos() {        
@@ -58,7 +64,7 @@ public class InicioController implements Initializable {
         ArrayList<Vehiculo> vehiculos = new ArrayList<>(); // Implementa este método según tus necesidades
         vehiculos.addAll(VehiculoDataManager.getInstance().getVehiculos());
         // Dividir la lista de vehículos en páginas
-        int totalPages = vehiculos.size() /  ITEMS_PER_PAGE;
+        totalPages = (int) Math.ceil((double) vehiculos.size() / ITEMS_PER_PAGE);
         for (int i = 0; i < totalPages; i++) {
             ArrayList<Vehiculo> page = new ArrayList<>();
             for (int j = i * ITEMS_PER_PAGE; j < (i + 1) * ITEMS_PER_PAGE && j < vehiculos.size(); j++) {
@@ -84,6 +90,13 @@ public class InicioController implements Initializable {
     private void mostrarPaginaProxima() {
         if (current.hasNext()) {
             ArrayList<Vehiculo> vehiculos = current.next();
+            if (currentPage != totalPages){
+                currentPage++;
+            }else{
+                currentPage = 1;
+            }
+            
+            actualizarContadorPaginas();
             tilePane.getChildren().clear();
             for (Vehiculo vehiculo : vehiculos) {
                 VBox card = createCard(vehiculo);
@@ -95,6 +108,8 @@ public class InicioController implements Initializable {
     private void mostrarPaginaAnterior() {
         if (current.hasPrevious()) {
             ArrayList<Vehiculo> vehiculos = current.previous();
+            currentPage--;
+            actualizarContadorPaginas();
             tilePane.getChildren().clear();
             for (Vehiculo vehiculo : vehiculos) {
                 VBox card = createCard(vehiculo);
@@ -103,4 +118,7 @@ public class InicioController implements Initializable {
         }
     }
      
+    private void actualizarContadorPaginas() {
+        ControlPaginas.setText("Pagina " + currentPage + " de " + totalPages + ".");
+    }
 }

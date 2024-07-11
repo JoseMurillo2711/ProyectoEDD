@@ -304,7 +304,7 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
 
     @Override
     public String toString() {
-        return "Vehiculo{" + "marca=" + marca + ", modelo=" + modelo + ", ano=" + ano + ", kilometraje=" + kilometraje + ", precio=" + precio + ", tipoCosto=" + tipoCosto + '}';
+        return "Vehiculo{" + "marca=" + marca + ", modelo=" + modelo + ", ano=" + ano + ", kilometraje=" + kilometraje + ", precio=" + precio + ", tipoCosto=" + tipoCosto+'}';
     }
 
     public void agregarFoto(String foto) {

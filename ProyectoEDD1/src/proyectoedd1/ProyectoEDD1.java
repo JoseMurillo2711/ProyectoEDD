@@ -33,7 +33,7 @@ public class ProyectoEDD1 extends Application {
     public static void main(String[] args) {
         System.out.println(VehiculoDataManager.getInstance().getVehiculos());
         System.out.println(UsuarioDataManager.getInstance().getUsuarios());
-        agregarDatos();
+        //agregarDatos();
 
         launch(args);
 

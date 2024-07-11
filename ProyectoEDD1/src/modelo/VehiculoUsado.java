@@ -37,14 +37,17 @@ public class VehiculoUsado extends Vehiculo implements Serializable {
 
     public VehiculoUsado(Usuario dueno, String marca, String modelo, int ano, int kilometraje, double precio, TipoCosto tipoCosto) {
         super(dueno, marca, modelo, ano, kilometraje, precio, tipoCosto);
+        this.historial = new Historial();
     }    
 
     public VehiculoUsado(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int ano, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, TipoTraccion traccion, TipoDireccion direccion, String color, boolean climatizado, int numHilera, int numPuerta, String foto) {
         super(dueno, tipoCosto, marca, modelo, ano, kilometraje, precio, motor, transmision, ubicacion, traccion, direccion, color, climatizado, numHilera, numPuerta, foto);
+        this.historial = new Historial();
     }
 
     public VehiculoUsado(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, TipoTraccion traccion, TipoDireccion direccion, String color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<String> fotos) {
         super(dueno, tipoCosto, marca, modelo, año, kilometraje, precio, motor, transmision, ubicacion, traccion, direccion, color, climatizado, numHilera, numPuerta, fotos);
+        this.historial = new Historial();
     }
 
     public Historial getHistorial() {

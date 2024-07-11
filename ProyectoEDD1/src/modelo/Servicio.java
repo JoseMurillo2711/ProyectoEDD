@@ -5,8 +5,10 @@
 package modelo;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
+import static util.Utilitario.generateUniqueId;
 
 /**
  *
@@ -14,19 +16,19 @@ import java.util.Objects;
  */
 public class Servicio implements Serializable{
 
-    private static int id = 0;
+    private String id;
     private String tipo;
-    private Date fecha;
+    private LocalDate fecha;
 
     private static final long serialVersionUID = 432992201266L;
     
-    public Servicio(String tipo, Date fecha) {
-        Servicio.id = ++id;
+    public Servicio(String tipo, LocalDate fecha) {
+        this.id = generateUniqueId();
         this.tipo = tipo;
         this.fecha = fecha;
     }
 
-    public static int getId() {
+    public String getId() {
         return id;
     }
 
@@ -38,11 +40,11 @@ public class Servicio implements Serializable{
         this.tipo = tipo;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

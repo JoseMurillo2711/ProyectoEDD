@@ -34,6 +34,7 @@ import static util.Utilitario.formatoNumericoDecimal;
 import util.VehiculoDataManager;
 import TDA.ArrayList;
 import TDA.DoubleCircleLinkedList;
+import javafx.fxml.FXMLLoader;
 
 public class MostrarInfoController implements Initializable {
 
@@ -288,31 +289,7 @@ public class MostrarInfoController implements Initializable {
                 txtPlaca.setText("");
             }
 
-            Historial historial = vehiculoUsado.getHistorial();
-            if (historial != null) {
-                if (historial.getServicios() != null && !historial.getServicios().isEmpty()) {
-                    ArrayList<Servicio> serviciosObservableList = new ArrayList<>();
-                    for (Servicio servicio : historial.getServicios()) {
-                        serviciosObservableList.addLast(servicio);
-                    }
-                    tableServicios.getItems().setAll(serviciosObservableList.toArray(new Servicio[0]));
-                } else {
-                    tableServicios.getItems().clear();
-                }
-
-                if (historial.getReparaciones() != null && !historial.getReparaciones().isEmpty()) {
-                    ArrayList<Reparacion> reparacionesObservableList = new ArrayList<>();
-                    for (Reparacion reparacion : historial.getReparaciones()) {
-                        reparacionesObservableList.addLast(reparacion);
-                    }
-                    tablaReparacion.getItems().setAll(reparacionesObservableList.toArray(new Reparacion[0]));
-                } else {
-                    tablaReparacion.getItems().clear();
-                }
-            } else {
-                tableServicios.getItems().clear();
-                tablaReparacion.getItems().clear();
-            }
+            this.llenarTablas();
         } else {
             tableServicios.getItems().clear();
             tablaReparacion.getItems().clear();
@@ -403,7 +380,7 @@ public class MostrarInfoController implements Initializable {
                 Files.copy(archivoSeleccionado.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 listaImagenes.addLast(destino.getName());
                 imagenesAAgregar.addLast(destino.getName());
-                imageIterator = listaImagenes.listIterator(listaImagenes.size() - 1); 
+                imageIterator = listaImagenes.listIterator(listaImagenes.size() - 1);
                 setImagen(destino.getName());
                 Alertas.alertaInfo("Imagen agregada", "La imagen ha sido agregada exitosamente.");
             } catch (IOException e) {
@@ -418,7 +395,6 @@ public class MostrarInfoController implements Initializable {
         try {
             VehiculoDataManager.getInstance().editarVehiculo(this.vehiculo);
 
-            // Eliminar las imágenes físicamente
             for (String imagen : imagenesAEliminar) {
                 File archivo = new File(RUTA_IMAGEN_CARROS + imagen);
                 if (archivo.exists()) {
@@ -466,10 +442,16 @@ public class MostrarInfoController implements Initializable {
 
     @FXML
     private void agregarServicio(ActionEvent event) {
+        FXMLLoader serv = abrirNuevaVentana("nuevoServicio","Servicios");
+        NuevoServicioController nuevoSer = serv.getController();
+        nuevoSer.reciribirParametros(this, "agregar");
     }
 
     @FXML
     private void editarServicio(ActionEvent event) {
+        FXMLLoader serv = abrirNuevaVentana("nuevoServicio","Servicios");
+        NuevoServicioController nuevoSer = serv.getController();
+        nuevoSer.reciribirParametros(this, "editar");
     }
 
     @FXML
@@ -520,12 +502,12 @@ public class MostrarInfoController implements Initializable {
     @FXML
     private void eliminarImagen(ActionEvent event) {
         if (listaImagenes != null && !listaImagenes.isEmpty()) {
-            if (Alertas.alertaConfirmacion("Eliminar Imagen", "¿Está seguro de eliminar esta imagen?")) {                
+            if (Alertas.alertaConfirmacion("Eliminar Imagen", "¿Está seguro de eliminar esta imagen?")) {
                 String imagenActual;
                 if (imageIterator.hasPrevious()) {
                     imagenActual = imageIterator.previous();
                     imageIterator.remove();
-                } else {                    
+                } else {
                     imageIterator = listaImagenes.listIterator();
                     if (imageIterator.hasNext()) {
                         imagenActual = imageIterator.next();
@@ -554,4 +536,44 @@ public class MostrarInfoController implements Initializable {
             }
         }
     }
+
+    public void llenarTablas() {
+        if (vehiculo instanceof VehiculoUsado vehiculoUsado) {
+            Historial historial = vehiculoUsado.getHistorial();
+            if (historial != null) {
+                if (historial.getServicios() != null && !historial.getServicios().isEmpty()) {
+                    ArrayList<Servicio> serviciosObservableList = new ArrayList<>();
+                    for (Servicio servicio : historial.getServicios()) {
+                        serviciosObservableList.addLast(servicio);
+                    }
+                    tableServicios.getItems().setAll(serviciosObservableList.toArray(new Servicio[0]));
+                } else {
+                    tableServicios.getItems().clear();
+                }
+
+                if (historial.getReparaciones() != null && !historial.getReparaciones().isEmpty()) {
+                    ArrayList<Reparacion> reparacionesObservableList = new ArrayList<>();
+                    for (Reparacion reparacion : historial.getReparaciones()) {
+                        reparacionesObservableList.addLast(reparacion);
+                    }
+                    tablaReparacion.getItems().setAll(reparacionesObservableList.toArray(new Reparacion[0]));
+                } else {
+                    tablaReparacion.getItems().clear();
+                }
+            } else {
+                tableServicios.getItems().clear();
+                tablaReparacion.getItems().clear();
+            }
+        }
+
+    }
+
+    public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
+    }
+
 }

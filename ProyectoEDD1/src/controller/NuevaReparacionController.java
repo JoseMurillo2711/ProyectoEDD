@@ -6,7 +6,11 @@ package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 
 /**
  * FXML Controller class
@@ -15,12 +19,26 @@ import javafx.fxml.Initializable;
  */
 public class NuevaReparacionController implements Initializable {
 
+    @FXML
+    private Button btnReparacion;
+    @FXML
+    private DatePicker datePick;
+    @FXML
+    private TextArea txtDescripcion;
+    
+    private MostrarInfoController mostraInfoController;
+    private String tipoAccion;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
     
+    public void reciribirParametros(MostrarInfoController mostraInfoController, String tipoAccion){
+        this.mostraInfoController = mostraInfoController;
+        this.tipoAccion = tipoAccion;
+    }
+
 }

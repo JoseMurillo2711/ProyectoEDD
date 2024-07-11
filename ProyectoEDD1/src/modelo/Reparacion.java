@@ -5,8 +5,10 @@
 package modelo;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
+import static util.Utilitario.generateUniqueId;
 
 /**
  *
@@ -14,21 +16,21 @@ import java.util.Objects;
  */
 public class Reparacion implements Serializable {
 
-    private static int id = 0;
+    private String id;
     private String descripcion;
-    private Date fecha;
+    private LocalDate fecha;
 
     private static final long serialVersionUID = 587402201266L;
 
-    public Reparacion(String descripcion, Date fecha) {
-        Reparacion.id = ++id;
+    public Reparacion(String descripcion, LocalDate fecha) {
+        this.id = generateUniqueId();
         this.descripcion = descripcion;
         this.fecha = fecha;
     }
 
-    public static int getId() {
+    public String getId() {
         return id;
-    }
+    } 
 
     public String getDescripcion() {
         return descripcion;
@@ -38,11 +40,11 @@ public class Reparacion implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 

@@ -4,6 +4,7 @@
  */
 package modelo;
 
+import TDA.ArrayList;
 import TDA.DoubleCircleLinkedList;
 import TDA.List;
 import java.io.Serializable;
@@ -16,17 +17,17 @@ import java.util.Objects;
 public class Historial implements Serializable{
 
     private static int id = 0;
-    private DoubleCircleLinkedList<Servicio> servicios;
-    private DoubleCircleLinkedList<Reparacion> reparaciones;
+    private List<Servicio> servicios;
+    private List<Reparacion> reparaciones;
     
     private static final long serialVersionUID = 5874329201266L;
 
     public Historial() {
-        this.servicios = new DoubleCircleLinkedList<>();
-        this.reparaciones = new DoubleCircleLinkedList<>();
+        this.servicios = new ArrayList<>();
+        this.reparaciones = new ArrayList<>();
     }
 
-    public Historial(DoubleCircleLinkedList<Servicio> servicios, DoubleCircleLinkedList<Reparacion> reparaciones) {
+    public Historial(List<Servicio> servicios, List<Reparacion> reparaciones) {
         Historial.id = ++id;
         this.servicios = servicios;
         this.reparaciones = reparaciones;

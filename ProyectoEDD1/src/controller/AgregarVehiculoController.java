@@ -1,19 +1,17 @@
 package controller;
 
 //import java.awt.Color;
+import TDA.ArrayList;
 import TDA.DoubleCircleLinkedList;
-import javafx.scene.paint.Color;
-import java.util.Date;
+import TDA.List;
+import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -95,15 +93,14 @@ public class AgregarVehiculoController {
     @FXML
     private TextField usrFotoNombre;
 
-    private DoubleCircleLinkedList<Servicio> tipoServ;
-    private DoubleCircleLinkedList<Reparacion> tipoRep;
-    
+    private List<Servicio> tipoServ;
+    private List<Reparacion> tipoRep;
+
     private DoubleCircleLinkedList<String> fotosList;
 
     //Esta variable es verdadera sí y solo sí se accedió a registro mediante la ventana del login
     private boolean isInicioSesion;
-    
-    
+
     private Usuario usuario;
 
     public void initialize() {
@@ -115,33 +112,34 @@ public class AgregarVehiculoController {
         });
 
         setUsadoFieldsEnabled(false);
-        
+
         isInicioSesion = false;
+        tipoServ = new ArrayList<>();
+        tipoRep = new ArrayList<>();
     }
-    
+
     public void parametros(boolean inicioSesion) {
         this.isInicioSesion = inicioSesion;
     }
-
 
     private void inicializarValores() {
         for (TipoMotor tm : TipoMotor.values()) {
             this.usrTipoMotor.getItems().addAll(tm);
         }
-        
+
         for (TipoCosto tp : TipoCosto.values()) {
             this.usrTipoCosto.getItems().addAll(tp);
         }
         usrTipoCosto.setValue(TipoCosto.FIJO);
-        
+
         for (TipoDireccion td : TipoDireccion.values()) {
             this.usrTipoDireccion.getItems().addAll(td);
         }
-        
+
         for (TipoTransmision ttn : TipoTransmision.values()) {
             this.usrTipoTransmision.getItems().addAll(ttn);
         }
-        
+
         for (TipoTraccion tt : TipoTraccion.values()) {
             this.usrTipoTraccion.getItems().addAll(tt);
         }
@@ -176,19 +174,19 @@ public class AgregarVehiculoController {
             TipoTraccion tipoTraccion = usrTipoTraccion.getValue();
             TipoDireccion tipoDireccion = usrTipoDireccion.getValue();
             //Color color = usrColor.getValue();
-            String color = ""+usrColor.getValue();
+            String color = "" + usrColor.getValue();
             boolean climatizado = usrClimatizado.isSelected();
             int nHileras = Integer.parseInt(usrNHileras.getText());
             int nPuertas = Integer.parseInt(usrNPuertas.getText());
-            
+
             boolean usado = usrUsado.isSelected();
             if (usado) {
                 int ultimoDigito = Integer.parseInt(usrUlDigito.getText());
                 String provincia = usrProvincia.getText();
                 String historialReparaciones = usrTipoRep.getText();
                 String historialServicios = usrTipoServ.getText();
-                Date fechaRep = java.sql.Date.valueOf(usrFechaRep.getValue());
-                Date fechaServ = java.sql.Date.valueOf(usrFechaServ.getValue());
+                LocalDate fechaRep = usrFechaRep.getValue();
+                LocalDate fechaServ = usrFechaServ.getValue();
 
                 Reparacion reparaciones = new Reparacion(historialReparaciones, fechaRep);
                 Servicio servicios = new Servicio(historialServicios, fechaServ);
@@ -196,10 +194,10 @@ public class AgregarVehiculoController {
                 tipoServ.addFirst(servicios);
                 tipoRep.addFirst(reparaciones);
                 //fotosList.addLast(fotoNombre);
-                //public VehiculoUsado(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, String color, boolean climatizado, int numHilera, int numPuerta, String foto, Placa placa) {
-                VehiculoUsado nuevoVehiculoUsado = new VehiculoUsado(usuario, tipoCosto, marca, modelo, anio, kilometraje, precio, new Motor(tipoMotor, cilindraje), new Transmision(tipoTransmision, velocidades), new Ubicacion(ciudad, direccion), tipoTraccion, tipoDireccion, color, climatizado, nHileras, nPuertas, fotoNombre, new Placa(ultimoDigito, provincia), new Historial(tipoServ, tipoRep));
+                //(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, String color, boolean climatizado, int numHilera, int numPuerta, String foto, Placa placa) {
+                VehiculoUsado nuevoVehiculoUsado = new VehiculoUsado(usuario, tipoCosto, marca, modelo, anio, kilometraje, precio, new Motor(tipoMotor, cilindraje), new Transmision(tipoTransmision, velocidades), new Ubicacion(ciudad, direccion),new Historial(tipoServ, tipoRep), tipoTraccion, tipoDireccion, color, climatizado, nHileras, nPuertas, fotoNombre, new Placa(ultimoDigito, provincia));
                 //Vehiculo nuevoVehiculoUsado = new VehiculoUsado(usuario, marca, modelo, anio, kilometraje, precio, tipoCosto);
-                
+
                 VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculoUsado);
 
             } else {

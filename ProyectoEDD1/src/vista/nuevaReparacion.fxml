@@ -1,11 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NuevaReparacionController">
-    
-</AnchorPane>
+<VBox prefHeight="222.0" prefWidth="412.0" styleClass="mainFxmlClass" stylesheets="@../estilos/vehiculos.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NuevaReparacionController">
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <top>
+            <VBox style="-fx-background-color: #BF8F84;">
+               <children>
+                  <Label id="lblTituloSub" alignment="CENTER" maxWidth="1.7976931348623157E308" text="Reparacion" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </top>
+         <center>
+            <VBox prefHeight="246.0" prefWidth="276.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
+               </padding>
+               <children>
+                  <VBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label text="Fecha:" />
+                        <DatePicker fx:id="datePick" editable="false" promptText="Fecha de reparacion" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+                  <VBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label text="Descripcion" />
+                        <TextArea fx:id="txtDescripcion" prefHeight="200.0" prefWidth="200.0" promptText="Descripcion de la reparacion" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER" style="-fx-background-color: #F9F3D9;">
+               <children>
+                  <Button fx:id="btnReparacion" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="5.0" />
+                     </BorderPane.margin>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </bottom>
+      </BorderPane>
+   </children>
+</VBox>

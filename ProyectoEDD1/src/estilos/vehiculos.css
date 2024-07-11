@@ -128,3 +128,11 @@
 .flow-pane-custom .flow-pane-child {
     -fx-margin: 10; 
 }
+
+#lblTituloSub{
+    -fx-font-size: 22px;
+    -fx-border-color: #030759;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-font-weight: bold;
+}

@@ -2,20 +2,28 @@ package controller;
 
 //import java.awt.Color;
 import TDA.DoubleCircleLinkedList;
+import javafx.scene.paint.Color;
 import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import modelo.Historial;
+import modelo.Motor;
+import modelo.Placa;
 import modelo.Reparacion;
 import modelo.Servicio;
+import modelo.Transmision;
+import modelo.Ubicacion;
 import modelo.Usuario;
 import modelo.Vehiculo;
 import modelo.VehiculoNuevo;
@@ -41,11 +49,11 @@ public class AgregarVehiculoController {
     @FXML
     private TextField usrKilometraje;
     @FXML
-    private MenuButton usrTipoMotor;
+    private ChoiceBox<TipoMotor> usrTipoMotor;
     @FXML
     private TextField usrCilindraje;
     @FXML
-    private MenuButton usrTipoTransmicion;
+    private ChoiceBox<TipoTransmision> usrTipoTransmision;
     @FXML
     private TextField usrVelocidades;
     @FXML
@@ -53,9 +61,11 @@ public class AgregarVehiculoController {
     @FXML
     private TextField udrDireccion;
     @FXML
-    private MenuButton usrTipoTraccion;
+    private ChoiceBox<TipoTraccion> usrTipoTraccion;
     @FXML
-    private MenuButton usrTipoDireccion;    
+    private ChoiceBox<TipoDireccion> usrTipoDireccion;
+    @FXML
+    private ColorPicker usrColor;
     @FXML
     private CheckBox usrClimatizado;
     @FXML
@@ -87,6 +97,7 @@ public class AgregarVehiculoController {
 
     private DoubleCircleLinkedList<Servicio> tipoServ;
     private DoubleCircleLinkedList<Reparacion> tipoRep;
+    
     private DoubleCircleLinkedList<String> fotosList;
 
     //Esta variable es verdadera sí y solo sí se accedió a registro mediante la ventana del login
@@ -94,20 +105,9 @@ public class AgregarVehiculoController {
     
     
     private Usuario usuario;
-    @FXML
-
-    private TextField usrColor;
-
-    @FXML
-    private Button RegresarButton;
-
 
     public void initialize() {
         usuario = UsuarioDataManager.getInstance().getUsuarioActual();
-        initializeMenuButton(usrTipoMotor, TipoMotor.values());
-        initializeMenuButton(usrTipoTransmicion, TipoTransmision.values());
-        initializeMenuButton(usrTipoTraccion, TipoTraccion.values());
-        initializeMenuButton(usrTipoDireccion, TipoDireccion.values());
         inicializarValores();
 
         usrUsado.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -123,19 +123,28 @@ public class AgregarVehiculoController {
         this.isInicioSesion = inicioSesion;
     }
 
-    private <T extends Enum<T>> void initializeMenuButton(MenuButton menuButton, T[] values) {
-        for (T value : values) {
-            MenuItem item = new MenuItem(value.name());
-            item.setOnAction(event -> menuButton.setText(value.name()));
-            menuButton.getItems().add(item);
-        }
-    }
 
     private void inicializarValores() {
+        for (TipoMotor tm : TipoMotor.values()) {
+            this.usrTipoMotor.getItems().addAll(tm);
+        }
+        
         for (TipoCosto tp : TipoCosto.values()) {
             this.usrTipoCosto.getItems().addAll(tp);
         }
         usrTipoCosto.setValue(TipoCosto.FIJO);
+        
+        for (TipoDireccion td : TipoDireccion.values()) {
+            this.usrTipoDireccion.getItems().addAll(td);
+        }
+        
+        for (TipoTransmision ttn : TipoTransmision.values()) {
+            this.usrTipoTransmision.getItems().addAll(ttn);
+        }
+        
+        for (TipoTraccion tt : TipoTraccion.values()) {
+            this.usrTipoTraccion.getItems().addAll(tt);
+        }
     }
 
     private void setUsadoFieldsEnabled(boolean enabled) {
@@ -150,28 +159,29 @@ public class AgregarVehiculoController {
     @FXML
     private void crearVehiculo(ActionEvent event) {
         try {
+            //String tipoCosto = ""+ usrTipoCosto.getValue();
+            TipoCosto tipoCosto = usrTipoCosto.getValue();
             String marca = usrMarca.getText();
             String modelo = usrModelo.getText();
             int anio = Integer.parseInt(usranio.getText());
             int kilometraje = Integer.parseInt(usrKilometraje.getText());
-            String tipoMotor = usrTipoMotor.getText();
+            double precio = Double.parseDouble(usrPrecio.getText());
+            TipoMotor tipoMotor = usrTipoMotor.getValue();
             int cilindraje = Integer.parseInt(usrCilindraje.getText());
-            String tipoTransmicion = usrTipoTransmicion.getText();
+            TipoTransmision tipoTransmision = usrTipoTransmision.getValue();
             int velocidades = Integer.parseInt(usrVelocidades.getText());
             String ciudad = usrCiudad.getText();
             String direccion = udrDireccion.getText();
             String fotoNombre = usrFotoNombre.getText();
-            String tipoTraccion = usrTipoTraccion.getText();
-            String tipoDireccion = usrTipoDireccion.getText();
-            String color = usrColor.getText();
+            TipoTraccion tipoTraccion = usrTipoTraccion.getValue();
+            TipoDireccion tipoDireccion = usrTipoDireccion.getValue();
+            //Color color = usrColor.getValue();
+            String color = ""+usrColor.getValue();
             boolean climatizado = usrClimatizado.isSelected();
             int nHileras = Integer.parseInt(usrNHileras.getText());
             int nPuertas = Integer.parseInt(usrNPuertas.getText());
-            double precio = Double.parseDouble(usrPrecio.getText());
-            //String tipoCosto = ""+ usrTipoCosto.getValue();
-            TipoCosto tipoCosto = usrTipoCosto.getValue();
+            
             boolean usado = usrUsado.isSelected();
-
             if (usado) {
                 int ultimoDigito = Integer.parseInt(usrUlDigito.getText());
                 String provincia = usrProvincia.getText();
@@ -185,16 +195,17 @@ public class AgregarVehiculoController {
 
                 tipoServ.addFirst(servicios);
                 tipoRep.addFirst(reparaciones);
-                fotosList.addLast(fotoNombre);
-                //public VehiculoUsado(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, Color color, boolean climatizado, int numHilera, int numPuerta, DoubleCircleLinkedList<String> fotos, Placa placa) {
-                //VehiculoUsado nuevoVehiculoUsado = new VehiculoUsado(usuario, new TipoCosto(tipoCosto), marca, modelo, anio, kilometraje, precio, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), velocidades, new Historial(tipoServ, tipoRep), new TipoTraccion(tipoTraccion), new TipoDireccion(tipoDireccion), color, climatizado, nHileras, nPuertas, fotosList, new Placa(ultimoDigito, provincia));
-                Vehiculo nuevoVehiculoUsado = new VehiculoUsado(usuario, marca, modelo, anio, kilometraje, precio, tipoCosto);
+                //fotosList.addLast(fotoNombre);
+                //public VehiculoUsado(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, String color, boolean climatizado, int numHilera, int numPuerta, String foto, Placa placa) {
+                VehiculoUsado nuevoVehiculoUsado = new VehiculoUsado(usuario, tipoCosto, marca, modelo, anio, kilometraje, precio, new Motor(tipoMotor, cilindraje), new Transmision(tipoTransmision, velocidades), new Ubicacion(ciudad, direccion), tipoTraccion, tipoDireccion, color, climatizado, nHileras, nPuertas, fotoNombre, new Placa(ultimoDigito, provincia), new Historial(tipoServ, tipoRep));
+                //Vehiculo nuevoVehiculoUsado = new VehiculoUsado(usuario, marca, modelo, anio, kilometraje, precio, tipoCosto);
                 
                 VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculoUsado);
 
             } else {
                 //Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, anio, kilometraje, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), foto, new TipoTraccion(tipoTraccion), tipoDireccion, color, climatizado, nHileras, nPuertas, precio, new TipoCosto(tipoCosto));
-                Vehiculo nuevoVehiculo = new VehiculoNuevo(usuario, marca, modelo, anio, kilometraje, precio, tipoCosto);
+                //Vehiculo nuevoVehiculo = new VehiculoNuevo(usuario, marca, modelo, anio, kilometraje, precio, tipoCosto);
+                Vehiculo nuevoVehiculo = new VehiculoNuevo(usuario, tipoCosto, marca, modelo, anio, kilometraje, precio, new Motor(tipoMotor, cilindraje), new Transmision(tipoTransmision, velocidades), new Ubicacion(ciudad, direccion), tipoTraccion, tipoDireccion, color, climatizado, nHileras, nPuertas, fotoNombre);
                 VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculo);
 
             }
@@ -214,7 +225,6 @@ public class AgregarVehiculoController {
         ventanaActual.close();
     }
 
-    @FXML
     private void regresar(ActionEvent event) {
         String ruta = "main";
         if (this.isInicioSesion) {

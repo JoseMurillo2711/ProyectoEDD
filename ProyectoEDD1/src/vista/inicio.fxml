@@ -42,10 +42,20 @@
                   <Font size="15.0" />
                </font></Label>
             <ChoiceBox fx:id="cbModelo" prefHeight="26.0" prefWidth="133.0" GridPane.columnIndex="5" />
+            <Label text="Categoría:" GridPane.columnIndex="6">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <ChoiceBox fx:id="cbCategoria" prefHeight="26.0" prefWidth="133.0" GridPane.columnIndex="7" />
             <TextField fx:id="tfAnioMin" promptText="Año Mínimo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="tfAnioMax" promptText="Año Máximo" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <TextField fx:id="tfKilometrajeMin" promptText="Kilometraje Mínimo" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <TextField fx:id="tfKilometrajeMax" promptText="Kilometraje Máximo" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Label text="Transmisión:" GridPane.columnIndex="6" GridPane.rowIndex="1">
+               <font>
+                  <Font size="15.0" />
+               </font></Label>
+            <ChoiceBox fx:id="cbTransmision" prefHeight="26.0" prefWidth="133.0" GridPane.columnIndex="7" GridPane.rowIndex="1"/>
             <Label text="Tipo de costo:" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font size="15.0" />

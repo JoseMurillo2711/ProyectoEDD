@@ -1,5 +1,6 @@
 package controller;
 
+import tipo.*;
 import TDA.ArrayList;
 import TDA.DoubleCircleLinkedList;
 import java.net.URL;
@@ -46,6 +47,10 @@ public class InicioController implements Initializable {
     private ChoiceBox<String> cbMarca;
     @FXML
     private ChoiceBox<String> cbModelo;
+    @FXML
+    private ChoiceBox<TipoMotor> cbCategoria;
+    @FXML
+    private ChoiceBox<TipoTransmision> cbTransmision;
     @FXML
     private TextField tfKilometrajeMin;
     @FXML
@@ -96,6 +101,9 @@ public class InicioController implements Initializable {
                 cargarModelos(selectedMarca);
             }
         });
+        cbCategoria.getItems().setAll(TipoMotor.values());
+        cbTransmision.getItems().setAll(TipoTransmision.values());
+        
     }
 
     private void cargarMarcas() {
@@ -200,6 +208,8 @@ public class InicioController implements Initializable {
                               vehiculo.getPrecio() <= precioMax &&
                               vehiculo.getAño() >= anioMin &&
                               vehiculo.getAño() <= anioMax &&
+                              vehiculo.getTransmision().getTipo() == cbTransmision.getValue() &&
+                              vehiculo.getMotor().getTipo() == cbCategoria.getValue() &&
                               (tipoCosto == null || tipoCosto.isEmpty() || vehiculo.getTipoCosto().toString().equals(tipoCosto));
 
             if (matches) {
@@ -217,6 +227,8 @@ public class InicioController implements Initializable {
     private void resetFilters() {
         cbMarca.setValue(null);
         cbModelo.setValue(null);
+        cbCategoria.setValue(null);
+        cbTransmision.setValue(null);
         tfKilometrajeMin.clear();
         tfKilometrajeMax.clear();
         tfPrecioMin.clear();

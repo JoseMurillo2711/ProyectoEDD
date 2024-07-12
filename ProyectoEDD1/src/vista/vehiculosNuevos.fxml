@@ -15,7 +15,7 @@
    <children>
       <BorderPane fx:id="borderPane" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <top>
-            <VBox alignment="CENTER" prefHeight="140.0" prefWidth="432.0" spacing="10.0" styleClass="cuadro" BorderPane.alignment="CENTER">
+            <VBox fx:id="vbFiltros" alignment="CENTER" prefHeight="140.0" prefWidth="432.0" spacing="10.0" styleClass="cuadro" BorderPane.alignment="CENTER">
                <children>
                   <Label id="lblAutos" text="Busca tu auto nuevo" textAlignment="CENTER" />
                   <ComboBox fx:id="cbMarca" maxWidth="1.7976931348623157E308" promptText="Seleccionar marca" />

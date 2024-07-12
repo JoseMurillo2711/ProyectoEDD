@@ -325,6 +325,9 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
     
     public String getStar(){
         String star = "☆";
+        if (UsuarioDataManager.getInstance().getUsuarioActual() == null){
+            return star;
+        }
         if (isFavorite()){
             star = "★";
         }

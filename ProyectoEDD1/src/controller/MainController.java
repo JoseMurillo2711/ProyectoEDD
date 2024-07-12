@@ -135,7 +135,6 @@ public class MainController implements Initializable {
         this.txtBusqueda.setPromptText("Buscar un auto nuevo");
     }
 
-    @FXML
     private void mostrarAutosViejos(ActionEvent event) {
         cargarPagina("vehiculosViejos");
         seccionUsado = true;

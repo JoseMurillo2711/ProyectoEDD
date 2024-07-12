@@ -107,7 +107,6 @@
                <children>
                   <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#irPaginaPrincipal" text="Inicio" />
                   <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarAutosNuevos" text="Nuevo" VBox.vgrow="ALWAYS" />
-                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarAutosViejos" text="Usados" VBox.vgrow="ALWAYS" />
                   <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarAuto" prefWidth="101.0" text="Agregar Auto" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS" />
                </children>
                <padding>

@@ -102,6 +102,7 @@ public class UsuarioDataManager {
             usuarioActual.getVehiculosFavoritos().remove(vehiculo);
             this.usuarios.set(obtenerIndice(), usuarioActual);
             escribirArchivoUsuarios();
+            return;
         }
         throw new Exception("Debe iniciar sesion");
     }
@@ -116,6 +117,7 @@ public class UsuarioDataManager {
             usuarioActual.getVehiculosFavoritos().addLast(vehiculo);
             this.usuarios.set(obtenerIndice(), usuarioActual);
             escribirArchivoUsuarios();
+            return;
         }
         throw new Exception("Debe iniciar sesion");
     }

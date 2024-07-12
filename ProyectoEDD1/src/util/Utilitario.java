@@ -4,21 +4,21 @@
  */
 package util;
 
-import TDA.CircularLinkedList;
-import TDA.DoubleCircleLinkedList;
 import TDA.List;
 import controller.MostrarInfoController;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
 import java.util.Random;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -29,9 +29,10 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import modelo.Usuario;
+import javafx.util.Callback;
 import modelo.Vehiculo;
 import modelo.VehiculoNuevo;
+import modelo.VehiculoUsado;
 import proyectoedd1.ProyectoEDD1;
 import tipo.TipoCosto;
 import static util.CONSTANTES.CHARACTERS;
@@ -97,6 +98,12 @@ public class Utilitario {
             FXMLLoader loader = new FXMLLoader(ProyectoEDD1.class.getResource("/vista/" + vista + ".fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
+            if (vista.equalsIgnoreCase("main")) {
+                stage.setOnCloseRequest(event -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
+            }
             stage.setTitle(titulo);
             stage.setScene(new Scene(root));
             stage.show();
@@ -112,7 +119,6 @@ public class Utilitario {
         for (Vehiculo ve : vehiculos) {
             VBox carta = createCard(ve);
             carta.setOnMouseClicked((MouseEvent event) -> {
-                System.out.println("Mostrar Vehiculo");
                 mostrarInformacion(ve);
             });
             panel.getChildren().add(carta);
@@ -135,11 +141,11 @@ public class Utilitario {
         Label marcaLabel = new Label(vehiculo.getMarca() + " " + vehiculo.getModelo());
         Label anoLabel = new Label("Año: " + vehiculo.getAño());
         Label precioLbl = new Label("Precio: $: " + vehiculo.getPrecio());
-        Label ngociable = new Label("Precio " + vehiculo.getTipoCosto().toString());
+        String tipo = vehiculo instanceof VehiculoUsado ? "Usado - " : "Nuevo - ";
+        Label ngociable = new Label(tipo + vehiculo.getTipoCosto().toString());
         ngociable.setId("lblPrecio");
         ImageView imageView = new ImageView();
         File archivo = new File(IMAGEN_NOT_FOUND);
-        System.out.println(archivo.getAbsolutePath());
         favorite.setOnAction(event -> {
             vehiculo.onchangeFavorite();
             favorite.setText(vehiculo.getStar());
@@ -157,13 +163,13 @@ public class Utilitario {
             imageView.setImage(new Image(archivo.toURI().toString()));
         }
 
-        imageView.setFitWidth(80);
-        imageView.setFitHeight(55);
+        imageView.setFitWidth(85);
+        imageView.setFitHeight(75);
         imageView.setPreserveRatio(true);
-        if (vehiculo.getTipoCosto() != TipoCosto.FIJO) {
+        if (UsuarioDataManager.getInstance().getUsuarioActual() != null) {
             card.getChildren().addAll(imageView, favorite, marcaLabel, anoLabel, precioLbl, ngociable);
         } else {
-            card.getChildren().addAll(imageView, favorite, marcaLabel, anoLabel, precioLbl);
+            card.getChildren().addAll(imageView, marcaLabel, anoLabel, precioLbl, ngociable);
         }
         return card;
     }
@@ -201,19 +207,18 @@ public class Utilitario {
         card.setAlignment(Pos.CENTER);
         return card;
     }
-    
+
     public static HBox createCardMios(Vehiculo vehiculo) {
         VBox card = new VBox(10);
         HBox info = new HBox(10);
         info.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-border-color: black; -fx-border-width: 1;");
         info.setId("card");
-        
-        
+
         Label marcaLabel = new Label(vehiculo.getMarca() + " " + vehiculo.getModelo());
         Label anoLabel = new Label("Año: " + vehiculo.getAño());
         Label precioLbl = new Label("Precio: $: " + vehiculo.getPrecio());
-        String antes = vehiculo instanceof VehiculoNuevo?"Nuevo - ":"Usado - ";
-        String valor = antes+"Precio " + vehiculo.getTipoCosto().toString();
+        String antes = vehiculo instanceof VehiculoNuevo ? "Nuevo - " : "Usado - ";
+        String valor = antes + "Precio " + vehiculo.getTipoCosto().toString();
         Label ngociable = new Label(valor);
         ngociable.setMaxWidth(Double.MAX_VALUE);
         ngociable.setId("lblPrecio");
@@ -236,7 +241,22 @@ public class Utilitario {
         imageView.setFitHeight(75);
         imageView.setPreserveRatio(true);
         card.getChildren().addAll(marcaLabel, anoLabel, precioLbl, ngociable);
-        info.getChildren().addAll(imageView,card);
+        info.getChildren().addAll(imageView, card);
         return info;
+    }
+    
+    public static void configureDatePicker(DatePicker datePicker) {
+        datePicker.setDayCellFactory((final DatePicker datePicker1) -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item.isAfter(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;");
+                }
+            }
+        });
+
+        datePicker.setValue(LocalDate.now());
     }
 }

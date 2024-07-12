@@ -34,7 +34,6 @@ import util.UsuarioDataManager;
 import util.Utilitario;
 import static util.Utilitario.abrirNuevaVentana;
 import static util.Utilitario.panelVehiculos;
-import util.VehiculoDataManager;
 import static util.VehiculoDataManager.buscarVehiculos;
 import static util.VehiculoDataManager.buscarVehiculosPorMarca;
 
@@ -56,7 +55,6 @@ public class MainController implements Initializable {
     private HBox hbBusqueda;
 
     private Usuario usuario;
-   private List<Vehiculo> vehiculos;
     private List<Vehiculo> vehiculosBuscados;
     private boolean seccionNuevo;
     private boolean seccionUsado;
@@ -66,7 +64,6 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         formatoEncabezado();
-        vehiculos = VehiculoDataManager.getInstance().getVehiculos();
         seccionNuevo = false;
         seccionUsado = false;
         this.usuario = UsuarioDataManager.getInstance().getUsuarioActual();
@@ -145,6 +142,10 @@ public class MainController implements Initializable {
         this.txtBusqueda.setPromptText("Buscar un auto usado");
     }
 
+    public void ocultarBarraBusqueda(){
+        Platform.runLater(()->this.hbBusqueda.setVisible(false));
+    }
+    
     @FXML
     private void agregarAuto(ActionEvent event) {
         if (usuario == null) {
@@ -173,6 +174,7 @@ public class MainController implements Initializable {
             }
             rootBorderPane.setCenter(pagina);
         } catch (IOException e) {
+            e.printStackTrace();
             Alertas.alertaError("Ha ocurrido un error", e.getMessage());
         }
     }

@@ -172,8 +172,8 @@ public class AgregarVehiculoController {
                 LocalDate fechaRep = usrFechaRep.getValue();
                 LocalDate fechaServ = usrFechaServ.getValue();
 
-                Reparacion reparaciones = new Reparacion(historialReparaciones, fechaRep);
-                Servicio servicios = new Servicio(historialServicios, fechaServ);
+                Reparacion reparaciones = new Reparacion(fechaRep, historialReparaciones);
+                Servicio servicios = new Servicio(fechaServ, historialServicios);
 
                 tipoServ.addFirst(servicios);
                 tipoRep.addFirst(reparaciones);

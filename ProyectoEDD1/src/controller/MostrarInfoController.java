@@ -34,7 +34,10 @@ import static util.Utilitario.formatoNumericoDecimal;
 import util.VehiculoDataManager;
 import TDA.ArrayList;
 import TDA.DoubleCircleLinkedList;
+import java.time.LocalDate;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class MostrarInfoController implements Initializable {
 
@@ -114,6 +117,18 @@ public class MostrarInfoController implements Initializable {
     private VBox vbImagenesEdicion;
     @FXML
     private Button btnEliminar;
+    @FXML
+    private TableColumn<Servicio, LocalDate> colFechaSer;
+    @FXML
+    private TableColumn<Servicio, String> colDescripSer;
+    @FXML
+    private TableColumn<Reparacion, LocalDate> colFechaRep;
+    @FXML
+    private TableColumn<Reparacion, String> colDescripRep;
+    @FXML
+    private HBox hbServicios;
+    @FXML
+    private HBox hbReparaciones;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -125,6 +140,30 @@ public class MostrarInfoController implements Initializable {
         listaImagenes = new DoubleCircleLinkedList<>();
         imagenesAEliminar = new ArrayList<>();
         imagenesAAgregar = new ArrayList<>();
+        configTablas();
+    }
+
+    private void configTablas() {
+        colDescripSer.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        colFechaSer.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+        colFechaRep.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+        colDescripRep.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+
+        this.tableServicios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                this.hbServicios.setVisible(true);
+            } else {
+                this.hbServicios.setVisible(false);
+            }
+        });
+
+        this.tablaReparacion.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                this.hbReparaciones.setVisible(true);
+            } else {
+                this.hbReparaciones.setVisible(false);
+            }
+        });
     }
 
     public void recibirVehiculo(Vehiculo vehiculo, boolean editable) {
@@ -154,7 +193,6 @@ public class MostrarInfoController implements Initializable {
             txtKm.setEditable(true);
             txtKm.setDisable(false);
         }
-
         confMensajeTablas();
         llenarInfoCampos();
     }
@@ -181,6 +219,8 @@ public class MostrarInfoController implements Initializable {
     }
 
     private void desactivarEdicion() {
+        this.txtColor.setEditable(false);
+        txtColor.setDisable(true);
         txtMarca.setEditable(false);
         txtMarca.setDisable(true);
         txtModelo.setEditable(false);
@@ -305,7 +345,9 @@ public class MostrarInfoController implements Initializable {
         }
         listaImagenes = vehiculo.getFotos();
         imageIterator = listaImagenes.listIterator();
-        btnEliminar.setVisible(true);
+        if (listaImagenes.size() <= 1) {
+            btnEliminar.setVisible(false);
+        }
 
         if (imageIterator.hasNext()) {
             setImagen(imageIterator.next());
@@ -381,6 +423,9 @@ public class MostrarInfoController implements Initializable {
                 listaImagenes.addLast(destino.getName());
                 imagenesAAgregar.addLast(destino.getName());
                 imageIterator = listaImagenes.listIterator(listaImagenes.size() - 1);
+                if (listaImagenes.size() > 1) {
+                    btnEliminar.setVisible(true);
+                }
                 setImagen(destino.getName());
                 Alertas.alertaInfo("Imagen agregada", "La imagen ha sido agregada exitosamente.");
             } catch (IOException e) {
@@ -401,7 +446,6 @@ public class MostrarInfoController implements Initializable {
                     archivo.delete();
                 }
             }
-
             abrirNuevaVentana("misAutos", "Mis autos");
             this.cerrarVentana();
         } catch (Exception ex) {
@@ -442,32 +486,60 @@ public class MostrarInfoController implements Initializable {
 
     @FXML
     private void agregarServicio(ActionEvent event) {
-        FXMLLoader serv = abrirNuevaVentana("nuevoServicio","Servicios");
+        FXMLLoader serv = abrirNuevaVentana("nuevoServicio", "Servicios");
         NuevoServicioController nuevoSer = serv.getController();
-        nuevoSer.reciribirParametros(this, "agregar");
+        nuevoSer.reciribirParametros(this, "Agregar Servicio");
     }
 
     @FXML
     private void editarServicio(ActionEvent event) {
-        FXMLLoader serv = abrirNuevaVentana("nuevoServicio","Servicios");
-        NuevoServicioController nuevoSer = serv.getController();
-        nuevoSer.reciribirParametros(this, "editar");
+        Servicio servicio = this.tableServicios.getSelectionModel().getSelectedItem();
+        if (servicio != null) {
+            FXMLLoader serv = abrirNuevaVentana("nuevoServicio", "Servicios");
+            NuevoServicioController nuevoSer = serv.getController();
+            nuevoSer.reciribirParametros(this, "Editar Servicio");
+            nuevoSer.recibirServicio(servicio);
+        }
     }
 
     @FXML
     private void eliminarServicio(ActionEvent event) {
+        Servicio servicio = this.tableServicios.getSelectionModel().getSelectedItem();
+        if (servicio != null) {
+            FXMLLoader serv = abrirNuevaVentana("nuevoServicio", "Servicios");
+            NuevoServicioController nuevoSer = serv.getController();
+            nuevoSer.reciribirParametros(this, "Eliminar Servicio");
+            nuevoSer.recibirServicio(servicio);
+        }
     }
 
     @FXML
     private void agregarReparacion(ActionEvent event) {
+        FXMLLoader serv = abrirNuevaVentana("nuevaReparacion", "Reparacion");
+        NuevaReparacionController nuevoSer = serv.getController();
+        nuevoSer.reciribirParametros(this, "Agregar Reparacion");
     }
 
     @FXML
     private void editarReparacion(ActionEvent event) {
+        Reparacion reparacion = this.tablaReparacion.getSelectionModel().getSelectedItem();
+        if (reparacion != null) {
+            FXMLLoader serv = abrirNuevaVentana("nuevaReparacion", "Reparacion");
+            NuevaReparacionController nuevoSer = serv.getController();
+            nuevoSer.reciribirParametros(this, "Editar Reparacion");
+            nuevoSer.recibirReparacion(reparacion);
+        }
     }
 
     @FXML
     private void eliminarReparacion(ActionEvent event) {
+        Reparacion reparacion = this.tablaReparacion.getSelectionModel().getSelectedItem();
+        if (reparacion != null) {
+            FXMLLoader serv = abrirNuevaVentana("nuevaReparacion", "Reparacion");
+            NuevaReparacionController nuevoSer = serv.getController();
+            nuevoSer.reciribirParametros(this, "Eliminar Reparacion");
+            nuevoSer.recibirReparacion(reparacion);
+        }
     }
 
     private void modificarVehiculo() {
@@ -501,7 +573,7 @@ public class MostrarInfoController implements Initializable {
 
     @FXML
     private void eliminarImagen(ActionEvent event) {
-        if (listaImagenes != null && !listaImagenes.isEmpty()) {
+        if (listaImagenes != null && !listaImagenes.isEmpty() && listaImagenes.size() > 1) {
             if (Alertas.alertaConfirmacion("Eliminar Imagen", "¿Está seguro de eliminar esta imagen?")) {
                 String imagenActual;
                 if (imageIterator.hasPrevious()) {
@@ -521,7 +593,7 @@ public class MostrarInfoController implements Initializable {
                     imagenesAEliminar.addLast(imagenActual);
                 }
 
-                if (listaImagenes.isEmpty()) {
+                if (listaImagenes.isEmpty() && listaImagenes.size() <= 1) {
                     File archivoN = new File(IMAGEN_NOT_FOUND);
                     imgVehiculo.setImage(new Image(archivoN.toURI().toString()));
                     btnEliminar.setVisible(false);
@@ -538,25 +610,24 @@ public class MostrarInfoController implements Initializable {
     }
 
     public void llenarTablas() {
+        tableServicios.getItems().clear();
+        tablaReparacion.getItems().clear();
+        this.hbServicios.setVisible(false);
+        this.hbReparaciones.setVisible(false);
         if (vehiculo instanceof VehiculoUsado vehiculoUsado) {
             Historial historial = vehiculoUsado.getHistorial();
             if (historial != null) {
                 if (historial.getServicios() != null && !historial.getServicios().isEmpty()) {
-                    ArrayList<Servicio> serviciosObservableList = new ArrayList<>();
                     for (Servicio servicio : historial.getServicios()) {
-                        serviciosObservableList.addLast(servicio);
+                        this.tableServicios.getItems().add(servicio);
                     }
-                    tableServicios.getItems().setAll(serviciosObservableList.toArray(new Servicio[0]));
                 } else {
                     tableServicios.getItems().clear();
                 }
-
-                if (historial.getReparaciones() != null && !historial.getReparaciones().isEmpty()) {
-                    ArrayList<Reparacion> reparacionesObservableList = new ArrayList<>();
+                if (historial.getReparaciones() != null && !historial.getReparaciones().isEmpty()) {                    
                     for (Reparacion reparacion : historial.getReparaciones()) {
-                        reparacionesObservableList.addLast(reparacion);
-                    }
-                    tablaReparacion.getItems().setAll(reparacionesObservableList.toArray(new Reparacion[0]));
+                        this.tablaReparacion.getItems().add(reparacion);
+                    }                    
                 } else {
                     tablaReparacion.getItems().clear();
                 }

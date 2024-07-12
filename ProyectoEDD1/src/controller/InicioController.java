@@ -17,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -91,7 +90,7 @@ public class InicioController implements Initializable {
     }
     
     private void cargarModelos(String marca) {
-        cbModelo.getItems().clear(); // Limpia los modelos previos
+        cbModelo.getItems().clear(); 
         DoubleCircleLinkedList<Vehiculo> vehiculosDeMarca = vehiculosMarcas().get(marca);
         Set<String> modelos = new HashSet<>();
         for (Vehiculo vehiculo : vehiculosDeMarca) {
@@ -126,9 +125,7 @@ public class InicioController implements Initializable {
                 page.addLast(vehiculos.get(j));
             }
             paginas.addLast(page);
-        }
-        
-        System.out.println("Paginas completas: " + paginas);
+        }        
 
        current = paginas.listIterator();
 

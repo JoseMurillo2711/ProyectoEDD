@@ -16,6 +16,7 @@ import java.util.Set;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,6 +35,7 @@ import modelo.VehiculoNuevo;
 import tipo.TipoCosto;
 import util.Alertas;
 import static util.CONSTANTES.PER_PAGE;
+import static util.Utilitario.abrirNuevaVentana;
 import static util.Utilitario.createCardMarca;
 import static util.Utilitario.panelVehiculos;
 import util.VehiculoDataManager;
@@ -55,7 +57,11 @@ public class NuevosController implements Initializable {
     private FlowPane flowPane;
     @FXML
     private VBox vbMarcas;
-
+    @FXML
+    private ScrollPane scroll;
+    @FXML
+    private VBox vbFiltros;
+    
     private Map<String, DoubleCircleLinkedList<Vehiculo>> mapMarcas;    
     private DoubleCircleLinkedList<Vehiculo> vehiculosMostrados;
     private DoubleCircleLinkedList<Vehiculo> vehiculosPorMarca;
@@ -67,9 +73,6 @@ public class NuevosController implements Initializable {
     private String selectedMarca;
     private HBox bottom;
 
-    @FXML
-    private ScrollPane scroll;
-
     /**
      * Initializes the controller class.
      *
@@ -77,7 +80,7 @@ public class NuevosController implements Initializable {
      * @param rb
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) {        
         // TODO        
         configBotones();        
         mapMarcas = vehiculosMarcas();
@@ -85,8 +88,19 @@ public class NuevosController implements Initializable {
         vehiculosMostrados = new DoubleCircleLinkedList<>();
         mostrarMarcas();
         confComboBox();
+        comprobarListadoAutos();
     }
 
+    private void comprobarListadoAutos(){
+        if(VehiculoDataManager.getInstance().getVehiculos().isEmpty()){
+            this.vbFiltros.setVisible(false);
+            this.vbFiltros.setManaged(true);
+            Label mensaje = new Label("No existen vehiculos nuevos en el sistema");
+            mensaje.setId("lblAutos");
+            this.vbMarcas.getChildren().clear();
+            this.vbMarcas.getChildren().add(mensaje);
+        }
+    }
     private void confComboBox() {
         cbMarca.setOnAction(event -> {
             selectedMarca = cbMarca.getSelectionModel().getSelectedItem();
@@ -109,13 +123,26 @@ public class NuevosController implements Initializable {
     @FXML
     private void buscarAutoNuevo(ActionEvent event) {
         if (cbMarca.getValue() != null && cbModelo.getValue() != null) {
-            this.mainController.cargarPagina("vehiculosNuevos");
-            this.mainController.setSeccionNuevo(true);
+            FXMLLoader nuevos = abrirNuevaVentana("mostrarInfo", "Informacion de vehiculo");
+            MostrarInfoController mostrar = nuevos.getController();
+            mostrar.recibirVehiculo(buscarVehiculoModelo(cbMarca.getValue(), cbModelo.getValue()), false);
+            //this.mainController.cargarPagina("vehiculosNuevos");
+            //this.mainController.setSeccionNuevo(true);
+            
         } else {
             Alertas.alertaError("Debe ingresar los parametros de busqueda", "No se pudo realizar la busqueda, debe seleccionar la marca y el modelo del auto");
         }
     }
 
+    private Vehiculo buscarVehiculoModelo(String marca, String modelo){
+        Vehiculo veh = null;
+        for(Vehiculo v: VehiculoDataManager.getInstance().getVehiculos()){
+            if(v.getMarca().equalsIgnoreCase(marca) && v.getModelo().equalsIgnoreCase(modelo))
+                return v;
+        }
+        return veh;
+    }
+    
     private Vehiculo vehiculoMarcaModelo() {
         DoubleCircleLinkedList<Vehiculo> vehiculosDeMarca = mapMarcas.get(selectedMarca);
         Vehiculo vehiculo = null;
@@ -174,6 +201,7 @@ public class NuevosController implements Initializable {
         this.btnRegresar.setOnAction(e -> {
             this.mainController.cargarPagina("vehiculosNuevos");
             this.mainController.setSeccionNuevo(true);
+            this.mainController.ocultarBarraBusqueda();
         });
     }
 
@@ -200,7 +228,6 @@ public class NuevosController implements Initializable {
             System.out.println("La lista de vehículos por marca está vacía.");
             return;
         }
-        System.out.println("Vehículos por marca: " + vehiculosPorMarca.size());
         int count = 0;
         int iteraciones = 0;
 
@@ -209,7 +236,6 @@ public class NuevosController implements Initializable {
                 while (iteratorVehiculo.hasNext() && count < PER_PAGE && iteraciones < vehiculosPorMarca.size()) {
                     Vehiculo vehiculo = iteratorVehiculo.next();
                     iteraciones++;
-                    System.out.println("Iterando adelante: " + vehiculo.getMarca() + " " + vehiculo.getModelo());
                     if (vehiculo.getTipoCosto().equals(TipoCosto.FIJO) && vehiculosUnicos.add(vehiculo)) {
                         vehiculosMostrados.addLast(vehiculo);
                         count++;
@@ -219,7 +245,6 @@ public class NuevosController implements Initializable {
                 while (iteratorVehiculo.hasPrevious() && count < PER_PAGE && iteraciones < vehiculosPorMarca.size()) {
                     Vehiculo vehiculo = iteratorVehiculo.previous();
                     iteraciones++;
-                    System.out.println("Iterando atrás: " + vehiculo.getMarca() + " " + vehiculo.getModelo());
                     if (vehiculo.getTipoCosto().equals(TipoCosto.FIJO) && vehiculosUnicos.add(vehiculo)) {
                         vehiculosMostrados.addFirst(vehiculo);
                         count++;

@@ -29,12 +29,10 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import modelo.Vehiculo;
 import modelo.VehiculoNuevo;
 import modelo.VehiculoUsado;
 import proyectoedd1.ProyectoEDD1;
-import tipo.TipoCosto;
 import static util.CONSTANTES.CHARACTERS;
 import static util.CONSTANTES.ID_LENGTH;
 import static util.CONSTANTES.IMAGEN_NOT_FOUND;
@@ -171,6 +169,7 @@ public class Utilitario {
         } else {
             card.getChildren().addAll(imageView, marcaLabel, anoLabel, precioLbl, ngociable);
         }
+        card.setOnMouseClicked(e->{mostrarInformacion(vehiculo);});
         return card;
     }
 

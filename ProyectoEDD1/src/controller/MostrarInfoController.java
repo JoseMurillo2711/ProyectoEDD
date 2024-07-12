@@ -377,6 +377,7 @@ public class MostrarInfoController implements Initializable {
 
     @FXML
     private void mostrarAnterior(ActionEvent event) {
+        initializeIterator();
         if (listaImagenes != null && !listaImagenes.isEmpty()) {
             if (!imageIterator.hasPrevious()) {
                 imageIterator = listaImagenes.listIterator(listaImagenes.size());
@@ -389,6 +390,7 @@ public class MostrarInfoController implements Initializable {
 
     @FXML
     private void mostrarSgte(ActionEvent event) {
+        initializeIterator();
         if (listaImagenes != null && !listaImagenes.isEmpty()) {
             if (!imageIterator.hasNext()) {
                 imageIterator = listaImagenes.listIterator();
@@ -396,6 +398,12 @@ public class MostrarInfoController implements Initializable {
             if (imageIterator.hasNext()) {
                 setImagen(imageIterator.next());
             }
+        }
+    }
+
+    private void initializeIterator() {
+        if (imageIterator == null && listaImagenes != null) {
+            imageIterator = listaImagenes.listIterator();
         }
     }
 
@@ -624,10 +632,10 @@ public class MostrarInfoController implements Initializable {
                 } else {
                     tableServicios.getItems().clear();
                 }
-                if (historial.getReparaciones() != null && !historial.getReparaciones().isEmpty()) {                    
+                if (historial.getReparaciones() != null && !historial.getReparaciones().isEmpty()) {
                     for (Reparacion reparacion : historial.getReparaciones()) {
                         this.tablaReparacion.getItems().add(reparacion);
-                    }                    
+                    }
                 } else {
                     tablaReparacion.getItems().clear();
                 }

@@ -298,7 +298,7 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
     }
 
     public ListIterator<E> listIterator(int index) {
-        if (isEmpty() || index < 0 || index >= size()) {
+        if (index < 0 || index > size()) {
             throw new IndexOutOfBoundsException();
         }
         return new DoubleCircleListIterator(index);

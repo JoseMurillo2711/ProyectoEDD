@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AgregarVehiculoController">
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AgregarVehiculoController">
    <content>
       <BorderPane prefHeight="725.0" prefWidth="704.0">
          <center>
@@ -222,6 +222,11 @@
                   <TextField fx:id="usrCiudad" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                   <TextField fx:id="udrDireccion" GridPane.columnIndex="5" GridPane.rowIndex="7" />
                   <TextField fx:id="usrFotoNombre" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                  <Button fx:id="btnAgregarImagen" mnemonicParsing="false" onAction="#agregarImagen" style="-fx-background-color: #030759;" text="Agregar Imagen" textFill="WHITE" GridPane.columnIndex="4" GridPane.rowIndex="8">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </Button>
                   <ChoiceBox fx:id="usrTipoTraccion" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
                   <ChoiceBox fx:id="usrTipoDireccion" prefWidth="150.0" GridPane.columnIndex="5" GridPane.rowIndex="9" />
                   <ColorPicker fx:id="usrColor" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="10" />

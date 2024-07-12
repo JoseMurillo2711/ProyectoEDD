@@ -4,6 +4,7 @@
  */
 package modelo;
 
+import TDA.CircularLinkedList;
 import TDA.List;
 import java.io.Serializable;
 import java.util.Objects;
@@ -20,7 +21,8 @@ public class Usuario implements Serializable{
     
     public Usuario(String nickname, String password) {        
         this.nickname = nickname;
-        this.password = password;        
+        this.password = password;  
+        this.vehiculosFavoritos = new CircularLinkedList<>();
     }
 
     public String getNickname() {

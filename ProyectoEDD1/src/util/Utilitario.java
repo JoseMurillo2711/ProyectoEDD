@@ -4,6 +4,7 @@
  */
 package util;
 
+import TDA.CircularLinkedList;
 import TDA.DoubleCircleLinkedList;
 import TDA.List;
 import controller.MostrarInfoController;
@@ -28,6 +29,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import modelo.Usuario;
 import modelo.Vehiculo;
 import modelo.VehiculoNuevo;
 import proyectoedd1.ProyectoEDD1;

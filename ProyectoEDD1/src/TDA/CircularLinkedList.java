@@ -321,6 +321,18 @@ public class CircularLinkedList<E> implements List<E> {
 
     @Override
     public int indexOf(E element) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (isEmpty()) {
+            return -1;
+        }
+        Node<E> current = tail;
+        int index = 0;
+        do {
+            if (current.getContent().equals(element)) {
+                return index;
+            }
+            current = current.getNext();
+            index++;
+        } while (current != tail);
+        return -1;
     }
 }

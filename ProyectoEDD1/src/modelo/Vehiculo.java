@@ -11,6 +11,7 @@ import java.util.Objects;
 import tipo.TipoCosto;
 import tipo.TipoDireccion;
 import tipo.TipoTraccion;
+import util.UsuarioDataManager;
 import static util.Utilitario.generateUniqueId;
 
 /**
@@ -38,15 +39,13 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
     private TipoCosto tipoCosto;
     private Usuario dueno;
     private boolean vendido;
-    private boolean favorite;
-
+    
     private static final long serialVersionUID = 587432992201266L;
 
     private Vehiculo() {
         this.id = generateUniqueId();
         this.url_fotos = new DoubleCircleLinkedList<>();
         this.vendido = false;
-        this.favorite = false;
     }
 
     public Vehiculo(Usuario dueno, String marca, String modelo, int ano, int kilometraje, double precio, TipoCosto tipoCosto) {
@@ -260,26 +259,6 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
         this.vendido = true;
     }
     
-    public boolean isFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-    }
-    
-    public String getStar(){
-        String star = "☆";
-        if (favorite){
-            star = "★";
-        }
-        return star;
-    }
-    
-    public void onchangeFavorite(){
-        favorite = !favorite;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 3;
@@ -337,4 +316,18 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
             return Integer.compare(v1.getKilometraje(), v2.getKilometraje());
         }
     };
+    
+    public boolean isFavorite(){
+        Usuario user = UsuarioDataManager.getInstance().getUsuarioActual();
+        return user.getVehiculosFavoritos().contains(this);
+        
+    }
+    
+    public String getStar(){
+        String star = "☆";
+        if (isFavorite()){
+            star = "★";
+        }
+        return star;
+    }
 }

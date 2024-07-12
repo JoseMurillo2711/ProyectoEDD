@@ -12,16 +12,17 @@ import java.io.Serializable;
  * @param <E>
  */
 public class Node<E> implements Serializable {
-    private E content;
-    private Node<E> previous;
-    private Node<E> next;
-    
-    private static final long serialVersionUID = 58743201266L;
 
-    public Node(E content) {
+    private E content;
+    private Node<E> next;
+    private Node<E> previous;
+
+    private static final long serialVersionUID = 587432201266L;
+    
+    Node(E content) {
         this.content = content;
-        this.next = null;
-        this.previous = null;
+        this.next = this;
+        this.previous = this;
     }
 
     public E getContent() {
@@ -32,14 +33,6 @@ public class Node<E> implements Serializable {
         this.content = content;
     }
 
-    public Node<E> getPrevious() {
-        return previous;
-    }
-
-    public void setPrevious(Node<E> previous) {
-        this.previous = previous;
-    }
-
     public Node<E> getNext() {
         return next;
     }
@@ -48,9 +41,11 @@ public class Node<E> implements Serializable {
         this.next = next;
     }
 
-    @Override
-    public String toString() {
-        return "Node{" + "content=" + content + '}';
+    public Node<E> getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(Node<E> previous) {
+        this.previous = previous;
     }
 }
-

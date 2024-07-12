@@ -106,7 +106,16 @@ public class ArrayList<E> implements List<E>, Serializable {
 
     @Override
     public E remove(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (index < 0 || index >= effectiveSize) {
+            throw new IndexOutOfBoundsException("Index out of range: " + index);
+        }
+        E removedElement = elements[index];
+        for (int i = index; i < effectiveSize - 1; i++) {
+            elements[i] = elements[i + 1];
+        }
+        elements[effectiveSize - 1] = null;
+        effectiveSize--;
+        return removedElement;
     }
 
     @Override
@@ -119,7 +128,12 @@ public class ArrayList<E> implements List<E>, Serializable {
 
     @Override
     public E set(int index, E element) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (index < 0 || index >= effectiveSize) {
+            throw new IndexOutOfBoundsException("Índice fuera de rango: " + index);
+        }
+        E oldElement = elements[index];
+        elements[index] = element;
+        return oldElement;
     }
 
     private void addCapacity() {

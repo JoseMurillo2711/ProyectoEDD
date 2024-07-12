@@ -4,6 +4,7 @@
  */
 package TDA;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 
@@ -12,7 +13,7 @@ import java.util.Comparator;
  * @author josem
  * @param <E>
  */
-public interface List<E> extends Iterable<E> {
+public interface List<E> extends Iterable<E>   {
     
     public int size();
     public  boolean isEmpty();

@@ -1,13 +1,17 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package TDA;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
+import java.util.PriorityQueue;
 
-/**
- * Double Circle Linked List implementation
- *
- * @param <E> the type of elements in this list
- */
 public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, List<E> {
 
     private Node<E> last;
@@ -56,10 +60,11 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
 
     @Override
     public boolean addFirst(E element) {
-        Node<E> nodo = new Node<>(element);
         if (element == null) {
             return false;
-        } else if (size() == 0) {
+        }
+        Node<E> nodo = new Node<>(element);
+        if (isEmpty()) {
             last = nodo;
             last.setNext(last);
             last.setPrevious(last);
@@ -75,10 +80,11 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
 
     @Override
     public void addLast(E element) {
-        Node<E> nodo = new Node<>(element);
         if (element == null) {
             throw new IllegalArgumentException("El objeto no puede ser nulo.");
-        } else if (size() == 0) {
+        }
+        Node<E> nodo = new Node<>(element);
+        if (isEmpty()) {
             last = nodo;
             last.setNext(last);
             last.setPrevious(last);
@@ -98,8 +104,12 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
             return null;
         }
         Node<E> first = last.getNext();
-        last.setNext(first.getNext());
-        first.getNext().setPrevious(last);
+        if (first == last) {
+            last = null;
+        } else {
+            last.setNext(first.getNext());
+            first.getNext().setPrevious(last);
+        }
         effective--;
         return first.getContent();
     }
@@ -110,8 +120,12 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
             return null;
         }
         Node<E> nodo = last.getPrevious();
-        nodo.setNext(last.getNext());
-        last.getNext().setPrevious(nodo);
+        if (nodo == last) {
+            last = null;
+        } else {
+            nodo.setNext(last.getNext());
+            last.getNext().setPrevious(nodo);
+        }
         E content = last.getContent();
         last = nodo;
         effective--;
@@ -119,10 +133,16 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
     }
 
     public E getFirst() {
+        if (isEmpty()) {
+            return null;
+        }
         return last.getNext().getContent();
     }
 
     public E getLast() {
+        if (isEmpty()) {
+            return null;
+        }
         return last.getContent();
     }
 
@@ -230,6 +250,9 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
     }
 
     public boolean remove(E element, Comparator<E> cmp) {
+        if (isEmpty() || element == null) {
+            return false;
+        }
         Node<E> nodo = last.getNext();
         do {
             if (cmp.compare(element, nodo.getContent()) == 0) {
@@ -268,10 +291,16 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
     }
 
     public ListIterator<E> listIterator() {
+        if (isEmpty()) {
+            return Collections.emptyListIterator();
+        }
         return new DoubleCircleListIterator(0);
     }
 
     public ListIterator<E> listIterator(int index) {
+        if (isEmpty() || index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
         return new DoubleCircleListIterator(index);
     }
 
@@ -472,6 +501,7 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
     }
 
     private class DoubleCircleListIterator implements ListIterator<E>, Serializable {
+
         private Node<E> current;
         private Node<E> lastReturned;
         private int nextIndex;
@@ -562,42 +592,6 @@ public class DoubleCircleLinkedList<E> implements Iterable<E>, Serializable, Lis
         @Override
         public void add(E e) {
             throw new UnsupportedOperationException("Not supported yet.");
-        }
-    }
-
-    private static class Node<E> implements Serializable {
-        private E content;
-        private Node<E> next;
-        private Node<E> previous;
-
-        Node(E content) {
-            this.content = content;
-            this.next = this;
-            this.previous = this;
-        }
-
-        public E getContent() {
-            return content;
-        }
-
-        public void setContent(E content) {
-            this.content = content;
-        }
-
-        public Node<E> getNext() {
-            return next;
-        }
-
-        public void setNext(Node<E> next) {
-            this.next = next;
-        }
-
-        public Node<E> getPrevious() {
-            return previous;
-        }
-
-        public void setPrevious(Node<E> previous) {
-            this.previous = previous;
         }
     }
 }

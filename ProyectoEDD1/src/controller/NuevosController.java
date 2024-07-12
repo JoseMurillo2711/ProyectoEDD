@@ -61,8 +61,8 @@ public class NuevosController implements Initializable {
     private ScrollPane scroll;
     @FXML
     private VBox vbFiltros;
-    
-    private Map<String, DoubleCircleLinkedList<Vehiculo>> mapMarcas;    
+
+    private Map<String, DoubleCircleLinkedList<Vehiculo>> mapMarcas;
     private DoubleCircleLinkedList<Vehiculo> vehiculosMostrados;
     private DoubleCircleLinkedList<Vehiculo> vehiculosPorMarca;
     private ListIterator<Vehiculo> iteratorVehiculo;
@@ -80,9 +80,9 @@ public class NuevosController implements Initializable {
      * @param rb
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {        
+    public void initialize(URL url, ResourceBundle rb) {
         // TODO        
-        configBotones();        
+        configBotones();
         mapMarcas = vehiculosMarcas();
         congfigBottom();
         vehiculosMostrados = new DoubleCircleLinkedList<>();
@@ -91,16 +91,17 @@ public class NuevosController implements Initializable {
         comprobarListadoAutos();
     }
 
-    private void comprobarListadoAutos(){
-        if(VehiculoDataManager.getInstance().getVehiculos().isEmpty()){
+    private void comprobarListadoAutos() {
+        if (VehiculoDataManager.getInstance().getVehiculos().isEmpty()) {
             this.vbFiltros.setVisible(false);
-            this.vbFiltros.setManaged(true);
+            this.vbFiltros.setManaged(false);
             Label mensaje = new Label("No existen vehiculos nuevos en el sistema");
             mensaje.setId("lblAutos");
             this.vbMarcas.getChildren().clear();
             this.vbMarcas.getChildren().add(mensaje);
         }
     }
+
     private void confComboBox() {
         cbMarca.setOnAction(event -> {
             selectedMarca = cbMarca.getSelectionModel().getSelectedItem();
@@ -128,21 +129,22 @@ public class NuevosController implements Initializable {
             mostrar.recibirVehiculo(buscarVehiculoModelo(cbMarca.getValue(), cbModelo.getValue()), false);
             //this.mainController.cargarPagina("vehiculosNuevos");
             //this.mainController.setSeccionNuevo(true);
-            
+
         } else {
             Alertas.alertaError("Debe ingresar los parametros de busqueda", "No se pudo realizar la busqueda, debe seleccionar la marca y el modelo del auto");
         }
     }
 
-    private Vehiculo buscarVehiculoModelo(String marca, String modelo){
+    private Vehiculo buscarVehiculoModelo(String marca, String modelo) {
         Vehiculo veh = null;
-        for(Vehiculo v: VehiculoDataManager.getInstance().getVehiculos()){
-            if(v.getMarca().equalsIgnoreCase(marca) && v.getModelo().equalsIgnoreCase(modelo))
+        for (Vehiculo v : VehiculoDataManager.getInstance().getVehiculos()) {
+            if (v.getMarca().equalsIgnoreCase(marca) && v.getModelo().equalsIgnoreCase(modelo)) {
                 return v;
+            }
         }
         return veh;
     }
-    
+
     private Vehiculo vehiculoMarcaModelo() {
         DoubleCircleLinkedList<Vehiculo> vehiculosDeMarca = mapMarcas.get(selectedMarca);
         Vehiculo vehiculo = null;
@@ -228,35 +230,28 @@ public class NuevosController implements Initializable {
             System.out.println("La lista de vehículos por marca está vacía.");
             return;
         }
-        int count = 0;
-        int iteraciones = 0;
 
-        try {
-            if (adelante) {
-                while (iteratorVehiculo.hasNext() && count < PER_PAGE && iteraciones < vehiculosPorMarca.size()) {
-                    Vehiculo vehiculo = iteratorVehiculo.next();
-                    iteraciones++;
-                    if (vehiculo.getTipoCosto().equals(TipoCosto.FIJO) && vehiculosUnicos.add(vehiculo)) {
-                        vehiculosMostrados.addLast(vehiculo);
-                        count++;
-                    }
+        if (adelante) {            
+            for (int i = 0; i < PER_PAGE; i++) {
+                if (!iteratorVehiculo.hasNext()) {
+                    iteratorVehiculo = vehiculosPorMarca.listIterator();
                 }
-            } else {
-                while (iteratorVehiculo.hasPrevious() && count < PER_PAGE && iteraciones < vehiculosPorMarca.size()) {
-                    Vehiculo vehiculo = iteratorVehiculo.previous();
-                    iteraciones++;
-                    if (vehiculo.getTipoCosto().equals(TipoCosto.FIJO) && vehiculosUnicos.add(vehiculo)) {
-                        vehiculosMostrados.addFirst(vehiculo);
-                        count++;
-                    }
+                Vehiculo vehiculo = iteratorVehiculo.next();
+                if (vehiculo.getTipoCosto().equals(TipoCosto.FIJO) && vehiculosUnicos.add(vehiculo)) {
+                    vehiculosMostrados.addLast(vehiculo);
                 }
             }
-        } catch (Exception e) {
-            System.out.println("Error durante la iteración: " + e.getMessage());
-            e.printStackTrace();
+        } else {            
+            for (int i = 0; i < PER_PAGE; i++) {
+                if (!iteratorVehiculo.hasPrevious()) {
+                    iteratorVehiculo = vehiculosPorMarca.listIterator(vehiculosPorMarca.size());
+                }
+                Vehiculo vehiculo = iteratorVehiculo.previous();
+                if (vehiculo.getTipoCosto().equals(TipoCosto.FIJO) && vehiculosUnicos.add(vehiculo)) {
+                    vehiculosMostrados.addFirst(vehiculo);
+                }
+            }
         }
-
-        System.out.println("Vehículos mostrados: " + vehiculosMostrados.size());
 
         if (vehiculosMostrados.isEmpty()) {
             System.out.println("No se encontraron vehículos para mostrar.");
@@ -270,13 +265,7 @@ public class NuevosController implements Initializable {
             FlowPane.setMargin(child, new Insets(10));
         }
 
-        Platform.runLater(() -> this.scroll.setContent(flowNuevo));
-
-        if (vehiculosMostrados.size() < PER_PAGE) {
-            ocultarBotones();
-        } else {
-            mostrarBotones();
-        }
+        Platform.runLater(() -> scroll.setContent(flowNuevo));
     }
 
     private void ocultarBotones() {

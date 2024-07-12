@@ -343,7 +343,12 @@ public class MostrarInfoController implements Initializable {
             btnEliminar.setVisible(false);
             return;
         }
-        listaImagenes = vehiculo.getFotos();
+        System.out.println("FOTOS "+vehiculo.getFotos());
+        for(String s: vehiculo.getFotos()){
+            listaImagenes.addLast(s);
+        }
+        
+        System.out.println("LISTA " +listaImagenes);
         imageIterator = listaImagenes.listIterator();
         if (listaImagenes.size() <= 1) {
             btnEliminar.setVisible(false);
@@ -377,34 +382,30 @@ public class MostrarInfoController implements Initializable {
 
     @FXML
     private void mostrarAnterior(ActionEvent event) {
-        initializeIterator();
-        if (listaImagenes != null && !listaImagenes.isEmpty()) {
+        if (!listaImagenes.isEmpty()) {
             if (!imageIterator.hasPrevious()) {
                 imageIterator = listaImagenes.listIterator(listaImagenes.size());
             }
-            if (imageIterator.hasPrevious()) {
-                setImagen(imageIterator.previous());
+            setImagen(imageIterator.previous());
+            if (!imageIterator.hasPrevious()) {
+                imageIterator = listaImagenes.listIterator(listaImagenes.size());
             }
         }
+        System.out.println("LISTA ATRAS: " +listaImagenes);
     }
 
     @FXML
     private void mostrarSgte(ActionEvent event) {
-        initializeIterator();
-        if (listaImagenes != null && !listaImagenes.isEmpty()) {
+        if (!listaImagenes.isEmpty()) {
             if (!imageIterator.hasNext()) {
                 imageIterator = listaImagenes.listIterator();
             }
-            if (imageIterator.hasNext()) {
-                setImagen(imageIterator.next());
+            setImagen(imageIterator.next());
+            if (!imageIterator.hasNext()) {
+                imageIterator = listaImagenes.listIterator();
             }
         }
-    }
-
-    private void initializeIterator() {
-        if (imageIterator == null && listaImagenes != null) {
-            imageIterator = listaImagenes.listIterator();
-        }
+        System.out.println("LISTA SGTE: " +listaImagenes);
     }
 
     @FXML
@@ -654,5 +655,5 @@ public class MostrarInfoController implements Initializable {
     public void setVehiculo(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
     }
-
+  
 }

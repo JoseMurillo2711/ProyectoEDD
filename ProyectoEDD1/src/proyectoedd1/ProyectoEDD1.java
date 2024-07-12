@@ -1,17 +1,12 @@
 package proyectoedd1;
 
-import TDA.ArrayList;
-import TDA.List;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import modelo.Usuario;
 import modelo.VehiculoNuevo;
 import modelo.VehiculoUsado;

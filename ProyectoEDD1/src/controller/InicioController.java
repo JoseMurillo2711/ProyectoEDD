@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package controller;
 
 import TDA.ArrayList;
@@ -15,6 +11,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -24,12 +21,14 @@ import modelo.Vehiculo;
 import modelo.VehiculoNuevo;
 import static util.Utilitario.createCard;
 import util.VehiculoDataManager;
+import tipo.TipoCosto;
 
 /**
  * FXML Controller class
  *
  * @author Michelle
  */
+
 public class InicioController implements Initializable {
 
     @FXML
@@ -38,11 +37,10 @@ public class InicioController implements Initializable {
     private Button btnSiguiente;
     @FXML
     private TilePane tilePane;
-    
+
     private DoubleCircleLinkedList<ArrayList<Vehiculo>> paginas;
-    
     private ListIterator<ArrayList<Vehiculo>> current;
-    
+
     private static final int ITEMS_PER_PAGE = 10;
     @FXML
     private ChoiceBox<String> cbMarca;
@@ -59,21 +57,37 @@ public class InicioController implements Initializable {
     @FXML
     private Button btnFiltrar;
 
-    /**
-     * Initializes the controller class.
-     * @param url
-     * @param rb
-     */
+    private ArrayList<Vehiculo> vehiculosOriginales;
+    @FXML
+    private TextField tfAnioMin;
+    @FXML
+    private TextField tfAnioMax;
+    @FXML
+    private ChoiceBox<String> cbTipoCosto;
+    @FXML
+    private Button btnReset;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        mostrarAutos();
-        btnFiltrar.setOnAction(event -> filtrarAutos());
-        
+        vehiculosOriginales = new ArrayList<>();
+        vehiculosOriginales.addAll(VehiculoDataManager.getInstance().getVehiculos());
+        mostrarAutos(vehiculosOriginales);
+
+        btnFiltrar.setOnAction(event -> {
+            try {
+                filtrarAutos();
+            } catch (Exception e) {
+                mostrarAlerta("No se encontraron vehículos con los criterios de búsqueda.");
+            }
+        });
+
+        btnReset.setOnAction(event -> resetFilters());
+
         configComboBox();
         cargarMarcas();
+        cargarTiposDeCosto();
     }
-    
+
     private void configComboBox() {
         cbMarca.setOnAction(event -> {
             String selectedMarca = cbMarca.getSelectionModel().getSelectedItem();
@@ -88,9 +102,9 @@ public class InicioController implements Initializable {
         Map<String, DoubleCircleLinkedList<Vehiculo>> mapMarcas = vehiculosMarcas();
         mapMarcas.keySet().forEach(marca -> cbMarca.getItems().add(marca));
     }
-    
+
     private void cargarModelos(String marca) {
-        cbModelo.getItems().clear(); 
+        cbModelo.getItems().clear();
         DoubleCircleLinkedList<Vehiculo> vehiculosDeMarca = vehiculosMarcas().get(marca);
         Set<String> modelos = new HashSet<>();
         for (Vehiculo vehiculo : vehiculosDeMarca) {
@@ -99,48 +113,45 @@ public class InicioController implements Initializable {
         modelos.forEach(modelo -> cbModelo.getItems().add(modelo));
     }
 
+    private void cargarTiposDeCosto() {
+        for (TipoCosto tipo : TipoCosto.values()) {
+            cbTipoCosto.getItems().add(tipo.toString());
+        }
+    }
+
     private Map<String, DoubleCircleLinkedList<Vehiculo>> vehiculosMarcas() {
         Map<String, DoubleCircleLinkedList<Vehiculo>> valores = new HashMap<>();
         for (Vehiculo ve : VehiculoDataManager.getInstance().getVehiculos()) {
-            String marca = ve.getMarca().toUpperCase();
+            String marca = ve.getMarca();
             if (ve instanceof VehiculoNuevo) {
                 valores.computeIfAbsent(marca, k -> new DoubleCircleLinkedList<>()).addLast(ve);
             }
         }
         return valores;
     }
-    
 
-    private void mostrarAutos() {        
+    private void mostrarAutos(ArrayList<Vehiculo> vehiculos) {
         paginas = new DoubleCircleLinkedList<>();
-        
-        // Cargar los vehículos desde el modelo o la base de datos
-        ArrayList<Vehiculo> vehiculos = new ArrayList<>(); // Implementa este método según tus necesidades
-        vehiculos.addAll(VehiculoDataManager.getInstance().getVehiculos());
-        // Dividir la lista de vehículos en páginas
-        int totalPages = vehiculos.size() /  ITEMS_PER_PAGE;
+        int totalPages = (vehiculos.size() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
         for (int i = 0; i < totalPages; i++) {
             ArrayList<Vehiculo> page = new ArrayList<>();
             for (int j = i * ITEMS_PER_PAGE; j < (i + 1) * ITEMS_PER_PAGE && j < vehiculos.size(); j++) {
                 page.addLast(vehiculos.get(j));
             }
             paginas.addLast(page);
-        }        
+        }
 
-       current = paginas.listIterator();
-
+        current = paginas.listIterator();
         if (current.hasNext()) {
             mostrarPaginaProxima();
         }
 
-        // Configurar los botones
         btnSiguiente.setOnAction(event -> mostrarPaginaProxima());
         btnAnterior.setOnAction(event -> mostrarPaginaAnterior());
-        
     }
-    
+
     private void mostrarPaginaProxima() {
-        if (current.hasNext()) {
+        if (current != null && current.hasNext()) {
             ArrayList<Vehiculo> vehiculos = current.next();
             tilePane.getChildren().clear();
             for (Vehiculo vehiculo : vehiculos) {
@@ -149,9 +160,9 @@ public class InicioController implements Initializable {
             }
         }
     }
-    
+
     private void mostrarPaginaAnterior() {
-        if (current.hasPrevious()) {
+        if (current != null && current.hasPrevious()) {
             ArrayList<Vehiculo> vehiculos = current.previous();
             tilePane.getChildren().clear();
             for (Vehiculo vehiculo : vehiculos) {
@@ -161,51 +172,66 @@ public class InicioController implements Initializable {
         }
     }
 
-    private void filtrarAutos() {
+    private void filtrarAutos() throws Exception {
         String marca = cbMarca.getValue();
         String modelo = cbModelo.getValue();
         String kilometrajeMinStr = tfKilometrajeMin.getText();
         String kilometrajeMaxStr = tfKilometrajeMax.getText();
         String precioMinStr = tfPrecioMin.getText();
         String precioMaxStr = tfPrecioMax.getText();
+        String anioMinStr = tfAnioMin.getText();
+        String anioMaxStr = tfAnioMax.getText();
+        String tipoCosto = cbTipoCosto.getValue();
 
         int kilometrajeMin = kilometrajeMinStr.isEmpty() ? Integer.MIN_VALUE : Integer.parseInt(kilometrajeMinStr);
         int kilometrajeMax = kilometrajeMaxStr.isEmpty() ? Integer.MAX_VALUE : Integer.parseInt(kilometrajeMaxStr);
         double precioMin = precioMinStr.isEmpty() ? Double.MIN_VALUE : Double.parseDouble(precioMinStr);
         double precioMax = precioMaxStr.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(precioMaxStr);
-
-        ArrayList<Vehiculo> vehiculos = new ArrayList<>(); // Implementa este método según tus necesidades
-        vehiculos.addAll(VehiculoDataManager.getInstance().getVehiculos());
+        int anioMin = anioMinStr.isEmpty() ? Integer.MIN_VALUE : Integer.parseInt(anioMinStr);
+        int anioMax = anioMaxStr.isEmpty() ? Integer.MAX_VALUE : Integer.parseInt(anioMaxStr);
 
         ArrayList<Vehiculo> vehiculosFiltrados = new ArrayList<>();
-        for (Vehiculo vehiculo : vehiculos) {
+        for (Vehiculo vehiculo : vehiculosOriginales) {
             boolean matches = (marca == null || marca.isEmpty() || vehiculo.getMarca().equals(marca)) &&
                               (modelo == null || modelo.isEmpty() || vehiculo.getModelo().equals(modelo)) &&
                               vehiculo.getKilometraje() >= kilometrajeMin &&
                               vehiculo.getKilometraje() <= kilometrajeMax &&
                               vehiculo.getPrecio() >= precioMin &&
-                              vehiculo.getPrecio() <= precioMax;
+                              vehiculo.getPrecio() <= precioMax &&
+                              vehiculo.getAño() >= anioMin &&
+                              vehiculo.getAño() <= anioMax &&
+                              (tipoCosto == null || tipoCosto.isEmpty() || vehiculo.getTipoCosto().toString().equals(tipoCosto));
 
             if (matches) {
-                vehiculosFiltrados.add(vehiculosFiltrados.size(), vehiculo);
+                vehiculosFiltrados.addLast(vehiculo);
             }
         }
 
-        paginas.clear();
-        int totalPages = vehiculosFiltrados.size() / ITEMS_PER_PAGE;
-        for (int i = 0; i < totalPages; i++) {
-            ArrayList<Vehiculo> page = new ArrayList<>();
-            for (int j = i * ITEMS_PER_PAGE; j < (i + 1) * ITEMS_PER_PAGE && j < vehiculosFiltrados.size(); j++) {
-                page.addLast(vehiculosFiltrados.get(j));
-            }
-            paginas.addLast(page);
+        if (vehiculosFiltrados.isEmpty()) {
+            throw new Exception("No se encontraron vehículos.");
         }
 
-        current = paginas.listIterator();
-
-        if (current.hasNext()) {
-            mostrarPaginaProxima();
-        }
+        mostrarAutos(vehiculosFiltrados);
     }
 
+    private void resetFilters() {
+        cbMarca.setValue(null);
+        cbModelo.setValue(null);
+        tfKilometrajeMin.clear();
+        tfKilometrajeMax.clear();
+        tfPrecioMin.clear();
+        tfPrecioMax.clear();
+        tfAnioMin.clear();
+        tfAnioMax.clear();
+        cbTipoCosto.setValue(null);
+        mostrarAutos(vehiculosOriginales);
+    }
+
+    private void mostrarAlerta(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Información");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
 }

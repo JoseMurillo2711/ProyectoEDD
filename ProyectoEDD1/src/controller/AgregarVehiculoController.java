@@ -4,10 +4,15 @@ import TDA.ArrayList;
 import TDA.DoubleCircleLinkedList;
 import TDA.List;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import modelo.*;
@@ -84,6 +89,8 @@ public class AgregarVehiculoController {
     private Usuario usuario;
     @FXML
     private Button btnAgregarImagen;
+    @FXML
+    private ImageView imgVehiculo;
 
     public void initialize() {
         usuario = UsuarioDataManager.getInstance().getUsuarioActual();
@@ -187,13 +194,13 @@ public class AgregarVehiculoController {
 
             }
 
-            Alertas.alertaInfo("Se ha agregado el vehiculo correctamente", "Vehiculo agregado con exito");
-            abrirNuevaVentana("main", "Welcome!");
-            cerrarVentana();
+            Alertas.alertaInfo("Se ha agregado el vehículo correctamente", "Vehículo agregado con éxito");
+            abrirNuevaVentana("main", "¡Bienvenido!");
+            //cerrarVentana();
         } catch (NumberFormatException e) {
-            System.err.println("Error. Revise haber colocado bien los datos." + e.getMessage());
+            Alertas.alertaError("Error", "Revise los datos ingresados", "Error: Verifique bien los datos.");
         } catch (Exception e) {
-            System.err.println("Error al crear el vehículo: " + e.getMessage());
+            Alertas.alertaError("Error", "Error al crear el vehículo", "Error: " + e.getMessage());
         }
     }
 
@@ -219,9 +226,26 @@ public class AgregarVehiculoController {
         );
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
-            String fotoNombre = selectedFile.getName();
-            usrFotoNombre.setText(fotoNombre);
-            fotosList.addLast(fotoNombre);
+            try {
+                // Ruta donde se guardarán las imágenes (en el directorio del proyecto, ajusta según tu estructura)
+                String rutaDestino = "src/recursos/";
+                File destino = new File(rutaDestino + selectedFile.getName());
+
+                // Copiar el archivo seleccionado al destino
+                Files.copy(selectedFile.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                // Actualizar la lista de fotos o hacer lo que necesites con la foto guardada
+                String fotoNombre = selectedFile.getName();
+                usrFotoNombre.setText(fotoNombre);
+                fotosList.addLast(fotoNombre);
+
+                // Mostrar la imagen en un ImageView (si es necesario)
+                Image image = new Image(destino.toURI().toString());
+                imgVehiculo.setImage(image); // Asegúrate de tener un ImageView llamado imgVehiculo en tu FXML
+            } catch (IOException e) {
+                Alertas.alertaError("Error", "No se pudo guardar la imagen", "Error: " + e.getMessage());
+            }
         }
     }
+
 }

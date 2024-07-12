@@ -8,9 +8,12 @@ import TDA.*;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tipo.TipoCosto;
 import tipo.TipoDireccion;
 import tipo.TipoTraccion;
+import util.Alertas;
 import util.UsuarioDataManager;
 import static util.Utilitario.generateUniqueId;
 
@@ -337,9 +340,17 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
     public void onchangeFavorite(){
         List<Vehiculo> vehicles = UsuarioDataManager.getInstance().getUsuarioActual().getVehiculosFavoritos();
         if (vehicles.contains(this)){
-            vehicles.remove(this);
+            try {
+                UsuarioDataManager.getInstance().eliminarAutoFavorito(this);
+            } catch (Exception ex) {
+                Logger.getLogger(Vehiculo.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }else{
-            vehicles.addLast(this);
+            try {
+                UsuarioDataManager.getInstance().agregarAutoFavorito(this);
+            } catch (Exception ex) {
+                Alertas.alertaError("Ha ocurrido un error inesperado", "Error", "Error: " + ex.getMessage());                
+            }
         }
         
         System.out.println(vehicles);

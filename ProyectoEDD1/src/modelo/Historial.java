@@ -67,10 +67,22 @@ public class Historial implements Serializable{
         this.servicios.remove(ind);
     }
     
+    public void editarServicio(Servicio servicio){
+        int ind = this.servicios.indexOf(servicio);
+        if (ind == -1) throw new NullPointerException("No se encuentra ese servicio registrado en el historial");
+        this.servicios.set(ind, servicio);
+    }
+    
     public void eliminarReparacion(Reparacion reparacion){
         int ind = this.reparaciones.indexOf(reparacion);
         if (ind == -1) throw new NullPointerException("No se encuentra esa reparacion registrada en el historial");
         this.reparaciones.remove(ind);
+    }
+    
+    public void editarReparacion(Reparacion reparacion){
+        int ind = this.reparaciones.indexOf(reparacion);
+        if (ind == -1) throw new NullPointerException("No se encuentra esa reparacion registrada en el historial");
+        this.reparaciones.set(ind, reparacion);
     }
 
     @Override

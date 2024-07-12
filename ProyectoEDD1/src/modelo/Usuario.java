@@ -73,6 +73,6 @@ public class Usuario implements Serializable{
 
     @Override
     public String toString() {
-        return "Usuario{" + "nickname=" + nickname + '}';
+        return "Usuario{" + "nickname=" + nickname + ", Pass:"+this.password+'}';
     }    
 }

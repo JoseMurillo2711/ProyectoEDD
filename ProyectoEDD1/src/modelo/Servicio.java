@@ -6,7 +6,6 @@ package modelo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 import static util.Utilitario.generateUniqueId;
 
@@ -22,7 +21,7 @@ public class Servicio implements Serializable{
 
     private static final long serialVersionUID = 432992201266L;
     
-    public Servicio(String tipo, LocalDate fecha) {
+    public Servicio(LocalDate fecha, String tipo) {
         this.id = generateUniqueId();
         this.tipo = tipo;
         this.fecha = fecha;

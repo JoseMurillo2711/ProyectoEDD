@@ -150,8 +150,9 @@ public class MainController implements Initializable {
         if (usuario == null) {
             Alertas.alertaError("No puedes continuar", "Para poder agregar vehiculos debe iniciar sesión");
         } else {
-            abrirNuevaVentana("agregarVehiculo", "Agregar vehiculo");
-            cerrarVentana();
+            cargarPagina("agregarVehiculo");
+            this.hbBusqueda.setVisible(false);
+            seccionNuevo = true;
         }
     }
 

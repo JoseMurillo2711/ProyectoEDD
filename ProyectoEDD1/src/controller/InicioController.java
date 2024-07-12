@@ -82,6 +82,7 @@ public class InicioController implements Initializable {
             try {
                 filtrarAutos();
             } catch (Exception e) {
+                System.out.println(e);
                 mostrarAlerta("No se encontraron vehículos con los criterios de búsqueda.");
             }
         });
@@ -190,6 +191,9 @@ public class InicioController implements Initializable {
         String anioMinStr = tfAnioMin.getText();
         String anioMaxStr = tfAnioMax.getText();
         String tipoCosto = cbTipoCosto.getValue();
+        TipoTransmision tt = cbTransmision.getValue();
+        TipoMotor tm = cbCategoria.getValue();
+        
 
         int kilometrajeMin = kilometrajeMinStr.isEmpty() ? Integer.MIN_VALUE : Integer.parseInt(kilometrajeMinStr);
         int kilometrajeMax = kilometrajeMaxStr.isEmpty() ? Integer.MAX_VALUE : Integer.parseInt(kilometrajeMaxStr);
@@ -200,6 +204,8 @@ public class InicioController implements Initializable {
 
         ArrayList<Vehiculo> vehiculosFiltrados = new ArrayList<>();
         for (Vehiculo vehiculo : vehiculosOriginales) {
+            TipoMotor tm1 = (vehiculo.getMotor() != null) ? vehiculo.getMotor().getTipo() : null;
+            TipoTransmision tt1 = (vehiculo.getTransmision() != null) ? vehiculo.getTransmision().getTipo() : null;
             boolean matches = (marca == null || marca.isEmpty() || vehiculo.getMarca().equals(marca)) &&
                               (modelo == null || modelo.isEmpty() || vehiculo.getModelo().equals(modelo)) &&
                               vehiculo.getKilometraje() >= kilometrajeMin &&
@@ -208,8 +214,8 @@ public class InicioController implements Initializable {
                               vehiculo.getPrecio() <= precioMax &&
                               vehiculo.getAño() >= anioMin &&
                               vehiculo.getAño() <= anioMax &&
-                              vehiculo.getTransmision().getTipo() == cbTransmision.getValue() &&
-                              vehiculo.getMotor().getTipo() == cbCategoria.getValue() &&
+                              tm1 == tm &&  
+                              tt1 == tt &&
                               (tipoCosto == null || tipoCosto.isEmpty() || vehiculo.getTipoCosto().toString().equals(tipoCosto));
 
             if (matches) {

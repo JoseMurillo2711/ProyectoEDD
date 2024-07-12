@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AutosFavoritosController">
+    <children>
+        <BorderPane prefHeight="440.0" prefWidth="531.0" VBox.vgrow="ALWAYS">
+            <top>
+                <Label id="tituloVehicuos" fx:id="lblTitulo" text="Mis Vehiculos" BorderPane.alignment="CENTER" />
+            </top>
+            <center>
+                <TilePane fx:id="tilePane2" prefHeight="245.0" prefWidth="449.0" />
+            </center>
+            <bottom>
+                <HBox alignment="CENTER" spacing="10.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#regresar" text="Regresar" />
+                        <Button fx:id="btnAnterior2" text="Anterior" />
+                        <Button fx:id="btnSiguiente2" text="Siguiente" />
+                    </children>
+                </HBox>
+            </bottom>
+        </BorderPane>
+    </children>
+</VBox>

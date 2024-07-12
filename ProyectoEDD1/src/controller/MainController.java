@@ -126,6 +126,8 @@ public class MainController implements Initializable {
 
     @FXML
     private void verFavoritos(ActionEvent event) {
+        Utilitario.abrirNuevaVentana("misFavoritos", "Mis autos favoritos");
+        cerrarVentana();
     }
 
     @FXML

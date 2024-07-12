@@ -1,36 +1,17 @@
 package controller;
 
-//import java.awt.Color;
 import TDA.ArrayList;
 import TDA.DoubleCircleLinkedList;
 import TDA.List;
+import java.io.File;
 import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import modelo.Historial;
-import modelo.Motor;
-import modelo.Placa;
-import modelo.Reparacion;
-import modelo.Servicio;
-import modelo.Transmision;
-import modelo.Ubicacion;
-import modelo.Usuario;
-import modelo.Vehiculo;
-import modelo.VehiculoNuevo;
-import modelo.VehiculoUsado;
-import tipo.TipoCosto;
-import tipo.TipoDireccion;
-import tipo.TipoMotor;
-import tipo.TipoTraccion;
-import tipo.TipoTransmision;
+import modelo.*;
+import tipo.*;
 import util.Alertas;
 import util.UsuarioDataManager;
 import static util.Utilitario.abrirNuevaVentana;
@@ -98,10 +79,11 @@ public class AgregarVehiculoController {
 
     private DoubleCircleLinkedList<String> fotosList;
 
-    //Esta variable es verdadera sí y solo sí se accedió a registro mediante la ventana del login
     private boolean isInicioSesion;
 
     private Usuario usuario;
+    @FXML
+    private Button btnAgregarImagen;
 
     public void initialize() {
         usuario = UsuarioDataManager.getInstance().getUsuarioActual();
@@ -111,11 +93,15 @@ public class AgregarVehiculoController {
             setUsadoFieldsEnabled(newValue);
         });
 
+        usrFotoNombre.setDisable(false);
         setUsadoFieldsEnabled(false);
 
         isInicioSesion = false;
         tipoServ = new ArrayList<>();
         tipoRep = new ArrayList<>();
+        fotosList = new DoubleCircleLinkedList<>();
+        
+        
     }
 
     public void parametros(boolean inicioSesion) {
@@ -157,7 +143,6 @@ public class AgregarVehiculoController {
     @FXML
     private void crearVehiculo(ActionEvent event) {
         try {
-            //String tipoCosto = ""+ usrTipoCosto.getValue();
             TipoCosto tipoCosto = usrTipoCosto.getValue();
             String marca = usrMarca.getText();
             String modelo = usrModelo.getText();
@@ -173,7 +158,6 @@ public class AgregarVehiculoController {
             String fotoNombre = usrFotoNombre.getText();
             TipoTraccion tipoTraccion = usrTipoTraccion.getValue();
             TipoDireccion tipoDireccion = usrTipoDireccion.getValue();
-            //Color color = usrColor.getValue();
             String color = "" + usrColor.getValue();
             boolean climatizado = usrClimatizado.isSelected();
             int nHileras = Integer.parseInt(usrNHileras.getText());
@@ -193,17 +177,12 @@ public class AgregarVehiculoController {
 
                 tipoServ.addFirst(servicios);
                 tipoRep.addFirst(reparaciones);
-                //fotosList.addLast(fotoNombre);
-                //(Usuario dueno, TipoCosto tipoCosto, String marca, String modelo, int año, int kilometraje, double precio, Motor motor, Transmision transmision, Ubicacion ubicacion, Historial historial, TipoTraccion traccion, TipoDireccion direccion, String color, boolean climatizado, int numHilera, int numPuerta, String foto, Placa placa) {
-                VehiculoUsado nuevoVehiculoUsado = new VehiculoUsado(usuario, tipoCosto, marca, modelo, anio, kilometraje, precio, new Motor(tipoMotor, cilindraje), new Transmision(tipoTransmision, velocidades), new Ubicacion(ciudad, direccion),new Historial(tipoServ, tipoRep), tipoTraccion, tipoDireccion, color, climatizado, nHileras, nPuertas, fotoNombre, new Placa(ultimoDigito, provincia));
-                //Vehiculo nuevoVehiculoUsado = new VehiculoUsado(usuario, marca, modelo, anio, kilometraje, precio, tipoCosto);
 
+                VehiculoUsado nuevoVehiculoUsado = new VehiculoUsado(usuario, tipoCosto, marca, modelo, anio, kilometraje, precio, new Motor(tipoMotor, cilindraje), new Transmision(tipoTransmision, velocidades), new Ubicacion(ciudad, direccion), new Historial(tipoServ, tipoRep), tipoTraccion, tipoDireccion, color, climatizado, nHileras, nPuertas, fotoNombre, new Placa(ultimoDigito, provincia));
                 VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculoUsado);
 
             } else {
-                //Vehiculo nuevoVehiculo = new Vehiculo(marca, modelo, anio, kilometraje, new Motor(new TipoMotor(tipoMotor), cilindraje), new Transmision(new TipoTransmision(tipoTransmicion), velocidades), new Ubicacion(ciudad, direccion), foto, new TipoTraccion(tipoTraccion), tipoDireccion, color, climatizado, nHileras, nPuertas, precio, new TipoCosto(tipoCosto));
-                //Vehiculo nuevoVehiculo = new VehiculoNuevo(usuario, marca, modelo, anio, kilometraje, precio, tipoCosto);
-                Vehiculo nuevoVehiculo = new VehiculoNuevo(usuario, tipoCosto, marca, modelo, anio, kilometraje, precio, new Motor(tipoMotor, cilindraje), new Transmision(tipoTransmision, velocidades), new Ubicacion(ciudad, direccion), tipoTraccion, tipoDireccion, color, climatizado, nHileras, nPuertas, fotoNombre);
+                VehiculoNuevo nuevoVehiculo = new VehiculoNuevo(usuario, tipoCosto, marca, modelo, anio, kilometraje, precio, new Motor(tipoMotor, cilindraje), new Transmision(tipoTransmision, velocidades), new Ubicacion(ciudad, direccion), tipoTraccion, tipoDireccion, color, climatizado, nHileras, nPuertas, fotoNombre);
                 VehiculoDataManager.getInstance().agregarVehiculo(nuevoVehiculo);
 
             }
@@ -232,4 +211,17 @@ public class AgregarVehiculoController {
         cerrarVentana();
     }
 
+    @FXML
+    private void agregarImagen(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            String fotoNombre = selectedFile.getName();
+            usrFotoNombre.setText(fotoNombre);
+            fotosList.addLast(fotoNombre);
+        }
+    }
 }

@@ -330,4 +330,16 @@ public abstract class Vehiculo implements Serializable, Comparable<Vehiculo> {
         }
         return star;
     }
+    
+    public void onchangeFavorite(){
+        List<Vehiculo> vehicles = UsuarioDataManager.getInstance().getUsuarioActual().getVehiculosFavoritos();
+        if (vehicles.contains(this)){
+            vehicles.remove(this);
+        }else{
+            vehicles.addLast(this);
+        }
+        
+        System.out.println(vehicles);
+        
+    }
 }

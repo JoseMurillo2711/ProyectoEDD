@@ -1,10 +1,11 @@
 package TDA;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class CircularLinkedList<E> implements List<E> {
+public class CircularLinkedList<E> implements List<E>, Serializable {
     private Node<E> tail;
     private int size;
 

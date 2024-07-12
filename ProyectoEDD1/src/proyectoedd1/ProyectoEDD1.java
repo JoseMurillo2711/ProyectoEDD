@@ -1,11 +1,17 @@
 package proyectoedd1;
 
+import TDA.ArrayList;
+import TDA.List;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import modelo.Usuario;
 import modelo.VehiculoNuevo;
 import modelo.VehiculoUsado;
@@ -25,6 +31,10 @@ public class ProyectoEDD1 extends Application {
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Mi Aplicación JavaFX");
+            primaryStage.setOnCloseRequest(event -> {
+                Platform.exit();
+                System.exit(0);
+            });
             primaryStage.show();
         } catch (IOException e) {
         }
@@ -40,9 +50,10 @@ public class ProyectoEDD1 extends Application {
     }
 
     private static void agregarDatos() {
+        agregarUsuarios();
         UsuarioDataManager dataUser = UsuarioDataManager.getInstance();
-        Usuario user1 = dataUser.obtenerUsuario("user1");
-        Usuario user2 = dataUser.obtenerUsuario("user2");
+        Usuario user1 = dataUser.obtenerUsuario("admin");
+        Usuario user2 = dataUser.obtenerUsuario("admi");
         Usuario user3 = dataUser.obtenerUsuario("anckpop");
         VehiculoDataManager vehiculoDataManager = VehiculoDataManager.getInstance();
         vehiculoDataManager.agregarVehiculo(new VehiculoNuevo(user1, "KIA", "Seltos", 2024, 0, 132654.0, TipoCosto.FIJO));
@@ -86,6 +97,24 @@ public class ProyectoEDD1 extends Application {
         vehiculoDataManager.agregarVehiculo(new VehiculoNuevo(user3, "Ford", "Bronco", 2023, 0, 48000.0, TipoCosto.FIJO));
         vehiculoDataManager.agregarVehiculo(new VehiculoNuevo(user3, "Ford", "Maverick", 2023, 0, 35000.0, TipoCosto.FIJO));
         vehiculoDataManager.agregarVehiculo(new VehiculoNuevo(user1, "Ford", "Taurus", 2023, 0, 41000.0, TipoCosto.FIJO));
+    }
+
+    private static void agregarUsuarios() {
+        try {
+            UsuarioDataManager.getInstance().agregarUsuario(new Usuario("anckpop", "123"));
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        try {
+            UsuarioDataManager.getInstance().agregarUsuario(new Usuario("admin", "admin"));
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        try {
+            UsuarioDataManager.getInstance().agregarUsuario(new Usuario("admi", "admi"));
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
 
     }
 }
